@@ -15,6 +15,11 @@
 // You should have received a copy of the GNU General Public License
 // along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 
+mod args;
+
+use clap::{Parser, Subcommand};
+use args::FlavorArgs;
+
 fn main() {
-    println!("Hello, world!");
+    let args = FlavorArgs::parse();
 }
