@@ -38,6 +38,9 @@ jobs:
           components: clippy
           override: true
 
+      - name: Install apt deps
+        run: sudo apt install libdbus-1-dev pkg-config
+
       - name: Install required cargo
         run: cargo install clippy-sarif sarif-fmt
 
