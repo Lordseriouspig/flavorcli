@@ -1,36 +1,38 @@
 // Copyright (C) 2025 Lordseriouspig
-// 
+//
 // This file is part of flavorcli.
-// 
+//
 // flavorcli is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // flavorcli is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 
-mod commands;
+use clap::{Args, Subcommand};
 
-use clap::{Parser};
-use commands::FlavorArgs;
+pub mod get;
+pub mod list;
 
-fn main() {
-    let args = FlavorArgs::parse();
+#[derive(Debug, Args)]
+pub struct ProjectDevlogs {
+    // Defines devlog subcommand (level 3)
+    #[clap(subcommand)]
+    pub command: ProjectDevlogSubcommand,
+}
 
-    match args.entity_type {
-        commands::Command::Auth(auth_cmd) => {
-        }
-        commands::Command::Project(project_cmd) => {
-        }
-        commands::Command::Store(store_cmd) => {
-        }
-        commands::Command::User(user_cmd) => {
-        }
-    }
+#[derive(Debug, Subcommand)]
+pub enum ProjectDevlogSubcommand {
+    // Defines devlog commands (level 4)
+    /// List devlogs for a project
+    List(list::ProjectDevlogList),
+
+    /// Get a specific devlog by its ID
+    Get(get::ProjectDevlogGet),
 }
