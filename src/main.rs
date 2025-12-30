@@ -19,18 +19,36 @@ mod commands;
 
 use clap::{Parser};
 use commands::FlavorArgs;
+use log::{info, warn, error};
 
-fn main() {
+#[tokio::main]
+async fn main() {
+    colog::init();
+
     let args = FlavorArgs::parse();
 
     match args.entity_type {
         commands::Command::Auth(auth_cmd) => {
+            match auth_cmd.command {
+                commands::auth::AuthSubcommand::Set(set_cmd) => {
+                    if let Err(e) = set_cmd.execute().await {
+                        error!("Failed to set authentication token: {}", e);
+                        std::process::exit(1);
+                    }
+                }
+                commands::auth::AuthSubcommand::Delete(delete_cmd) => {
+                    //TODO: Delete command
+                }
+            }
         }
         commands::Command::Project(project_cmd) => {
+            //TODO: Project commands
         }
         commands::Command::Store(store_cmd) => {
+            //TODO: Store commands
         }
         commands::Command::User(user_cmd) => {
+            //TODO: User commands
         }
     }
 }

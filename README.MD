@@ -52,21 +52,24 @@ Upon release, FlavorCLI will be available on all[^1] major package managers.
    
 ![An image of the settings modal, the section you're looking for (The API key section btw) is at the bottom. That should be enough to help you find it, right?](https://hc-cdn.hel1.your-objectstorage.com/s/v3/f6e817ef5ec2b794_image.png)
 
-4. Run ``ft auth set <APIKEY>``[^3]
+4. Get your User ID. Either hover over the link, and note down the number that shows, or click on the link and note the number in the URL bar.
+![An image pointing to your name in the sidebar.](https://hc-cdn.hel1.your-objectstorage.com/s/v3/69a83acd6aba05dc_image.png)
+
+5. Run ``ft auth set <USER_ID> <TOKEN>``[^3]
 [^3]: You can use ``ft auth delete`` at any time to delete your API Key. Your API Key is stored on device with your device's keychain. If you want to set auth for each command, add the ``--auth <APIKEY>`` flag
 
 ### Using the commands
 Uhm, just use ``ft --help`` ig. (TODO: write proper guides on how to use the commands that definitely exist)
 
 ## Features
-* none rn lol
-* well it has placeholder commands... i guess thats something
+* Stores and verifies your API Key in your OS' keychain when using ``ft auth set <USER_ID> <TOKEN>``.
+* thats it rn lol.
 
 ### Planned Features
 - [x] Actually *have* commands
 - [ ] Make those commands reflect what can be done with the API, add **more**
-- [ ] Authorization with Flavortown.
-- [ ] API Key storage with keychain.
-- [ ] Actually handle the commands lol.
+- [x] Authorization with Flavortown.
+- [x] API Key storage with keychain.
+- [x] Actually handle the commands lol.
 - [ ] API Implementation
 - [ ] Pretty much everything else
