@@ -25,7 +25,7 @@
 [![Last Commit](https://img.shields.io/github/last-commit/lordseriouspig/flavorcli)](https://github.com/Lordseriouspig/flavorcli/commits/main/ "Commit History")
 
 > [!CAUTION]
-> FlavorCLI *doesn't actually work* as of right now. I am awaiting for more features to be added to the Flavortown API before continuing the project. Until then, you **should not** use this project.
+> FlavorCLI *only kinda works* as of right now. I'm still working on writing some more commands and am still waiting on some more API routes to be added. Right now there's only read routes available.
 
 FlavorCLI is a fully-featured implementation of the Flavortown API, allowing for easier and streamlined interaction with HackClub's Flavortown.
 
