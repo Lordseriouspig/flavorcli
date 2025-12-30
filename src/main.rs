@@ -37,18 +37,52 @@ async fn main() {
                     }
                 }
                 commands::auth::AuthSubcommand::Delete(delete_cmd) => {
-                    //TODO: Delete command
+                    if let Err(e) = delete_cmd.execute().await {
+                        error!("Failed to delete authentication token: {}", e);
+                        std::process::exit(1);
+                    }
                 }
             }
         }
         commands::Command::Project(project_cmd) => {
-            //TODO: Project commands
+            match project_cmd.command {
+                commands::project::ProjectSubcommand::Get(get_cmd) => {
+                    //TODO: Get Command
+                }
+                commands::project::ProjectSubcommand::List(list_cmd) => {
+                    //TODO: List Command
+                }
+                commands::project::ProjectSubcommand::Devlog(devlog_cmd) => {
+                    match devlog_cmd.command {
+                        commands::project::devlog::ProjectDevlogSubcommand::Get(get_cmd) => {
+                            //TODO: Get Command
+                        }
+                        commands::project::devlog::ProjectDevlogSubcommand::List(list_cmd) => {
+                            //TODO: List Command
+                        }
+                    }
+                }
+            }
         }
         commands::Command::Store(store_cmd) => {
-            //TODO: Store commands
+            match store_cmd.command {
+                commands::store::StoreSubcommand::Get(get_cmd) => {
+                    //TODO: Get Command
+                }
+                commands::store::StoreSubcommand::List(list_cmd) => {
+                    //TODO: List Command
+                }
+            }
         }
         commands::Command::User(user_cmd) => {
-            //TODO: User commands
+            match user_cmd.command {
+                commands::user::UserSubcommand::Get(get_cmd) => {
+                    //TODO: Get Command
+                }
+                commands::user::UserSubcommand::List(list_cmd) => {
+                    //TODO: List Command
+                }
+            }
         }
     }
 }

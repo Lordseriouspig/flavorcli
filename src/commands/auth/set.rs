@@ -65,6 +65,7 @@ impl AuthSet {
                 .send()
                 .await?;
             if !res.status().is_success() {
+                spinner.finish_and_clear();
                 anyhow::bail!(
                     "Token verification failed with status: {}. Are you sure your token is correct?",
                     res.status()
