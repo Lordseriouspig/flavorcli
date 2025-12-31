@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 
+use crate::models::authdata::AuthData;
 use anyhow;
 use clap::Args;
 use indicatif::{ProgressBar, ProgressStyle};
@@ -32,12 +33,6 @@ pub struct AuthSet {
     /// Disables token verification (not recommended)
     #[clap(long)]
     pub no_verify: bool,
-}
-
-#[derive(Serialize, Deserialize)]
-struct AuthData {
-    token: String,
-    user_id: u64,
 }
 
 impl AuthSet {

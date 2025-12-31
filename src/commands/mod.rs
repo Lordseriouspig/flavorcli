@@ -29,6 +29,8 @@ pub struct FlavorArgs {
     // Defines the top level command
     #[clap(subcommand)]
     pub entity_type: Command,
+    #[command(flatten)]
+    pub verbosity: clap_verbosity_flag::Verbosity,
 }
 
 #[derive(Debug, Subcommand)]

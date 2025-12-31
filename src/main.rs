@@ -16,16 +16,21 @@
 // along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 
 mod commands;
+mod helpers;
+mod models;
 
 use clap::{Parser};
 use commands::FlavorArgs;
-use log::{info, warn, error};
+use log::{error};
 
 #[tokio::main]
 async fn main() {
-    colog::init();
-
     let args = FlavorArgs::parse();
+
+    let mut builder = colog::basic_builder();
+    builder
+        .filter_level(args.verbosity.into())
+        .init();
 
     match args.entity_type {
         commands::Command::Auth(auth_cmd) => {
@@ -47,7 +52,10 @@ async fn main() {
         commands::Command::Project(project_cmd) => {
             match project_cmd.command {
                 commands::project::ProjectSubcommand::Get(get_cmd) => {
-                    //TODO: Get Command
+                    if let Err(e) = get_cmd.execute().await {
+                        error!("Failed to get project: {}", e);
+                        std::process::exit(1);
+                    }
                 }
                 commands::project::ProjectSubcommand::List(list_cmd) => {
                     //TODO: List Command

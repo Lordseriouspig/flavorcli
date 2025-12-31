@@ -15,11 +15,61 @@
 // You should have received a copy of the GNU General Public License
 // along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 
+use crate::helpers::get_key::get_key;
+use crate::helpers::print_project::print_project;
+use crate::models::authdata::AuthData;
+use crate::models::project::Project;
+use anyhow;
 use clap::Args;
+use indicatif::{ProgressBar, ProgressStyle};
+use log::info;
 
 #[derive(Debug, Args)]
 pub struct ProjectGet {
     // Defines get project command (level 3)
     /// The project ID to retrieve
-    pub project_id: u64,
+    pub project_id: u64, // TODO: JSON flag, short flag (short output), long/resolve flag (resolve devlogs)
+}
+
+impl ProjectGet {
+    pub async fn execute(&self) -> anyhow::Result<()> {
+        let auth: AuthData = get_key()?;
+        let spinner = ProgressBar::new_spinner();
+        spinner.set_style(
+            ProgressStyle::with_template("{spinner} {msg}")?
+                .tick_strings(&["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"]),
+        );
+        spinner.set_message("Retrieving project...");
+        spinner.enable_steady_tick(std::time::Duration::from_millis(80));
+
+        let client = reqwest::Client::new();
+        let res = client
+            .get(&format!(
+                "https://flavortown.hackclub.com/api/v1/projects/{}",
+                self.project_id
+            ))
+            .header("Authorization", auth.token.clone())
+            .header("X-Flavortown-Ext-333", "true")
+            .send()
+            .await?;
+        if !res.status().is_success() {
+            spinner.finish_and_clear();
+            anyhow::bail!(
+                "Request failed with status: {}. {}",
+                res.status(),
+                match res.status().as_u16() {
+                    401 => "Is your token correct?",
+                    404 => "Is the project ID correct?",
+                    _ => "Please try again later.",
+                }
+            );
+        } else {
+            spinner.finish_and_clear();
+            info!("Retrieved project successfully.");
+            let project: Project = res.json().await?;
+            print_project(&project);
+        }
+
+        Ok(())
+    }
 }
