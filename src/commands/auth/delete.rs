@@ -17,7 +17,6 @@
 
 use clap::Args;
 use keyring::Entry;
-use log::info;
 
 #[derive(Debug, Args)]
 pub struct AuthDelete; // Defines delete command (level 3)
@@ -27,7 +26,7 @@ impl AuthDelete {
         let entry = Entry::new("flavorcli", "auth_token")?;
         entry.delete_credential()?;
 
-        info!("Authentication token deleted successfully.");
+        println!("Authentication token deleted successfully.");
         Ok(())
     }
 }

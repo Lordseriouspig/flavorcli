@@ -22,7 +22,7 @@ use crate::models::project_vec::ProjectVec;
 use anyhow;
 use clap::Args;
 use indicatif::{ProgressBar, ProgressStyle};
-use log::{info,trace};
+use log::info;
 use owo_colors::OwoColorize;
 
 #[derive(Debug, Args)]
@@ -83,7 +83,8 @@ impl ProjectList {
             info!("Retrieved projects successfully.");
             let projects: ProjectVec = res.json().await?;
             if self.query.is_some() {
-                println!("{}{}{}",
+                println!(
+                    "{}{}{}",
                     "Search result(s) for query '".bold().cyan(),
                     self.query.as_ref().unwrap().italic().bold().yellow(),
                     "'".bold().cyan()

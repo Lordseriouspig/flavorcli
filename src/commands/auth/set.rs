@@ -21,7 +21,6 @@ use clap::Args;
 use indicatif::{ProgressBar, ProgressStyle};
 use keyring::Entry;
 use log::{info, warn};
-use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Args)]
 pub struct AuthSet {
@@ -88,7 +87,7 @@ impl AuthSet {
         let json = serde_json::to_string(&auth)?;
 
         entry.set_password(&json)?;
-        info!("Authentication token set successfully.");
+        println!("Authentication token set successfully.");
         Ok(())
     }
 }

@@ -17,7 +17,8 @@
 
 use serde::Deserialize;
 
-fn empty_string<'de, D>(deserializer: D) -> Result<String, D::Error> // This exists because for some reason the urls, when not set, will be either null or "", seemingly at random
+fn empty_string<'de, D>(deserializer: D) -> Result<String, D::Error>
+// This exists because for some reason the urls, when not set, will be either null or "", seemingly at random
 where
     D: serde::Deserializer<'de>,
 {

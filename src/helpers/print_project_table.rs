@@ -57,14 +57,9 @@ pub fn print_project_table(projects: &[Project], pagination: &Pagination) {
             project.description.clone()
         };
         let updated = format_time(&project.updated_at);
-        table.add_row(vec![
-            id,
-            sanitize(&title),
-            sanitize(&desc),
-            updated,
-        ]);
+        table.add_row(vec![id, sanitize(&title), sanitize(&desc), updated]);
     }
-        let footer_text = if let Some(next) = pagination.next_page {
+    let footer_text = if let Some(next) = pagination.next_page {
         format!(
             "Page {}/{} | Total results: {} | Next page: {}",
             pagination.current_page, pagination.total_pages, pagination.total_count, next

@@ -19,8 +19,6 @@ mod commands;
 mod helpers;
 mod models;
 
-use std::f32::consts::E;
-
 use clap::{Parser};
 use commands::FlavorArgs;
 use log::{error,trace};
