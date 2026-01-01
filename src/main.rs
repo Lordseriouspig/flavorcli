@@ -19,9 +19,11 @@ mod commands;
 mod helpers;
 mod models;
 
+use std::f32::consts::E;
+
 use clap::{Parser};
 use commands::FlavorArgs;
-use log::{error};
+use log::{error,trace};
 
 #[tokio::main]
 async fn main() {
@@ -38,12 +40,14 @@ async fn main() {
                 commands::auth::AuthSubcommand::Set(set_cmd) => {
                     if let Err(e) = set_cmd.execute().await {
                         error!("Failed to set authentication token: {}", e);
+                        trace!("{:#?}", e);
                         std::process::exit(1);
                     }
                 }
                 commands::auth::AuthSubcommand::Delete(delete_cmd) => {
                     if let Err(e) = delete_cmd.execute().await {
                         error!("Failed to delete authentication token: {}", e);
+                        trace!("{:#?}", e);
                         std::process::exit(1);
                     }
                 }
@@ -54,11 +58,16 @@ async fn main() {
                 commands::project::ProjectSubcommand::Get(get_cmd) => {
                     if let Err(e) = get_cmd.execute().await {
                         error!("Failed to get project: {}", e);
+                        trace!("{:#?}", e);
                         std::process::exit(1);
                     }
                 }
                 commands::project::ProjectSubcommand::List(list_cmd) => {
-                    //TODO: List Command
+                    if let Err(e) = list_cmd.execute().await {
+                        error!("Failed to list projects: {}", e);
+                        trace!("{:#?}", e);
+                        std::process::exit(1);
+                    }
                 }
                 commands::project::ProjectSubcommand::Devlog(devlog_cmd) => {
                     match devlog_cmd.command {

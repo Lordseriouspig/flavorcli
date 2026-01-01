@@ -1,4 +1,4 @@
-// Copyright (C) 2025 Lordseriouspig
+// Copyright (C) 2026 Lordseriouspig
 //
 // This file is part of flavorcli.
 //
@@ -15,6 +15,19 @@
 // You should have received a copy of the GNU General Public License
 // along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 
-pub mod get_key;
-pub mod print_project;
-pub mod print_project_table;
+use crate::models::project::Project;
+use serde::Deserialize;
+
+#[derive(Debug, Deserialize)]
+pub struct Pagination {
+    pub current_page: u32,
+    pub total_pages: u32,
+    pub total_count: u32,
+    pub next_page: Option<u32>,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct ProjectVec {
+    pub projects: Vec<Project>,
+    pub pagination: Pagination,
+}

@@ -17,14 +17,24 @@
 
 use serde::Deserialize;
 
+fn empty_string<'de, D>(deserializer: D) -> Result<String, D::Error> // This exists because for some reason the urls, when not set, will be either null or "", seemingly at random
+where
+    D: serde::Deserializer<'de>,
+{
+    Option::<String>::deserialize(deserializer).map(|s| s.unwrap_or_default())
+}
+
 #[derive(Debug, Deserialize)]
 pub struct Project {
     pub id: u64,
     pub title: String,
     pub description: String,
     pub ship_status: String,
+    #[serde(deserialize_with = "empty_string")]
     pub repo_url: String,
+    #[serde(deserialize_with = "empty_string")]
     pub demo_url: String,
+    #[serde(deserialize_with = "empty_string")]
     pub readme_url: String,
     pub created_at: String,
     pub updated_at: String,
