@@ -28,7 +28,7 @@ use owo_colors::OwoColorize;
 #[derive(Debug, Args)]
 pub struct ProjectList {
     // Defines list projects command (level 3)
-    /// Page number for pagination
+    /// Page number for pagination. Defaults to 1.
     #[clap(long, short)]
     pub page: Option<u32>,
 

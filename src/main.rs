@@ -77,7 +77,11 @@ async fn main() {
                             }
                         }
                         commands::project::devlog::ProjectDevlogSubcommand::List(list_cmd) => {
-                            //TODO: List Command
+                            if let Err(e) = list_cmd.execute().await {
+                                error!("Failed to list devlogs: {}", e);
+                                trace!("{:#?}", e);
+                                std::process::exit(1);
+                            }
                         }
                     }
                 }
