@@ -74,7 +74,7 @@ impl ProjectList {
                 res.status(),
                 match res.status().as_u16() {
                     401 => "Is your token correct?",
-                    404 => "Is the project ID correct?",
+                    404 => "Could not find what you were lookin' for!",
                     _ => "Please try again later.",
                 }
             );

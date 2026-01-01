@@ -16,5 +16,6 @@
 // along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 
 pub mod get_key;
+pub mod print_devlog;
 pub mod print_project;
 pub mod print_project_table;

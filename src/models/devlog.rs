@@ -1,4 +1,4 @@
-// Copyright (C) 2025 Lordseriouspig
+// Copyright (C) 2026 Lordseriouspig
 //
 // This file is part of flavorcli.
 //
@@ -15,7 +15,16 @@
 // You should have received a copy of the GNU General Public License
 // along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 
-pub mod authdata;
-pub mod devlog;
-pub mod project;
-pub mod project_vec;
+use serde::Deserialize;
+
+#[derive(Debug, Deserialize)]
+pub struct Devlog {
+    pub id: u32,
+    pub body: String,
+    pub comments_count: u32,
+    pub duration_seconds: u32,
+    pub likes_count: u32,
+    pub scrapbook_url: Option<String>,
+    pub created_at: String,
+    pub updated_at: String,
+}
