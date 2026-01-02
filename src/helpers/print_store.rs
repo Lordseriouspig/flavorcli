@@ -15,8 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 
-use crate::models::store::Store;
 use crate::models::store::AghContents;
+use crate::models::store::Store;
 use owo_colors::OwoColorize;
 use textwrap::fill;
 
@@ -138,15 +138,13 @@ pub fn print_store(i: &Store) {
     println!("{:<20}: {}", "Buyable By Self?".blue(), i.buyable_by_self);
     if let Some(tag) = &i.accessory_tag {
         if !tag.is_empty() {
-            println!(
-                "{:<20}: {}",
-                "Accessory Tag".blue(),
-                tag
-            );
+            println!("{:<20}: {}", "Accessory Tag".blue(), tag);
         }
     }
 
-    if !i.attached_shop_item_ids.is_empty() && i.attached_shop_item_ids.iter().any(|id| id.is_some()) {
+    if !i.attached_shop_item_ids.is_empty()
+        && i.attached_shop_item_ids.iter().any(|id| id.is_some())
+    {
         println!("\n{}", "Attached Item IDs:".bold().cyan());
         for item_id in &i.attached_shop_item_ids {
             if let Some(id) = item_id {
@@ -160,10 +158,20 @@ pub fn print_store(i: &Store) {
 
     println!("\n{}", "Random metadata:".bold().cyan()); //TODO: Hide when --detailed is not supplied
     if !i.old_prices.is_empty() {
-        println!("{:<20}: {}", "Old Prices".blue(), i.old_prices.iter().map(|p| p.to_string()).collect::<Vec<String>>().join(", "));
+        println!(
+            "{:<20}: {}",
+            "Old Prices".blue(),
+            i.old_prices
+                .iter()
+                .map(|p| p.to_string())
+                .collect::<Vec<String>>()
+                .join(", ")
+        );
     }
     println!("{:<20}: {}", "Show In Carousel?".blue(), i.show_in_carousel);
-    if !matches!(&i.agh_contents, AghContents::Null) && !matches!(&i.agh_contents, AghContents::String(s) if s.is_empty()) {
+    if !matches!(&i.agh_contents, AghContents::Null)
+        && !matches!(&i.agh_contents, AghContents::String(s) if s.is_empty())
+    {
         println!("\n{}", "AGH Contents:".bold().cyan());
         match &i.agh_contents {
             AghContents::Choice(c) => {
@@ -175,7 +183,10 @@ pub fn print_store(i: &Store) {
             AghContents::Items(items) => {
                 println!("{:<20}: Items:", "Items".blue());
                 for item in items {
-                    println!("{:<20}  - SKU: {}, Quantity: {}", "", item.sku, item.quantity);
+                    println!(
+                        "{:<20}  - SKU: {}, Quantity: {}",
+                        "", item.sku, item.quantity
+                    );
                 }
             }
             AghContents::String(s) => println!("{:<20}: {}", "String".blue(), s),

@@ -21,15 +21,6 @@ use serde::{Deserialize, Deserializer};
  * This struct will be the first thing to break if even someone breathes on the API the wrong way
  */
 
-fn string_to_f64<'de, D>(deserializer: D) -> Result<f64, D::Error>
-// do you guys make my life hard on purpose
-where
-    D: Deserializer<'de>,
-{
-    let s = String::deserialize(deserializer)?;
-    s.parse::<f64>().map_err(serde::de::Error::custom)
-}
-
 #[derive(Debug, Deserialize)]
 pub struct AghChoice {
     // i hate that this has to exist
@@ -67,20 +58,13 @@ pub struct Enabled {
 
 #[derive(Debug, Deserialize)]
 pub struct TicketCost {
-    #[serde(deserialize_with = "string_to_f64")] // THESE GET SENT AS A STRING... WHHYYYYYYYYYYYYYY
     pub au: f64,
-    #[serde(deserialize_with = "string_to_f64")]
     pub ca: f64,
-    #[serde(deserialize_with = "string_to_f64")]
     pub eu: f64,
     #[serde(rename = "in")]
-    #[serde(deserialize_with = "string_to_f64")]
     pub in_: f64,
-    #[serde(deserialize_with = "string_to_f64")]
     pub uk: f64,
-    #[serde(deserialize_with = "string_to_f64")]
     pub us: f64,
-    #[serde(deserialize_with = "string_to_f64")]
     pub xx: f64,
 }
 
