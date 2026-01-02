@@ -17,7 +17,8 @@
 
 use serde::Deserialize;
 
-fn zero_if_null<'de, D>(deserializer: D) -> Result<u32, D::Error> // Sets duration to 0 if it is null because for some reason it can be null.
+fn zero_if_null<'de, D>(deserializer: D) -> Result<u32, D::Error>
+// Sets duration to 0 if it is null because for some reason it can be null.
 where
     D: serde::Deserializer<'de>,
 {

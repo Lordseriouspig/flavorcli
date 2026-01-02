@@ -20,3 +20,4 @@ pub mod devlog;
 pub mod devlog_vec;
 pub mod project;
 pub mod project_vec;
+pub mod store;

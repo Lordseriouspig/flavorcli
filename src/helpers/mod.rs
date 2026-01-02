@@ -20,3 +20,4 @@ pub mod print_devlog;
 pub mod print_devlog_table;
 pub mod print_project;
 pub mod print_project_table;
+pub mod print_store;

@@ -15,11 +15,61 @@
 // You should have received a copy of the GNU General Public License
 // along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 
+use crate::helpers::get_key::get_key;
+use crate::helpers::print_store::print_store;
+use crate::models::authdata::AuthData;
+use crate::models::store::Store;
+use anyhow;
 use clap::Args;
+use indicatif::{ProgressBar, ProgressStyle};
+use log::info;
 
 #[derive(Debug, Args)]
 pub struct StoreGet {
     // Defines get store item command (level 3)
     /// The store item ID to retrieve
-    pub item_id: u64,
+    pub item_id: u64, // TODO: --short, --detailed, --json
+}
+
+impl StoreGet {
+    pub async fn execute(&self) -> anyhow::Result<()> {
+        let auth: AuthData = get_key()?;
+        let spinner = ProgressBar::new_spinner();
+        spinner.set_style(
+            ProgressStyle::with_template("{spinner} {msg}")?
+                .tick_strings(&["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"]),
+        );
+        spinner.set_message("Retrieving store item...");
+        spinner.enable_steady_tick(std::time::Duration::from_millis(80));
+
+        let client = reqwest::Client::new();
+        let res = client
+            .get(&format!(
+                "https://flavortown.hackclub.com/api/v1/store/{}",
+                self.item_id
+            ))
+            .header("Authorization", auth.token.clone())
+            .header("X-Flavortown-Ext-333", "true")
+            .send()
+            .await?;
+        if !res.status().is_success() {
+            spinner.finish_and_clear();
+            anyhow::bail!(
+                "Request failed with status: {}. {}",
+                res.status(),
+                match res.status().as_u16() {
+                    401 => "Is your token correct?",
+                    404 => "Is the item ID correct?",
+                    _ => "Please try again later.",
+                }
+            );
+        } else {
+            spinner.finish_and_clear();
+            info!("Retrieved store item successfully.");
+            let store_item: Store = res.json().await?;
+            print_store(&store_item);
+        }
+
+        Ok(())
+    }
 }

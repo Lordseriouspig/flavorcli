@@ -90,7 +90,11 @@ async fn main() {
         commands::Command::Store(store_cmd) => {
             match store_cmd.command {
                 commands::store::StoreSubcommand::Get(get_cmd) => {
-                    //TODO: Get Command
+                    if let Err(e) = get_cmd.execute().await {
+                        error!("Failed to get store item: {}", e);
+                        trace!("{:#?}", e);
+                        std::process::exit(1);
+                    }
                 }
                 commands::store::StoreSubcommand::List(list_cmd) => {
                     //TODO: List Command
