@@ -18,13 +18,6 @@
 use crate::models::user::User;
 use owo_colors::OwoColorize;
 
-fn format_duration(seconds: u32) -> String {
-    let hours = seconds / 3600;
-    let minutes = (seconds % 3600) / 60;
-    let secs = seconds % 60;
-    format!("{:02}:{:02}:{:02}", hours, minutes, secs)
-}
-
 pub fn print_user(u: &User) {
     // TODO: Refactor these printlns to premade macros globally (ie header! text! long_text! etc)
     println!(
