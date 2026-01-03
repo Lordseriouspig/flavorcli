@@ -97,7 +97,11 @@ async fn main() {
                     }
                 }
                 commands::store::StoreSubcommand::List(list_cmd) => {
-                    //TODO: List Command
+                    if let Err(e) = list_cmd.execute().await {
+                        error!("Failed to list store items: {}", e);
+                        trace!("{:#?}", e);
+                        std::process::exit(1);
+                    }
                 }
             }
         }

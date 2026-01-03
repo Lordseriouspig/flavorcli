@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 
-use serde::{Deserialize};
+use serde::Deserialize;
 
 /**
  * This struct will be the first thing to break if even someone breathes on the API the wrong way
