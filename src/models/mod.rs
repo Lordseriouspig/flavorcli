@@ -21,3 +21,4 @@ pub mod devlog_vec;
 pub mod project;
 pub mod project_vec;
 pub mod store;
+pub mod user;

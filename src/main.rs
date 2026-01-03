@@ -108,7 +108,11 @@ async fn main() {
         commands::Command::User(user_cmd) => {
             match user_cmd.command {
                 commands::user::UserSubcommand::Get(get_cmd) => {
-                    //TODO: Get Command
+                    if let Err(e) = get_cmd.execute().await {
+                        error!("Failed to get user: {}", e);
+                        trace!("{:#?}", e);
+                        std::process::exit(1);
+                    }
                 }
                 commands::user::UserSubcommand::List(list_cmd) => {
                     //TODO: List Command
