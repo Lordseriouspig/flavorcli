@@ -1,6 +1,6 @@
 [package]
 name = "flavorcli"
-version = "0.1.0"
+version = "0.1.0-beta.1"
 edition = "2024"
 
 [[bin]]
@@ -9,7 +9,7 @@ path = "src/main.rs"
 
 [dependencies]
 clap = { version = "4.5.54", features = ["derive"] }
-reqwest = { version = "0.13.1", features = ["json"] }
+reqwest = { version = "0.12.28", features = ["json"] }
 tokio = { version = "1.49.0", features = ["full"] }
 serde = { version = "1.0.228", features = ["derive"] }
 serde_json = "1.0.148"
