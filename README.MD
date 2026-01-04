@@ -33,14 +33,17 @@ FlavorCLI is a fully-featured implementation of the Flavortown API, allowing for
 
 ## Installation
 ### Prebuilt (Recommended)
-Upon release, FlavorCLI will be available on all[^1] major package managers.
+At some point, FlavorCLI will be available on all[^1] major package managers.
+Right now, you can follow the instructions on the [releases page](https://github.com/Lordseriouspig/flavorcli/releases) to download and install the program.
 [^1]: What that constitutes is unknown to me, *I'll figure it out when it's time™*
 
 ### Build it yourself
 1. Download the source code or git clone the repo[^2]
 2. Download and install rust if it is not already installed
-3. Run ``cargo install --path .``
-4. Profit!
+3. Run ``cargo build -r``
+4. Run ``cargo install --path .``
+5. Ensure you have your cargo's install directory (usually ``~/.cargo/bin``) in PATH
+6. Profit!
 [^2]: What you do is up to you, just get a copy of the code
 
 ## Usage
@@ -65,13 +68,17 @@ Uhm, just use ``ft --help`` ig. (TODO: write proper guides on how to use the com
 
 ## Features
 * Stores and verifies your API Key in your OS' keychain when using ``ft auth set <USER_ID> <TOKEN>``.
-* thats it rn lol.
+* Get and list projects
+* Get and list devlogs
+* Get and list store items
+* Get and list users
 
 ### Planned Features
 - [x] Actually *have* commands
-- [ ] Make those commands reflect what can be done with the API, add **more**
+- [x] Make those commands reflect what can be done with the API, add **more**
 - [x] Authorization with Flavortown.
 - [x] API Key storage with keychain.
 - [x] Actually handle the commands lol.
-- [ ] API Implementation
-- [ ] Pretty much everything else
+- [x] API Implementation
+- [ ] The rest is dependant on what additions are made to the API
+- [ ] Also a few flags are planned, i've marked them in comments and cannot be bothered to write them here haha
