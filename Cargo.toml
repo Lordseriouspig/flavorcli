@@ -7,7 +7,7 @@ description = "A command line interface to interact with FlavorTown"
 readme = "README.MD"
 repository = "https://github.com/lordseriouspig/flavorcli"
 license = "GPL-3.0-or-later"
-keywords = ["flavortown","hack club"]
+keywords = ["flavortown","hack-club"]
 categories = ["command-line-utilities"]
 
 [lints.rust]
