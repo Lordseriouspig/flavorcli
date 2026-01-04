@@ -115,7 +115,11 @@ async fn main() {
                     }
                 }
                 commands::user::UserSubcommand::List(list_cmd) => {
-                    //TODO: List Command
+                    if let Err(e) = list_cmd.execute().await {
+                        error!("Failed to list users: {}", e);
+                        trace!("{:#?}", e);
+                        std::process::exit(1);
+                    }
                 }
             }
         }
