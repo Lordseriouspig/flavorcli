@@ -34,6 +34,7 @@ FlavorCLI is a fully-featured implementation of the Flavortown API, allowing for
 ## Installation
 ### Prebuilt (Recommended)
 At some point, FlavorCLI will be available on all[^1] major package managers.
+#### GitHub Releases
 To download and install precompiled binaries from GitHub, follow these steps:
 1. Download the ZIP file for your platform
 2. Unzip the contents
@@ -45,6 +46,13 @@ To download and install precompiled binaries from GitHub, follow these steps:
    4. This will move the binary to a bin directory and add it to PATH, so you can type ``flavor`` to run the app at any time.
 5. Keep the uninstall script handy for once flavortown ends.
 [^1]: What that constitutes is unknown to me, *I'll figure it out when it's time™*
+
+#### Cargo
+If you have cargo, you may choose to install FlavorCLI with the following command:
+```
+cargo install flavorcli
+```
+Ensure you have the cargo install directory in your PATH.
 
 ### Build it yourself
 1. Download the source code or git clone the repo[^2]
