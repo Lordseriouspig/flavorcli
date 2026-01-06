@@ -29,7 +29,9 @@ fn color_cell(enabled: bool, value: f64) -> Cell {
 }
 
 fn sanitize(text: &str) -> String {
-    text.replace('\n', " ").replace('\r', " ")
+    text.chars()
+        .map(|c| if c == '\n' || c == '\r' { ' ' } else { c })
+        .collect()
 }
 
 pub fn print_store_table(mut items: Vec<Store>) {

@@ -23,7 +23,6 @@
 [![Tracked on Hackatime](https://hackatime-badge.hackclub.com/U096NGLTF4K/flavorcli)](https://hackatime.hackclub.com/ "Go to Hackatime homepage")
 [![Commit activity](https://img.shields.io/github/commit-activity/w/lordseriouspig/flavorcli)](https://github.com/Lordseriouspig/flavorcli/commits/main/ "Commit History")
 [![Last Commit](https://img.shields.io/github/last-commit/lordseriouspig/flavorcli)](https://github.com/Lordseriouspig/flavorcli/commits/main/ "Commit History")
-[![Rust compile](https://github.com/Lordseriouspig/flavorcli/actions/workflows/rust.yml/badge.svg)](https://github.com/Lordseriouspig/flavorcli/actions/workflows/rust.yml)
 [![rust-clippy analyze](https://github.com/Lordseriouspig/flavorcli/actions/workflows/rust-clippy.yml/badge.svg)](https://github.com/Lordseriouspig/flavorcli/actions/workflows/rust-clippy.yml)
 
 > [!CAUTION]

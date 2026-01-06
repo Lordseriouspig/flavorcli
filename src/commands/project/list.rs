@@ -22,7 +22,7 @@ use crate::models::project_vec::ProjectVec;
 use anyhow;
 use clap::Args;
 use indicatif::{ProgressBar, ProgressStyle};
-use log::{info, debug};
+use log::{debug, info};
 use owo_colors::OwoColorize;
 
 #[derive(Debug, Args)]
@@ -40,7 +40,10 @@ pub struct ProjectList {
 
 impl ProjectList {
     pub async fn execute(&self) -> anyhow::Result<()> {
-        debug!("Executing project list command (page: {:?}, query: {:?})", self.page, self.query);
+        debug!(
+            "Executing project list command (page: {:?}, query: {:?})",
+            self.page, self.query
+        );
         let auth: AuthData = get_key()?;
         let spinner = ProgressBar::new_spinner();
         spinner.set_style(
@@ -61,7 +64,10 @@ impl ProjectList {
             }
             p
         };
-        debug!("Sending GET request to https://flavortown.hackclub.com/api/v1/projects with params: {:?}", params);
+        debug!(
+            "Sending GET request to https://flavortown.hackclub.com/api/v1/projects with params: {:?}",
+            params
+        );
         let res = client
             .get("https://flavortown.hackclub.com/api/v1/projects")
             .query(&params)

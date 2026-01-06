@@ -17,7 +17,7 @@
 
 use clap::Args;
 use keyring::Entry;
-use log::{info, debug};
+use log::{debug, info};
 
 #[derive(Debug, Args)]
 pub struct AuthDelete; // Defines delete command (level 3)

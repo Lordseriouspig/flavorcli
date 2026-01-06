@@ -22,7 +22,7 @@ use crate::models::devlog_vec::DevlogVec;
 use anyhow;
 use clap::Args;
 use indicatif::{ProgressBar, ProgressStyle};
-use log::{info, debug};
+use log::{debug, info};
 use owo_colors::OwoColorize;
 
 #[derive(Debug, Args)]
@@ -38,7 +38,10 @@ pub struct ProjectDevlogList {
 
 impl ProjectDevlogList {
     pub async fn execute(&self) -> anyhow::Result<()> {
-        debug!("Executing devlog list command (project_id: {:?}, page: {:?})", self.project_id, self.page);
+        debug!(
+            "Executing devlog list command (project_id: {:?}, page: {:?})",
+            self.project_id, self.page
+        );
         let auth: AuthData = get_key()?;
         let spinner = ProgressBar::new_spinner();
         spinner.set_style(
@@ -61,7 +64,7 @@ impl ProjectDevlogList {
             if let Some(project_id) = self.project_id {
                 format!("/api/v1/projects/{}/devlogs", project_id)
             } else {
-                format!("/api/v1/devlogs/")
+                "/api/v1/devlogs/".to_string()
             }
         );
         debug!("Sending GET request to {} with params: {:?}", url, params);

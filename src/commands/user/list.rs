@@ -22,7 +22,7 @@ use crate::models::user_vec::UserVec;
 use anyhow;
 use clap::Args;
 use indicatif::{ProgressBar, ProgressStyle};
-use log::{info, debug};
+use log::{debug, info};
 
 #[derive(Debug, Args)]
 pub struct UserList {
@@ -52,7 +52,10 @@ impl UserList {
             }
             p
         };
-        debug!("Sending GET request to https://flavortown.hackclub.com/api/v1/users with params: {:?}", params);
+        debug!(
+            "Sending GET request to https://flavortown.hackclub.com/api/v1/users with params: {:?}",
+            params
+        );
         let res = client
             .get("https://flavortown.hackclub.com/api/v1/users")
             .query(&params)

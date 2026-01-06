@@ -31,11 +31,9 @@ pub fn print_store(i: &Store) {
     println!("{:<20}: {}", "Type".blue(), i.type_);
     println!("{:<20}: {}", "Description".blue(), i.description);
 
-    if let Some(long_desc) = &i.long_description {
-        if !long_desc.is_empty() {
-            println!("\n{}", "Long Description:".bold().cyan());
-            println!("{}", fill(long_desc, 72));
-        }
+    if let Some(long_desc) = &i.long_description && !long_desc.is_empty() {
+        println!("\n{}", "Long Description:".bold().cyan());
+        println!("{}", fill(long_desc, 72));
     }
 
     println!("\n{}", "Regional Info:".bold().cyan());
@@ -136,20 +134,16 @@ pub fn print_store(i: &Store) {
         i.one_per_person_ever
     );
     println!("{:<20}: {}", "Buyable By Self?".blue(), i.buyable_by_self);
-    if let Some(tag) = &i.accessory_tag {
-        if !tag.is_empty() {
-            println!("{:<20}: {}", "Accessory Tag".blue(), tag);
-        }
+    if let Some(tag) = &i.accessory_tag && !tag.is_empty() {
+        println!("{:<20}: {}", "Accessory Tag".blue(), tag);
     }
 
     if !i.attached_shop_item_ids.is_empty()
         && i.attached_shop_item_ids.iter().any(|id| id.is_some())
     {
         println!("\n{}", "Attached Item IDs:".bold().cyan());
-        for item_id in &i.attached_shop_item_ids {
-            if let Some(id) = item_id {
-                println!("  - {}", id);
-            }
+        for id in i.attached_shop_item_ids.iter().flatten() {
+            println!("  - {}", id);
         }
     }
 

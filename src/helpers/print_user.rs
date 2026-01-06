@@ -32,8 +32,8 @@ pub fn print_user(u: &User) {
         u.display_name.to_string().bold().yellow(),
         "-".repeat(40)
     );
-    println!("{:<12}: {}", "ID".blue(), u.id.to_string());
-    println!("{:<12}: {}", "Slack ID".blue(), u.slack_id.to_string());
+    println!("{:<12}: {}", "ID".blue(), u.id);
+    println!("{:<12}: {}", "Slack ID".blue(), u.slack_id);
 
     println!("\n{}", "Avatar URL:".bold().cyan());
     println!("{}", u.avatar);
@@ -48,8 +48,8 @@ pub fn print_user(u: &User) {
     }
 
     println!("\n{}", "Statistics:".bold().cyan());
-    println!("{:<12}: {}", "Vote Count".blue(), u.vote_count.to_string());
-    println!("{:<12}: {}", "Like Count".blue(), u.like_count.to_string());
+    println!("{:<12}: {}", "Vote Count".blue(), u.vote_count);
+    println!("{:<12}: {}", "Like Count".blue(), u.like_count);
     println!(
         "{:<12}: {}",
         "Devlog Time Total".blue(),
@@ -60,5 +60,5 @@ pub fn print_user(u: &User) {
         "Devlog Time Today".blue(),
         format_duration(u.devlog_seconds_today)
     );
-    println!("{:<12}: {}", "Cookies".blue(), u.cookies.to_string());
+    println!("{:<12}: {}", "Cookies".blue(), u.cookies);
 }

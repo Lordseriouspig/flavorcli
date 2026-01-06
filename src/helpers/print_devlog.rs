@@ -36,20 +36,20 @@ fn format_duration(seconds: u32) -> String {
 pub fn print_devlog(d: &Devlog) {
     println!(
         "{}\n{}",
-        format!("Devlog #{}", d.id.to_string()).bold().yellow(),
+        format!("Devlog #{}", d.id).bold().yellow(),
         "-".repeat(40)
     );
     println!(
         "{:<12}: {}",
         "Comments".blue(),
-        d.comments_count.to_string()
+        d.comments_count
     );
     println!(
         "{:<12}: {}",
         "Time".blue(),
         format_duration(d.duration_seconds)
     );
-    println!("{:<12}: {}", "Likes".blue(), d.likes_count.to_string());
+    println!("{:<12}: {}", "Likes".blue(), d.likes_count);
     println!("{:<12}: {}", "Created".blue(), format_time(&d.created_at));
     println!("{:<12}: {}", "Updated".blue(), format_time(&d.updated_at));
 

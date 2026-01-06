@@ -22,7 +22,7 @@ use crate::models::project::Project;
 use anyhow;
 use clap::Args;
 use indicatif::{ProgressBar, ProgressStyle};
-use log::{info, debug};
+use log::{debug, info};
 
 #[derive(Debug, Args)]
 pub struct ProjectGet {
@@ -33,7 +33,10 @@ pub struct ProjectGet {
 
 impl ProjectGet {
     pub async fn execute(&self) -> anyhow::Result<()> {
-        debug!("Executing project get command for project ID: {}", self.project_id);
+        debug!(
+            "Executing project get command for project ID: {}",
+            self.project_id
+        );
         let auth: AuthData = get_key()?;
         let spinner = ProgressBar::new_spinner();
         spinner.set_style(

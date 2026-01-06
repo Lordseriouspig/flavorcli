@@ -33,7 +33,6 @@ pub fn get_key() -> anyhow::Result<AuthData> {
     let auth: AuthData =
         serde_json::from_str(&json).context("Failed to parse authentication data")?;
 
-    debug!("Retrieved authentication data: {:?}", auth);
     debug!("Successfully retrieved and parsed authentication key");
 
     Ok(auth)

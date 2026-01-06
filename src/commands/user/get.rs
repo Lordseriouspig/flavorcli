@@ -22,7 +22,7 @@ use crate::models::user::User;
 use anyhow;
 use clap::Args;
 use indicatif::{ProgressBar, ProgressStyle};
-use log::{info, debug};
+use log::{debug, info};
 
 #[derive(Debug, Args)]
 pub struct UserGet {
@@ -48,10 +48,10 @@ impl UserGet {
             "https://flavortown.hackclub.com/api/v1/users/{}",
             if self.user_id.is_some() {
                 self.user_id.unwrap().to_string()
-                } else {
-                    "me".to_string()
-                }
-            );
+            } else {
+                "me".to_string()
+            }
+        );
         debug!("Sending GET request to {}", url);
         let res = client
             .get(&url)

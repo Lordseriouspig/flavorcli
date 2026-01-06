@@ -37,7 +37,9 @@ fn format_duration(seconds: u32) -> String {
 }
 
 fn sanitize(text: &str) -> String {
-    text.replace('\n', " ").replace('\r', " ")
+    text.chars()
+        .map(|c| if c == '\n' || c == '\r' { ' ' } else { c })
+        .collect()
 }
 
 pub fn print_devlog_table(devlogs: &[Devlog], pagination: &Pagination) {

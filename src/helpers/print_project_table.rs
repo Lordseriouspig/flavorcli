@@ -30,7 +30,9 @@ fn format_time(dt: &str) -> String {
 }
 
 fn sanitize(text: &str) -> String {
-    text.replace('\n', " ").replace('\r', " ")
+    text.chars()
+        .map(|c| if c == '\n' || c == '\r' { ' ' } else { c })
+        .collect()
 }
 
 pub fn print_project_table(projects: &[Project], pagination: &Pagination) {

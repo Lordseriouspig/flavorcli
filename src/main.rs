@@ -26,7 +26,6 @@ use anyhow::{Context,Result};
 use sentry::{start_session,end_session};
 use sentry_anyhow::capture_anyhow;
 use sentry_log::{SentryLogger,LogFilter};
-use env_logger;
 
 
 #[tokio::main]
@@ -37,9 +36,7 @@ async fn main() {
         .format(colog::formatter(colog::format::DefaultCologStyle))
         .filter_level(args.verbosity.into());
 
-    let logger = SentryLogger::with_dest(builder.build()).filter(|md| match md.level() {
-    _ => LogFilter::Breadcrumb,
-    });
+    let logger = SentryLogger::with_dest(builder.build()).filter(|_| LogFilter::Breadcrumb);
     log::set_boxed_logger(Box::new(logger)).unwrap();
     log::set_max_level(log::LevelFilter::Trace);
 

@@ -20,7 +20,7 @@ use anyhow;
 use clap::Args;
 use indicatif::{ProgressBar, ProgressStyle};
 use keyring::Entry;
-use log::{info, warn, debug};
+use log::{debug, info, warn};
 
 #[derive(Debug, Args)]
 pub struct AuthSet {
@@ -36,7 +36,10 @@ pub struct AuthSet {
 
 impl AuthSet {
     pub async fn execute(&self) -> anyhow::Result<()> {
-        debug!("Executing auth set command (user_id: {}, no_verify: {})", self.user_id, self.no_verify);
+        debug!(
+            "Executing auth set command (user_id: {}, no_verify: {})",
+            self.user_id, self.no_verify
+        );
         let entry = Entry::new("flavorcli", "auth_token")?;
 
         // Verify Token

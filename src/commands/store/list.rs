@@ -22,7 +22,7 @@ use crate::models::store::Store;
 use anyhow;
 use clap::Args;
 use indicatif::{ProgressBar, ProgressStyle};
-use log::{info, debug};
+use log::{debug, info};
 
 #[derive(Debug, Args)]
 pub struct StoreList {
