@@ -22,7 +22,7 @@ use crate::models::project_vec::ProjectVec;
 use anyhow;
 use clap::Args;
 use indicatif::{ProgressBar, ProgressStyle};
-use log::info;
+use log::{info, debug};
 use owo_colors::OwoColorize;
 
 #[derive(Debug, Args)]
@@ -40,6 +40,7 @@ pub struct ProjectList {
 
 impl ProjectList {
     pub async fn execute(&self) -> anyhow::Result<()> {
+        debug!("Executing project list command (page: {:?}, query: {:?})", self.page, self.query);
         let auth: AuthData = get_key()?;
         let spinner = ProgressBar::new_spinner();
         spinner.set_style(
@@ -60,6 +61,7 @@ impl ProjectList {
             }
             p
         };
+        debug!("Sending GET request to https://flavortown.hackclub.com/api/v1/projects with params: {:?}", params);
         let res = client
             .get("https://flavortown.hackclub.com/api/v1/projects")
             .query(&params)
@@ -67,6 +69,7 @@ impl ProjectList {
             .header("X-Flavortown-Ext-333", "true")
             .send()
             .await?;
+        debug!("Received response with status: {}", res.status());
         if !res.status().is_success() {
             spinner.finish_and_clear();
             anyhow::bail!(
@@ -82,6 +85,7 @@ impl ProjectList {
             spinner.finish_and_clear();
             info!("Retrieved projects successfully.");
             let projects: ProjectVec = res.json().await?;
+            debug!("Successfully parsed {} projects", projects.projects.len());
             if self.query.is_some() {
                 println!(
                     "{}{}{}",

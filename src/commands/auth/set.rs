@@ -20,7 +20,7 @@ use anyhow;
 use clap::Args;
 use indicatif::{ProgressBar, ProgressStyle};
 use keyring::Entry;
-use log::{info, warn};
+use log::{info, warn, debug};
 
 #[derive(Debug, Args)]
 pub struct AuthSet {
@@ -36,10 +36,12 @@ pub struct AuthSet {
 
 impl AuthSet {
     pub async fn execute(&self) -> anyhow::Result<()> {
+        debug!("Executing auth set command (user_id: {}, no_verify: {})", self.user_id, self.no_verify);
         let entry = Entry::new("flavorcli", "auth_token")?;
 
         // Verify Token
         if !self.no_verify {
+            debug!("Verifying token with API");
             let spinner = ProgressBar::new_spinner();
             spinner.set_style(
                 ProgressStyle::with_template("{spinner} {msg}")?
@@ -49,15 +51,18 @@ impl AuthSet {
             spinner.enable_steady_tick(std::time::Duration::from_millis(80));
 
             let client = reqwest::Client::new();
+            let url = format!(
+                "https://flavortown.hackclub.com/api/v1/users/{}",
+                self.user_id
+            );
+            debug!("Sending GET request to {}", url);
             let res = client
-                .get(&format!(
-                    "https://flavortown.hackclub.com/api/v1/users/{}",
-                    self.user_id
-                ))
+                .get(&url)
                 .header("Authorization", self.token.clone())
                 .header("X-Flavortown-Ext-333", "true")
                 .send()
                 .await?;
+            debug!("Received response with status: {}", res.status());
             if !res.status().is_success() {
                 spinner.finish_and_clear();
                 anyhow::bail!(

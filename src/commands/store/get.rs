@@ -22,7 +22,7 @@ use crate::models::store::Store;
 use anyhow;
 use clap::Args;
 use indicatif::{ProgressBar, ProgressStyle};
-use log::info;
+use log::{info, debug};
 
 #[derive(Debug, Args)]
 pub struct StoreGet {
@@ -33,6 +33,7 @@ pub struct StoreGet {
 
 impl StoreGet {
     pub async fn execute(&self) -> anyhow::Result<()> {
+        debug!("Executing store get command for item ID: {}", self.item_id);
         let auth: AuthData = get_key()?;
         let spinner = ProgressBar::new_spinner();
         spinner.set_style(
@@ -43,15 +44,18 @@ impl StoreGet {
         spinner.enable_steady_tick(std::time::Duration::from_millis(80));
 
         let client = reqwest::Client::new();
+        let url = format!(
+            "https://flavortown.hackclub.com/api/v1/store/{}",
+            self.item_id
+        );
+        debug!("Sending GET request to {}", url);
         let res = client
-            .get(&format!(
-                "https://flavortown.hackclub.com/api/v1/store/{}",
-                self.item_id
-            ))
+            .get(&url)
             .header("Authorization", auth.token.clone())
             .header("X-Flavortown-Ext-333", "true")
             .send()
             .await?;
+        debug!("Received response with status: {}", res.status());
         if !res.status().is_success() {
             spinner.finish_and_clear();
             anyhow::bail!(
@@ -67,6 +71,7 @@ impl StoreGet {
             spinner.finish_and_clear();
             info!("Retrieved store item successfully.");
             let store_item: Store = res.json().await?;
+            debug!("Successfully parsed store item data");
             print_store(&store_item);
         }
 

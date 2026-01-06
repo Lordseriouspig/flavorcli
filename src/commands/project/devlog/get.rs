@@ -22,7 +22,7 @@ use crate::models::devlog::Devlog;
 use anyhow;
 use clap::Args;
 use indicatif::{ProgressBar, ProgressStyle};
-use log::info;
+use log::{info, debug};
 
 #[derive(Debug, Args)]
 pub struct ProjectDevlogGet {
@@ -36,6 +36,7 @@ pub struct ProjectDevlogGet {
 
 impl ProjectDevlogGet {
     pub async fn execute(&self) -> anyhow::Result<()> {
+        debug!("Executing devlog get command (project_id: {:?}, devlog_id: {})", self.project_id, self.devlog_id);
         let auth: AuthData = get_key()?;
         let spinner = ProgressBar::new_spinner();
         spinner.set_style(
@@ -46,19 +47,22 @@ impl ProjectDevlogGet {
         spinner.enable_steady_tick(std::time::Duration::from_millis(80));
 
         let client = reqwest::Client::new();
+        let url = format!(
+            "https://flavortown.hackclub.com{}",
+            if let Some(project_id) = self.project_id {
+                format!("/api/v1/projects/{}/devlogs/{}", project_id, self.devlog_id)
+            } else {
+                format!("/api/v1/devlogs/{}", self.devlog_id)
+            }
+        );
+        debug!("Sending GET request to {}", url);
         let res = client
-            .get(&format!(
-                "https://flavortown.hackclub.com{}",
-                if let Some(project_id) = self.project_id {
-                    format!("/api/v1/projects/{}/devlogs/{}", project_id, self.devlog_id)
-                } else {
-                    format!("/api/v1/devlogs/{}", self.devlog_id)
-                }
-            ))
+            .get(&url)
             .header("Authorization", auth.token.clone())
             .header("X-Flavortown-Ext-333", "true")
             .send()
             .await?;
+        debug!("Received response with status: {}", res.status());
         if !res.status().is_success() {
             spinner.finish_and_clear();
             anyhow::bail!(
@@ -74,6 +78,7 @@ impl ProjectDevlogGet {
             spinner.finish_and_clear();
             info!("Retrieved devlog successfully.");
             let devlog: Devlog = res.json().await?;
+            debug!("Successfully parsed devlog data");
             print_devlog(&devlog);
         }
 

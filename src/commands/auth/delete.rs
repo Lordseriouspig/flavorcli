@@ -17,14 +17,18 @@
 
 use clap::Args;
 use keyring::Entry;
+use log::{info, debug};
 
 #[derive(Debug, Args)]
 pub struct AuthDelete; // Defines delete command (level 3)
 
 impl AuthDelete {
     pub async fn execute(&self) -> anyhow::Result<()> {
+        debug!("Starting auth delete operation");
         let entry = Entry::new("flavorcli", "auth_token")?;
+        debug!("Deleting credential from keyring");
         entry.delete_credential()?;
+        info!("Authentication token deleted from keyring.");
 
         println!("Authentication token deleted successfully.");
         Ok(())

@@ -22,7 +22,7 @@ use crate::models::user::User;
 use anyhow;
 use clap::Args;
 use indicatif::{ProgressBar, ProgressStyle};
-use log::info;
+use log::{info, debug};
 
 #[derive(Debug, Args)]
 pub struct UserGet {
@@ -33,6 +33,7 @@ pub struct UserGet {
 
 impl UserGet {
     pub async fn execute(&self) -> anyhow::Result<()> {
+        debug!("Executing user get command for user ID: {:?}", self.user_id);
         let auth: AuthData = get_key()?;
         let spinner = ProgressBar::new_spinner();
         spinner.set_style(
@@ -43,19 +44,22 @@ impl UserGet {
         spinner.enable_steady_tick(std::time::Duration::from_millis(80));
 
         let client = reqwest::Client::new();
-        let res = client
-            .get(&format!(
-                "https://flavortown.hackclub.com/api/v1/users/{}",
-                if self.user_id.is_some() {
-                    self.user_id.unwrap().to_string()
+        let url = format!(
+            "https://flavortown.hackclub.com/api/v1/users/{}",
+            if self.user_id.is_some() {
+                self.user_id.unwrap().to_string()
                 } else {
                     "me".to_string()
                 }
-            ))
+            );
+        debug!("Sending GET request to {}", url);
+        let res = client
+            .get(&url)
             .header("Authorization", auth.token.clone())
             .header("X-Flavortown-Ext-333", "true")
             .send()
             .await?;
+        debug!("Received response with status: {}", res.status());
         if !res.status().is_success() {
             spinner.finish_and_clear();
             anyhow::bail!(
@@ -71,6 +75,7 @@ impl UserGet {
             spinner.finish_and_clear();
             info!("Retrieved user successfully.");
             let user: User = res.json().await?;
+            debug!("Successfully parsed user data");
             print_user(&user);
         }
 

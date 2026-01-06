@@ -22,7 +22,7 @@ use crate::models::user_vec::UserVec;
 use anyhow;
 use clap::Args;
 use indicatif::{ProgressBar, ProgressStyle};
-use log::info;
+use log::{info, debug};
 
 #[derive(Debug, Args)]
 pub struct UserList {
@@ -34,6 +34,7 @@ pub struct UserList {
 
 impl UserList {
     pub async fn execute(&self) -> anyhow::Result<()> {
+        debug!("Executing user list command (page: {:?})", self.page);
         let auth: AuthData = get_key()?;
         let spinner = ProgressBar::new_spinner();
         spinner.set_style(
@@ -51,6 +52,7 @@ impl UserList {
             }
             p
         };
+        debug!("Sending GET request to https://flavortown.hackclub.com/api/v1/users with params: {:?}", params);
         let res = client
             .get("https://flavortown.hackclub.com/api/v1/users")
             .query(&params)
@@ -58,6 +60,7 @@ impl UserList {
             .header("X-Flavortown-Ext-333", "true")
             .send()
             .await?;
+        debug!("Received response with status: {}", res.status());
         if !res.status().is_success() {
             spinner.finish_and_clear();
             anyhow::bail!(
@@ -73,6 +76,7 @@ impl UserList {
             spinner.finish_and_clear();
             info!("Retrieved users successfully.");
             let users: UserVec = res.json().await?;
+            debug!("Successfully parsed {} users", users.users.len());
             print_user_table(&users.users, &users.pagination);
         }
 

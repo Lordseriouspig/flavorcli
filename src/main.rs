@@ -20,7 +20,7 @@ mod helpers;
 mod models;
 
 use clap::{Parser};
-use log::{error};
+use log::{error,debug};
 use commands::FlavorArgs;
 use anyhow::{Context,Result};
 use sentry::{start_session,end_session};
@@ -59,15 +59,18 @@ async fn main() {
 }
 
 async fn run(args: FlavorArgs) -> Result<()> {
+    debug!("Parsed arguments: {:?}", args);
     match args.entity_type {
         commands::Command::Auth(auth_cmd) => {
             match auth_cmd.command {
                 commands::auth::AuthSubcommand::Set(set_cmd) => {
+                    debug!("Executing AuthSubcommand::Set with args: {:?}", set_cmd);
                     set_cmd.execute()
                     .await
                     .context("Failed to set authentication token")?;
                 }
                 commands::auth::AuthSubcommand::Delete(delete_cmd) => {
+                    debug!("Executing AuthSubcommand::Delete with args: {:?}", delete_cmd);
                     delete_cmd.execute()
                     .await
                     .context("Failed to delete authentication token")?;
@@ -77,11 +80,13 @@ async fn run(args: FlavorArgs) -> Result<()> {
         commands::Command::Project(project_cmd) => {
             match project_cmd.command {
                 commands::project::ProjectSubcommand::Get(get_cmd) => {
+                    debug!("Executing ProjectSubcommand::Get with args: {:?}", get_cmd);
                     get_cmd.execute()
                     .await
                     .context("Failed to get project")?;
                 }
                 commands::project::ProjectSubcommand::List(list_cmd) => {
+                    debug!("Executing ProjectSubcommand::List with args: {:?}", list_cmd);
                     list_cmd.execute()
                     .await
                     .context("Failed to list projects")?;
@@ -89,11 +94,13 @@ async fn run(args: FlavorArgs) -> Result<()> {
                 commands::project::ProjectSubcommand::Devlog(devlog_cmd) => {
                     match devlog_cmd.command {
                         commands::project::devlog::ProjectDevlogSubcommand::Get(get_cmd) => {
+                            debug!("Executing ProjectDevlogSubcommand::Get with args: {:?}", get_cmd);
                             get_cmd.execute()
                             .await
                             .context("Failed to get devlog")?;
                         }
                         commands::project::devlog::ProjectDevlogSubcommand::List(list_cmd) => {
+                            debug!("Executing ProjectDevlogSubcommand::List with args: {:?}", list_cmd);
                             list_cmd.execute()
                             .await
                             .context("Failed to list devlogs")?;
@@ -105,11 +112,13 @@ async fn run(args: FlavorArgs) -> Result<()> {
         commands::Command::Store(store_cmd) => {
             match store_cmd.command {
                 commands::store::StoreSubcommand::Get(get_cmd) => {
+                    debug!("Executing StoreSubcommand::Get with args: {:?}", get_cmd);
                     get_cmd.execute()
                     .await
                     .context("Failed to get store item")?;
                 }
                 commands::store::StoreSubcommand::List(list_cmd) => {
+                    debug!("Executing StoreSubcommand::List with args: {:?}", list_cmd);
                     list_cmd.execute()
                     .await
                     .context("Failed to list store items")?;
@@ -119,11 +128,13 @@ async fn run(args: FlavorArgs) -> Result<()> {
         commands::Command::User(user_cmd) => {
             match user_cmd.command {
                 commands::user::UserSubcommand::Get(get_cmd) => {
+                    debug!("Executing UserSubcommand::Get with args: {:?}", get_cmd);
                     get_cmd.execute()
                     .await
                     .context("Failed to get user")?;
                 }
                 commands::user::UserSubcommand::List(list_cmd) => {
+                    debug!("Executing UserSubcommand::List with args: {:?}", list_cmd);
                     list_cmd.execute()
                     .await
                     .context("Failed to list users")?;

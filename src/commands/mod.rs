@@ -24,7 +24,7 @@ pub mod user;
 
 #[derive(Parser)]
 #[clap(name = "ft", author, version, about)]
-
+#[derive(Debug)]
 pub struct FlavorArgs {
     // Defines the top level command
     #[clap(subcommand)]

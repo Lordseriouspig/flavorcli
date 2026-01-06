@@ -17,10 +17,12 @@
 
 use anyhow::Context;
 use keyring::Entry;
+use log::debug;
 
 use crate::models::authdata::AuthData;
 
 pub fn get_key() -> anyhow::Result<AuthData> {
+    debug!("Retrieving authentication key from credential store");
     let entry =
         Entry::new("flavorcli", "auth_token").context("Failed to access credential store")?;
 
@@ -30,6 +32,9 @@ pub fn get_key() -> anyhow::Result<AuthData> {
 
     let auth: AuthData =
         serde_json::from_str(&json).context("Failed to parse authentication data")?;
+
+    debug!("Retrieved authentication data: {:?}", auth);
+    debug!("Successfully retrieved and parsed authentication key");
 
     Ok(auth)
 }

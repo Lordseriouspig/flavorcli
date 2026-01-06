@@ -22,7 +22,7 @@ use crate::models::store::Store;
 use anyhow;
 use clap::Args;
 use indicatif::{ProgressBar, ProgressStyle};
-use log::info;
+use log::{info, debug};
 
 #[derive(Debug, Args)]
 pub struct StoreList {
@@ -32,6 +32,7 @@ pub struct StoreList {
 
 impl StoreList {
     pub async fn execute(&self) -> anyhow::Result<()> {
+        debug!("Executing store list command");
         let auth: AuthData = get_key()?;
         let spinner = ProgressBar::new_spinner();
         spinner.set_style(
@@ -43,6 +44,7 @@ impl StoreList {
 
         let client = reqwest::Client::new();
         // this is where to put params in the future (let params =)
+        debug!("Sending GET request to https://flavortown.hackclub.com/api/v1/store");
         let res = client
             .get("https://flavortown.hackclub.com/api/v1/store")
             //.query(&params)
@@ -50,6 +52,7 @@ impl StoreList {
             .header("X-Flavortown-Ext-333", "true")
             .send()
             .await?;
+        debug!("Received response with status: {}", res.status());
         if !res.status().is_success() {
             spinner.finish_and_clear();
             anyhow::bail!(
@@ -65,6 +68,7 @@ impl StoreList {
             spinner.finish_and_clear();
             info!("Retrieved items successfully.");
             let items: Vec<Store> = res.json().await?;
+            debug!("Successfully parsed {} store items", items.len());
             print_store_table(items);
         }
 

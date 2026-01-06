@@ -22,7 +22,7 @@ use crate::models::devlog_vec::DevlogVec;
 use anyhow;
 use clap::Args;
 use indicatif::{ProgressBar, ProgressStyle};
-use log::info;
+use log::{info, debug};
 use owo_colors::OwoColorize;
 
 #[derive(Debug, Args)]
@@ -38,6 +38,7 @@ pub struct ProjectDevlogList {
 
 impl ProjectDevlogList {
     pub async fn execute(&self) -> anyhow::Result<()> {
+        debug!("Executing devlog list command (project_id: {:?}, page: {:?})", self.project_id, self.page);
         let auth: AuthData = get_key()?;
         let spinner = ProgressBar::new_spinner();
         spinner.set_style(
@@ -55,20 +56,23 @@ impl ProjectDevlogList {
             }
             p
         };
+        let url = format!(
+            "https://flavortown.hackclub.com{}",
+            if let Some(project_id) = self.project_id {
+                format!("/api/v1/projects/{}/devlogs", project_id)
+            } else {
+                format!("/api/v1/devlogs/")
+            }
+        );
+        debug!("Sending GET request to {} with params: {:?}", url, params);
         let res = client
-            .get(&format!(
-                "https://flavortown.hackclub.com{}",
-                if let Some(project_id) = self.project_id {
-                    format!("/api/v1/projects/{}/devlogs", project_id)
-                } else {
-                    format!("/api/v1/devlogs/")
-                }
-            ))
+            .get(&url)
             .query(&params)
             .header("Authorization", auth.token.clone())
             .header("X-Flavortown-Ext-333", "true")
             .send()
             .await?;
+        debug!("Received response with status: {}", res.status());
         if !res.status().is_success() {
             spinner.finish_and_clear();
             anyhow::bail!(
@@ -84,6 +88,7 @@ impl ProjectDevlogList {
             spinner.finish_and_clear();
             info!("Retrieved devlogs successfully.");
             let devlogs: DevlogVec = res.json().await?;
+            debug!("Successfully parsed {} devlogs", devlogs.devlogs.len());
             if self.project_id.is_some() {
                 println!(
                     "{}{}{}",
