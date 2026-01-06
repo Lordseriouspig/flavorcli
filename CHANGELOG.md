@@ -2,15 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
-## Unreleased
+## 0.1.0-beta.2 - 2026-01-06
 
-[72405e3](72405e3c4d0a256c8ab2d36d86c7561e4362160e)...[709f954](709f954b3344e7bf7c251a03af2d8617a4d64b7f)
+[72405e3](72405e3c4d0a256c8ab2d36d86c7561e4362160e)...[c2394bd](c2394bdabe5c68f36c54819bd239a314dbd5b5ae)
 
 ### Documentation
 
 - Update install instructions ([932a33f](932a33f4dcaccdecb80b3492b9d3c2cc8ea8616b))
 - Execution policy and chmod instructions ([b430926](b430926d041829ceb0848d9e1557ca183f5b657f))
 - Add instructions for cargo ([709f954](709f954b3344e7bf7c251a03af2d8617a4d64b7f))
+
+### Miscellaneous Tasks
+
+- Add some release scripts and CHANGELOG ([5749fd3](5749fd3a28655260ece441c0964d2ed44d7644fc))
+- Add sentry ([029a12e](029a12eff3499c62dbd64e531bc124d26c24ebf9))
+- Add more logging ([e33c085](e33c085d83965e1329de81c4272bae5cf66e4dde))
+
+### Styling
+
+- Clear out some clippy warnings ([c2394bd](c2394bdabe5c68f36c54819bd239a314dbd5b5ae))
 
 ## 0.1.0-beta.1 - 2026-01-04
 
