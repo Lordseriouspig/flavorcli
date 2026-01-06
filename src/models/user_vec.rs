@@ -42,7 +42,8 @@ pub struct Pagination {
 }
 
 #[derive(Debug, Deserialize)]
-pub struct UserList { // The user object returned from list is slightly different to the one returned from get as of now. I'll remove this if that gets changed
+pub struct UserList {
+    // The user object returned from list is slightly different to the one returned from get as of now. I'll remove this if that gets changed
     pub id: u32,
     #[serde(deserialize_with = "fix_displayname")]
     pub display_name: String,

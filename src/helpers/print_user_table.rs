@@ -15,8 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 
-use crate::models::user_vec::UserList;
 use crate::models::user_vec::Pagination;
+use crate::models::user_vec::UserList;
 use comfy_table::modifiers::UTF8_ROUND_CORNERS;
 use comfy_table::presets::UTF8_FULL;
 use comfy_table::*;
@@ -32,20 +32,12 @@ pub fn print_user_table(users: &[UserList], pagination: &Pagination) {
         .load_preset(UTF8_FULL)
         .apply_modifier(UTF8_ROUND_CORNERS)
         .set_content_arrangement(ContentArrangement::Dynamic)
-        .set_header(vec![
-            "ID",
-            "Display Name",
-            "Cookies"
-        ]);
+        .set_header(vec!["ID", "Display Name", "Cookies"]);
     for user in users {
         let id = user.id.to_string();
         let display_name = user.display_name.clone();
         let cookies = user.cookies.to_string();
-        table.add_row(vec![
-            id,
-            display_name,
-            cookies
-        ]);
+        table.add_row(vec![id, display_name, cookies]);
     }
 
     let footer_text = if let Some(next) = pagination.next_page {
