@@ -39,11 +39,7 @@ pub fn print_devlog(d: &Devlog) {
         format!("Devlog #{}", d.id).bold().yellow(),
         "-".repeat(40)
     );
-    println!(
-        "{:<12}: {}",
-        "Comments".blue(),
-        d.comments_count
-    );
+    println!("{:<12}: {}", "Comments".blue(), d.comments_count);
     println!(
         "{:<12}: {}",
         "Time".blue(),

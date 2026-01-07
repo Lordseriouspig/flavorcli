@@ -31,7 +31,9 @@ pub fn print_store(i: &Store) {
     println!("{:<20}: {}", "Type".blue(), i.type_);
     println!("{:<20}: {}", "Description".blue(), i.description);
 
-    if let Some(long_desc) = &i.long_description && !long_desc.is_empty() {
+    if let Some(long_desc) = &i.long_description
+        && !long_desc.is_empty()
+    {
         println!("\n{}", "Long Description:".bold().cyan());
         println!("{}", fill(long_desc, 72));
     }
@@ -134,7 +136,9 @@ pub fn print_store(i: &Store) {
         i.one_per_person_ever
     );
     println!("{:<20}: {}", "Buyable By Self?".blue(), i.buyable_by_self);
-    if let Some(tag) = &i.accessory_tag && !tag.is_empty() {
+    if let Some(tag) = &i.accessory_tag
+        && !tag.is_empty()
+    {
         println!("{:<20}: {}", "Accessory Tag".blue(), tag);
     }
 
