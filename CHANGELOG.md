@@ -2,9 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.1.0-beta.3 - 2026-01-07
+
+[c25db4e](c25db4e09f23591d11b64871fa91aee1ce1565bd)...[eacb1f4](eacb1f4ad9c6338376e2d68e4b0a9f056eeaf4d6)
+
+### Bug Fixes
+
+- Fix a bug where the program would panick if the devlog text contained Korean characters (#1) ([eeeff72](eeeff727a7043713dab25a3eabbd1f0b804d40c4))
+
 ## 0.1.0-beta.2 - 2026-01-06
 
-[72405e3](72405e3c4d0a256c8ab2d36d86c7561e4362160e)...[c2394bd](c2394bdabe5c68f36c54819bd239a314dbd5b5ae)
+[72405e3](72405e3c4d0a256c8ab2d36d86c7561e4362160e)...[c25db4e](c25db4e09f23591d11b64871fa91aee1ce1565bd)
 
 ### Documentation
 
@@ -17,6 +25,7 @@ All notable changes to this project will be documented in this file.
 - Add some release scripts and CHANGELOG ([5749fd3](5749fd3a28655260ece441c0964d2ed44d7644fc))
 - Add sentry ([029a12e](029a12eff3499c62dbd64e531bc124d26c24ebf9))
 - Add more logging ([e33c085](e33c085d83965e1329de81c4272bae5cf66e4dde))
+- Release flavorcli version 0.1.0-beta.2 ([c25db4e](c25db4e09f23591d11b64871fa91aee1ce1565bd))
 
 ### Styling
 
