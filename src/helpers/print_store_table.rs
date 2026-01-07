@@ -62,13 +62,13 @@ pub fn print_store_table(mut items: Vec<Store>) {
         ]);
     for item in items {
         let id = item.id.to_string();
-        let name = if item.name.len() > 30 {
-            format!("{}...", &item.name[..27])
+        let name = if item.name.chars().count() > 30 {
+            format!("{}...", item.name.chars().take(27).collect::<String>())
         } else {
             item.name.clone()
         };
-        let desc = if item.description.len() > 50 {
-            format!("{}...", &item.description[..47])
+        let desc = if item.description.chars().count() > 50 {
+            format!("{}...", item.description.chars().take(47).collect::<String>())
         } else {
             item.description.clone()
         };

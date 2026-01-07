@@ -55,8 +55,8 @@ pub fn print_devlog_table(devlogs: &[Devlog], pagination: &Pagination) {
         .set_header(vec!["ID", "Body", "Time", "Likes", "Comments", "Updated"]);
     for devlog in devlogs {
         let id = devlog.id.to_string();
-        let body = if devlog.body.len() > 50 {
-            format!("{}...", &devlog.body[..47])
+        let body = if devlog.body.chars().count() > 50 {
+            format!("{}...", devlog.body.chars().take(47).collect::<String>())
         } else {
             devlog.body.clone()
         };
