@@ -30,7 +30,7 @@ pub struct StoreCommand {
 #[derive(Debug, Subcommand)]
 pub enum StoreSubcommand {
     // Defines store commands (level 3)
-    /// List store items
+    /// List store items (requires a lot of screen space)
     List(list::StoreList),
     /// Get a specific store item by its ID
     Get(get::StoreGet),

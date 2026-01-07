@@ -117,7 +117,7 @@ pub fn print_store(i: &Store, short: bool, detailed: bool) {
         }
     );
 
-    if (!short) {
+    if !short {
         println!("\n{}", "Buying Info:".bold().cyan());
         println!("{:<20}: {}", "Limited?".blue(), i.limited);
         println!("{:<20}: {}", "Stock".blue(), stock_str);
@@ -157,7 +157,7 @@ pub fn print_store(i: &Store, short: bool, detailed: bool) {
     }
 
     if detailed {
-        println!("\n{}", "Random metadata:".bold().cyan()); //TODO: Hide when --detailed is not supplied
+        println!("\n{}", "Random metadata:".bold().cyan());
         if !i.old_prices.is_empty() {
             println!(
                 "{:<20}: {}",

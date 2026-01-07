@@ -30,7 +30,28 @@ pub struct StoreList {
     /// Returns data as raw JSON
     #[clap(long)]
     pub json: bool,
-    // TODO: Region flag, flag to choose table fields, sort flag
+    /// Region column to show
+    #[clap(long, value_enum)]
+    pub region: Option<Regions>,
+    // TODO: flag to choose table fields, sort flag
+}
+
+#[derive(clap::ValueEnum, Clone, Copy, Debug)]
+pub enum Regions {
+    #[value(name = "australia")]
+    Au,
+    #[value(name = "canada")]
+    Ca,
+    #[value(name = "europe")]
+    Eu,
+    #[value(name = "india")]
+    In,
+    #[value(name = "united-kingdom")]
+    Uk,
+    #[value(name = "united-states")]
+    Us,
+    #[value(name = "world")]
+    Xx,
 }
 
 impl StoreList {
@@ -77,7 +98,10 @@ impl StoreList {
             } else {
                 let items: Vec<Store> = res.json().await?;
                 debug!("Successfully parsed {} store items", items.len());
-                print_store_table(items);
+                print_store_table(
+                    items,
+                    self.region.map(|r| format!("{:?}", r).to_lowercase()),
+                );
             }
         }
 

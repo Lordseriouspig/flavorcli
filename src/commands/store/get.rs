@@ -39,7 +39,13 @@ pub struct StoreGet {
     pub short: bool,
 
     /// Adds random other metadata
-    #[clap(long, short, conflicts_with = "json", conflicts_with = "short", alias = "long")]
+    #[clap(
+        long,
+        short,
+        conflicts_with = "json",
+        conflicts_with = "short",
+        alias = "long"
+    )]
     pub detailed: bool,
 }
 

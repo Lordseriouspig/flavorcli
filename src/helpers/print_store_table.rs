@@ -34,32 +34,34 @@ fn sanitize(text: &str) -> String {
         .collect()
 }
 
-pub fn print_store_table(mut items: Vec<Store>) {
+pub fn print_store_table(mut items: Vec<Store>, region: Option<impl AsRef<str>>) {
     items.sort_by_key(|item| item.id);
     if items.is_empty() {
         println!("No items found.");
         return;
     }
+
+    let region_filter = region.as_ref().map(|r| r.as_ref().to_uppercase());
+    let show_all_regions = region_filter.is_none();
+
     let mut table = Table::new();
     table
         .load_preset(UTF8_FULL)
         .apply_modifier(UTF8_ROUND_CORNERS)
-        .set_content_arrangement(ContentArrangement::Disabled)
-        .set_header(vec![
-            "ID",
-            "Name",
-            "Description",
-            "Stock",
-            "AU",
-            "CA",
-            "EU",
-            "IN",
-            "UK",
-            "US",
-            "XX",
-            "Type",
-            "Attached to",
-        ]);
+        .set_content_arrangement(ContentArrangement::Disabled);
+
+    // Build header dynamically based on region filter
+    let mut header = vec!["ID", "Name", "Description", "Stock"];
+
+    if show_all_regions {
+        header.extend_from_slice(&["AU", "CA", "EU", "IN", "UK", "US", "XX"]);
+    } else if let Some(ref region_code) = region_filter {
+        header.push(region_code.as_str());
+    }
+
+    header.extend_from_slice(&["Type", "Attached to"]);
+    table.set_header(header);
+
     for item in items {
         let id = item.id.to_string();
         let name = if item.name.len() > 30 {
@@ -88,21 +90,42 @@ pub fn print_store_table(mut items: Vec<Store>) {
             .filter_map(|id| id.map(|i| i.to_string()))
             .collect::<Vec<String>>()
             .join(", ");
-        table.add_row(vec![
+
+        let mut row = vec![
             Cell::new(id),
             Cell::new(sanitize(&name)),
             Cell::new(sanitize(&desc)),
             Cell::new(stock),
-            color_cell(item.enabled.enabled_au, item.ticket_cost.au),
-            color_cell(item.enabled.enabled_ca, item.ticket_cost.ca),
-            color_cell(item.enabled.enabled_eu, item.ticket_cost.eu),
-            color_cell(item.enabled.enabled_in, item.ticket_cost.in_),
-            color_cell(item.enabled.enabled_uk, item.ticket_cost.uk),
-            color_cell(item.enabled.enabled_us, item.ticket_cost.us),
-            color_cell(item.enabled.enabled_xx, item.ticket_cost.xx),
+        ];
+
+        // Add region columns based on filter
+        if show_all_regions {
+            row.extend_from_slice(&[
+                color_cell(item.enabled.enabled_au, item.ticket_cost.au),
+                color_cell(item.enabled.enabled_ca, item.ticket_cost.ca),
+                color_cell(item.enabled.enabled_eu, item.ticket_cost.eu),
+                color_cell(item.enabled.enabled_in, item.ticket_cost.in_),
+                color_cell(item.enabled.enabled_uk, item.ticket_cost.uk),
+                color_cell(item.enabled.enabled_us, item.ticket_cost.us),
+                color_cell(item.enabled.enabled_xx, item.ticket_cost.xx),
+            ]);
+        } else if let Some(ref region_code) = region_filter {
+            match region_code.as_str() {
+                "AU" => row.push(color_cell(item.enabled.enabled_au, item.ticket_cost.au)),
+                "CA" => row.push(color_cell(item.enabled.enabled_ca, item.ticket_cost.ca)),
+                "EU" => row.push(color_cell(item.enabled.enabled_eu, item.ticket_cost.eu)),
+                "IN" => row.push(color_cell(item.enabled.enabled_in, item.ticket_cost.in_)),
+                "UK" => row.push(color_cell(item.enabled.enabled_uk, item.ticket_cost.uk)),
+                "US" => row.push(color_cell(item.enabled.enabled_us, item.ticket_cost.us)),
+                "XX" => row.push(color_cell(item.enabled.enabled_xx, item.ticket_cost.xx)),
+                _ => {} // Unknown region, skip column
+            }
+        }
+        row.extend_from_slice(&[
             Cell::new(type_),
             Cell::new(attatched_to),
         ]);
+        table.add_row(row);
     }
 
     println!("{}", table);
