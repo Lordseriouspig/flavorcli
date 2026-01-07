@@ -29,10 +29,10 @@ $ErrorActionPreference = "Stop"
 
 # Get package info
 $version = (cargo pkgid | ForEach-Object { ($_ -split "#")[-1] })
-$packageName = "flavorcli"
+$packageName = "flavor"
 $arch = "x86_64"
 $platform = "windows"
-$packageDir = "$packageName-$version-$platform-$arch"
+$packageDir = "${packageName}cli-$version-$platform-$arch"
 
 Write-Host "Building $packageName for Windows..."
 cargo build --release
@@ -70,7 +70,7 @@ Write-Host "Windows release zip created: $zipPath"
 # Get package info
 $arch = "x86_64"
 $platform = "linux"
-$packageDir = "$packageName-$version-$platform-$arch"
+$packageDir = "${packageName}cli-$version-$platform-$arch"
 
 Write-Host "Building $packageName for Linux..."
 wsl /home/lachlan/.cargo/bin/cargo build --release
@@ -104,5 +104,5 @@ Remove-Item -Recurse -Force $packageDir
 Write-Host "Linux release zip created: $zipPath"
 
 # Release it to GitHub
-git cliff --current | gh release create v$version "target\$packageName-$version-windows-$arch.zip" "target\$packageName-$version-linux-$arch.zip" -t "v$version" -F - --draft --prerelease=$($version -like "*-beta*" -or $version -like "*-alpha*" -or $version -like "*-rc*")
+git cliff --current | gh release create v$version "./target/${packageName}cli-$version-windows-$arch.zip" "./target/${packageName}cli-$version-linux-$arch.zip" -t "v$version" -F - --draft --prerelease=$($version -like "*-beta*" -or $version -like "*-alpha*" -or $version -like "*-rc*")
 Write-Host "Release v$version created on GitHub. Check it out and publish it here: https://github.com/Lordseriouspig/flavorcli/releases/tag/v$version"
