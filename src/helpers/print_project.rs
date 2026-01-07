@@ -15,10 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 
-use crate::{helpers::resolve_devlogs::resolve_devlogs, helpers::print_devlog::print_devlog, models::project::Project};
+use crate::{helpers::{print_devlog::print_devlog, resolve_devlogs::resolve_devlogs}, models::project::Project};
 use chrono::{DateTime, Local};
 use owo_colors::OwoColorize;
-use textwrap::fill;
+use crate::{title, heading, field, long_text, list};
 
 fn format_time(dt: &str) -> String {
     let dt = DateTime::parse_from_rfc3339(dt).unwrap();
@@ -27,43 +27,17 @@ fn format_time(dt: &str) -> String {
 }
 
 pub async fn print_project(p: &Project, resolve: bool) {
-    println!("{}\n{}", p.title.bold().yellow(), "-".repeat(40));
-    println!("{:<12}: {}", "ID".blue(), p.id);
-    println!("{:<12}: {}", "Status".blue(), p.ship_status);
-    println!("{:<12}: {}", "Created".blue(), format_time(&p.created_at));
-    println!("{:<12}: {}", "Updated".blue(), format_time(&p.updated_at));
+    title!(p.title);
+    field!("ID", p.id);
+    field!("Status", p.ship_status);
+    field!("Created", format_time(&p.created_at));
+    field!("Updated", format_time(&p.updated_at));
+    long_text!("Description", &p.description);
 
-    println!("\n{}", "Description:".bold().cyan());
-    println!("{}", fill(&p.description, 72));
-
-    println!("\n{}", "Links:".bold().cyan());
-    println!(
-        "{:<7} {}",
-        "Repo".blue(),
-        if p.repo_url.is_empty() {
-            "-"
-        } else {
-            &p.repo_url
-        }
-    );
-    println!(
-        "{:<7} {}",
-        "Demo".blue(),
-        if p.demo_url.is_empty() {
-            "-"
-        } else {
-            &p.demo_url
-        }
-    );
-    println!(
-        "{:<7} {}",
-        "Readme".blue(),
-        if p.readme_url.is_empty() {
-            "-"
-        } else {
-            &p.readme_url
-        }
-    );
+    heading!("Links:");
+    field!("Repo", if p.repo_url.is_empty() { "-" } else { &p.repo_url });
+    field!("Demo", if p.demo_url.is_empty() { "-" } else { &p.demo_url });
+    field!("Readme", if p.readme_url.is_empty() { "-" } else { &p.readme_url });
 
     if resolve {
         println!("\n{}", "Devlogs:".bold().cyan());
@@ -76,9 +50,7 @@ pub async fn print_project(p: &Project, resolve: bool) {
         if p.devlog_ids.is_empty() {
             println!("- None -");
         } else {
-            for id in &p.devlog_ids {
-                println!("- {}", id);
-            }
+            list!(&p.devlog_ids);
         }
     }
 }

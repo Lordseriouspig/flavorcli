@@ -17,6 +17,7 @@
 
 use crate::models::user::User;
 use owo_colors::OwoColorize;
+use crate::{title, heading, field, long_text, list};
 
 fn format_duration(seconds: u32) -> String {
     let hours = seconds / 3600;
@@ -26,39 +27,22 @@ fn format_duration(seconds: u32) -> String {
 }
 
 pub fn print_user(u: &User) {
-    // TODO: Refactor these printlns to premade macros globally (ie header! text! long_text! etc)
-    println!(
-        "{}\n{}",
-        u.display_name.to_string().bold().yellow(),
-        "-".repeat(40)
-    );
-    println!("{:<12}: {}", "ID".blue(), u.id);
-    println!("{:<12}: {}", "Slack ID".blue(), u.slack_id);
+    title!(u.display_name);
+    field!("ID", u.id);
+    field!("Slack ID", u.slack_id);
+    long_text!("Avatar URL", &u.avatar);
 
-    println!("\n{}", "Avatar URL:".bold().cyan());
-    println!("{}", u.avatar);
-
-    println!("\n{}", "Project IDs:".bold().cyan());
+    heading!("Project IDs:");
     if u.project_ids.is_empty() {
         println!("- None -");
     } else {
-        for id in &u.project_ids {
-            println!("- {}", id);
-        }
+        list!(&u.project_ids);
     }
 
-    println!("\n{}", "Statistics:".bold().cyan());
-    println!("{:<12}: {}", "Vote Count".blue(), u.vote_count);
-    println!("{:<12}: {}", "Like Count".blue(), u.like_count);
-    println!(
-        "{:<12}: {}",
-        "Devlog Time Total".blue(),
-        format_duration(u.devlog_seconds_total)
-    );
-    println!(
-        "{:<12}: {}",
-        "Devlog Time Today".blue(),
-        format_duration(u.devlog_seconds_today)
-    );
-    println!("{:<12}: {}", "Cookies".blue(), u.cookies);
+    heading!("Statistics:");
+    field!("Vote Count", u.vote_count);
+    field!("Like Count", u.like_count);
+    field!("Devlog Time Total", format_duration(u.devlog_seconds_total));
+    field!("Devlog Time Today", format_duration(u.devlog_seconds_today));
+    field!("Cookies", u.cookies);
 }
