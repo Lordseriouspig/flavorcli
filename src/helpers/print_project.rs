@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 
-use crate::models::project::Project;
+use crate::{helpers::resolve_devlogs::resolve_devlogs, helpers::print_devlog::print_devlog, models::project::Project};
 use chrono::{DateTime, Local};
 use owo_colors::OwoColorize;
 use textwrap::fill;
@@ -26,7 +26,7 @@ fn format_time(dt: &str) -> String {
     local_dt.format("%Y-%m-%d %H:%M:%S").to_string()
 }
 
-pub fn print_project(p: &Project) {
+pub async fn print_project(p: &Project, resolve: bool) {
     println!("{}\n{}", p.title.bold().yellow(), "-".repeat(40));
     println!("{:<12}: {}", "ID".blue(), p.id);
     println!("{:<12}: {}", "Status".blue(), p.ship_status);
@@ -65,12 +65,20 @@ pub fn print_project(p: &Project) {
         }
     );
 
-    println!("\n{}", "Devlog IDs:".bold().cyan());
-    if p.devlog_ids.is_empty() {
-        println!("- None -");
+    if resolve {
+        println!("\n{}", "Devlogs:".bold().cyan());
+        for devlog in resolve_devlogs(&p.devlog_ids).await.unwrap_or_default() {
+            print_devlog(&devlog,true);
+            println!();
+        }
     } else {
-        for id in &p.devlog_ids {
-            println!("- {}", id);
+        println!("\n{}", "Devlog IDs:".bold().cyan());
+        if p.devlog_ids.is_empty() {
+            println!("- None -");
+        } else {
+            for id in &p.devlog_ids {
+                println!("- {}", id);
+            }
         }
     }
 }

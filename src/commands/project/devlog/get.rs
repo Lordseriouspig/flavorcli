@@ -31,10 +31,13 @@ pub struct ProjectDevlogGet {
     #[clap(long, short)]
     pub project_id: Option<u64>,
     /// The devlog ID to retrieve
-    pub devlog_id: u64, // TODO: short flag
+    pub devlog_id: u64,
     /// Returns data as raw JSON
     #[clap(long)]
     pub json: bool,
+    /// Omits the devlog's metadata
+    #[clap(long, short)]
+    pub short: bool,
 }
 
 impl ProjectDevlogGet {
@@ -90,7 +93,7 @@ impl ProjectDevlogGet {
             } else {
                 let devlog: Devlog = res.json().await?;
                 debug!("Successfully parsed devlog data");
-                print_devlog(&devlog);
+                print_devlog(&devlog, self.short);
             }
         }
 

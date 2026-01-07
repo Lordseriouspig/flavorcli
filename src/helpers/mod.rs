@@ -24,3 +24,4 @@ pub mod print_store;
 pub mod print_store_table;
 pub mod print_user;
 pub mod print_user_table;
+pub mod resolve_devlogs;
