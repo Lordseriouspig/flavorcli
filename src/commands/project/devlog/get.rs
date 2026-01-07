@@ -33,10 +33,10 @@ pub struct ProjectDevlogGet {
     /// The devlog ID to retrieve
     pub devlog_id: u64,
     /// Returns data as raw JSON
-    #[clap(long)]
+    #[clap(long, conflicts_with = "short")]
     pub json: bool,
     /// Omits the devlog's metadata
-    #[clap(long, short)]
+    #[clap(long, short, conflicts_with = "json")]
     pub short: bool,
 }
 

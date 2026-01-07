@@ -31,11 +31,17 @@ pub struct ProjectGet {
     pub project_id: u64,
 
     /// Returns data as raw JSON
-    #[clap(long)]
+    #[clap(long, conflicts_with = "resolve")]
     pub json: bool,
 
     /// Resolves and displays devlogs in a project (May take longer)
-    #[clap(long,short, alias = "long")]
+    #[clap(
+        long,
+        short,
+        alias = "long",
+        alias = "detailed",
+        conflicts_with = "json"
+    )]
     pub resolve: bool,
 }
 
