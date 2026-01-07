@@ -29,6 +29,10 @@ pub struct UserGet {
     // Defines get user command (level 3)
     /// The user ID to retrieve. Defaults to you if not supplied
     pub user_id: Option<u32>,
+
+    /// Returns data as raw JSON
+    #[clap(long)]
+    pub json: bool,
 }
 
 impl UserGet {
@@ -74,9 +78,15 @@ impl UserGet {
         } else {
             spinner.finish_and_clear();
             info!("Retrieved user successfully.");
-            let user: User = res.json().await?;
-            debug!("Successfully parsed user data");
-            print_user(&user);
+            if self.json {
+                let user_json = res.text().await?;
+                debug!("Returning raw JSON data");
+                println!("{}", user_json);
+            } else {
+                let user: User = res.json().await?;
+                debug!("Successfully parsed user data");
+                print_user(&user);
+            }
         }
 
         Ok(())

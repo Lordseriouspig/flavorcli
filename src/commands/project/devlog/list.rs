@@ -34,6 +34,10 @@ pub struct ProjectDevlogList {
     /// Page number for pagination. Defaults to 1.
     #[clap(long, short)]
     pub page: Option<u32>,
+
+    /// Returns data as raw JSON
+    #[clap(long)]
+    pub json: bool,
 }
 
 impl ProjectDevlogList {
@@ -90,17 +94,23 @@ impl ProjectDevlogList {
         } else {
             spinner.finish_and_clear();
             info!("Retrieved devlogs successfully.");
-            let devlogs: DevlogVec = res.json().await?;
-            debug!("Successfully parsed {} devlogs", devlogs.devlogs.len());
-            if self.project_id.is_some() {
-                println!(
-                    "{}{}{}",
-                    "Devlogs for project with ID: '".bold().cyan(), // TODO: Get project name instead of ID
-                    self.project_id.as_ref().unwrap().bold().yellow(),
-                    "'".bold().cyan()
-                );
+            if self.json {
+                let devlogs_json = res.text().await?;
+                debug!("Returning raw JSON data");
+                println!("{}", devlogs_json);
+            } else {
+                let devlogs: DevlogVec = res.json().await?;
+                debug!("Successfully parsed {} devlogs", devlogs.devlogs.len());
+                if self.project_id.is_some() {
+                    println!(
+                        "{}{}{}",
+                        "Devlogs for project with ID: '".bold().cyan(), // TODO: Get project name instead of ID
+                        self.project_id.as_ref().unwrap().bold().yellow(),
+                        "'".bold().cyan()
+                    );
+                }
+                print_devlog_table(&devlogs.devlogs, &devlogs.pagination);
             }
-            print_devlog_table(&devlogs.devlogs, &devlogs.pagination);
         }
 
         Ok(())

@@ -27,7 +27,10 @@ use log::{debug, info};
 #[derive(Debug, Args)]
 pub struct StoreList {
     // Defines list store items command (level 3)
-    // TODO: Region flag, json flag, flag to choose table fields, sort flag
+    /// Returns data as raw JSON
+    #[clap(long)]
+    pub json: bool,
+    // TODO: Region flag, flag to choose table fields, sort flag
 }
 
 impl StoreList {
@@ -67,9 +70,15 @@ impl StoreList {
         } else {
             spinner.finish_and_clear();
             info!("Retrieved items successfully.");
-            let items: Vec<Store> = res.json().await?;
-            debug!("Successfully parsed {} store items", items.len());
-            print_store_table(items);
+            if self.json {
+                let items_json = res.text().await?;
+                debug!("Returning raw JSON data");
+                println!("{}", items_json);
+            } else {
+                let items: Vec<Store> = res.json().await?;
+                debug!("Successfully parsed {} store items", items.len());
+                print_store_table(items);
+            }
         }
 
         Ok(())
