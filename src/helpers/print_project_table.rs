@@ -48,13 +48,13 @@ pub fn print_project_table(projects: &[Project], pagination: &Pagination) {
         .set_header(vec!["ID", "Title", "Description", "Updated"]);
     for project in projects {
         let id = project.id.to_string();
-        let title = if project.title.len() > 30 {
-            format!("{}...", &project.title[..27])
+        let title = if project.title.chars().count() > 30 {
+            format!("{}...", project.title.chars().take(27).collect::<String>())
         } else {
             project.title.clone()
         };
-        let desc = if project.description.len() > 50 {
-            format!("{}...", &project.description[..47])
+        let desc = if project.description.chars().count() > 50 {
+            format!("{}...", project.description.chars().take(47).collect::<String>())
         } else {
             project.description.clone()
         };
