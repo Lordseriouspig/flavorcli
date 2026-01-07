@@ -33,26 +33,28 @@ fn format_duration(seconds: u32) -> String {
     format!("{:02}:{:02}:{:02}", hours, minutes, secs)
 }
 
-pub fn print_devlog(d: &Devlog) {
+pub fn print_devlog(d: &Devlog, short: bool) {
     println!(
         "{}\n{}",
         format!("Devlog #{}", d.id).bold().yellow(),
         "-".repeat(40)
     );
-    println!("{:<12}: {}", "Comments".blue(), d.comments_count);
-    println!(
-        "{:<12}: {}",
-        "Time".blue(),
-        format_duration(d.duration_seconds)
-    );
-    println!("{:<12}: {}", "Likes".blue(), d.likes_count);
-    println!("{:<12}: {}", "Created".blue(), format_time(&d.created_at));
-    println!("{:<12}: {}", "Updated".blue(), format_time(&d.updated_at));
+    if !short {
+        println!("{:<12}: {}", "Comments".blue(), d.comments_count);
+        println!(
+            "{:<12}: {}",
+            "Time".blue(),
+            format_duration(d.duration_seconds)
+        );
+        println!("{:<12}: {}", "Likes".blue(), d.likes_count);
+        println!("{:<12}: {}", "Created".blue(), format_time(&d.created_at));
+        println!("{:<12}: {}", "Updated".blue(), format_time(&d.updated_at));
 
     println!("\n{}", "Body:".bold().cyan());
+    }
     println!("{}", fill(&d.body, 72));
 
-    if d.scrapbook_url.is_some() {
+    if d.scrapbook_url.is_some() && !short {
         println!("\n{}", "Scrapbook:".bold().cyan());
         println!("{:<12} {}", "URL".blue(), d.scrapbook_url.as_ref().unwrap());
     }
