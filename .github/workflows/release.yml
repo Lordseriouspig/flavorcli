@@ -49,7 +49,7 @@ jobs:
             run: |
               $version = $env:GITHUB_REF -replace 'refs/tags/', ''
               echo "version=$version" >> $env:GITHUB_ENV
-              Compress-Archive -Path .\target\release\flavorcli.exe, .\CHANGELOG.md, .\README.MD, .\LICENSE, .\install-win.ps1, .\uninstall-win.ps1 -DestinationPath flavorcli-${version}-windows-x86_64.zip
+              Compress-Archive -Path .\target\release\flavor.exe, .\CHANGELOG.md, .\README.MD, .\LICENSE, .\install-win.ps1, .\uninstall-win.ps1 -DestinationPath flavorcli-${version}-windows-x86_64.zip
           
           - name: Upload Binary
             uses: actions/upload-artifact@v4
@@ -72,6 +72,9 @@ jobs:
               components: clippy
               override: true
 
+          - name: install apt deps
+            run: sudo apt install libdbus-1-dev pkg-config zip
+
           - name: Build release binary
             run: cargo build --release
 
@@ -79,7 +82,7 @@ jobs:
             run: |
               version=${GITHUB_REF#refs/tags/}
               echo "version=${version}" >> $GITHUB_ENV
-              zip flavorcli-${version}-linux-x86_64.zip target/release/flavorcli CHANGELOG.md README.MD LICENSE install-linux.sh uninstall-linux.sh
+              zip flavorcli-${version}-linux-x86_64.zip target/release/flavor CHANGELOG.md README.MD LICENSE install-linux.sh uninstall-linux.sh
           
           - name: Upload Binary
             uses: actions/upload-artifact@v4
