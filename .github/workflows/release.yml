@@ -106,7 +106,7 @@ jobs:
             run: |
               version=${GITHUB_REF#refs/tags/}
               echo "version=${version}" >> $GITHUB_ENV
-              zip flavorcli-${version}-linux-x86_64.zip target/release/flavor CHANGELOG.md README.MD LICENSE install-linux.sh uninstall-linux.sh
+              zip -j flavorcli-${version}-linux-x86_64.zip target/release/flavor CHANGELOG.md README.MD LICENSE install-linux.sh uninstall-linux.sh
           
           - name: Upload Binary
             uses: actions/upload-artifact@v4
