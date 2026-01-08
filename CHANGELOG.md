@@ -2,13 +2,80 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.2.0-beta.1 - 2026-01-08
+
+[71dd9af](71dd9afa06317a8b4bd2ec97c07cfd6e6d4bd99f)...[76af6da](76af6dae293308a346eeadac772cd096d2ae9943)
+
+### Miscellaneous Tasks
+
+- Rm build script ([450c71e](450c71ef724ceec4eb723a1e81bd8fb3e851d042))
+
+## x.x.3 - 2026-01-08
+
+[5fc71cb](5fc71cb50242adfc467987978e1282ba51ba215e)...[71dd9af](71dd9afa06317a8b4bd2ec97c07cfd6e6d4bd99f)
+
+### Miscellaneous Tasks
+
+- Some release action enhancements ([71dd9af](71dd9afa06317a8b4bd2ec97c07cfd6e6d4bd99f))
+
+## x.x.2 - 2026-01-08
+
+[8c438d8](8c438d8164879c4652927392638ed49fd491d160)...[5fc71cb](5fc71cb50242adfc467987978e1282ba51ba215e)
+
+### Miscellaneous Tasks
+
+- Fix the action ([5fc71cb](5fc71cb50242adfc467987978e1282ba51ba215e))
+
+## x.x.1 - 2026-01-08
+
+[dca35aa](dca35aa1e51f52e3483732e4729a6f3ad6338504)...[8c438d8](8c438d8164879c4652927392638ed49fd491d160)
+
+### Miscellaneous Tasks
+
+- Create release action ([8c438d8](8c438d8164879c4652927392638ed49fd491d160))
+
+## x.x.x - 2026-01-07
+
+[44417e2](44417e24214d83033ef615cd4944e202b34fd4c2)...[dca35aa](dca35aa1e51f52e3483732e4729a6f3ad6338504)
+
+### Bug Fixes
+
+- Fix a bug where sentry debug logs were outputted by default ([049ca3c](049ca3c029435b126bd40c563423a80cfa60f225))
+- Fix a bug where the package name would be named incorrectly ([0b82044](0b820449511c3ac51f2eff556c53f57508d3f225))
+- Set some flags to be conflicting ([84aca48](84aca48a72e661fc3b0ef35286d565a2380d3510))
+
+### Features
+
+- Add --json flag ([615dcac](615dcac3c0dc4aab41fa7b7a3d4292e0d54e347a))
+- Add --short flag to devlog get ([85665d9](85665d9745be9dc2d34ef8b6520d7e61f776fe3f))
+- Add --resolve flag to print project ([d31ad26](d31ad26b23c56c238533dffbc8ec871cdb69f37c))
+- Make list devlogs return project name ([402dba3](402dba33f2c63bdad0b2cd61c181a052dd9afcf0))
+- Add --short and --long flags to get store ([34abed2](34abed2cff05b6f56b65bd24eb1da0f0a35f2c5e))
+- Add --region flag to store list ([75310d1](75310d18f0c4610a6a3b40faf850faecda3d5294))
+
+### Miscellaneous Tasks
+
+- Update release.toml ([d721290](d7212904755ca7d86a3d37d5ac8773f945175232))
+
+### Refactor
+
+- Moved printlns to macros in print_ helpers ([dca35aa](dca35aa1e51f52e3483732e4729a6f3ad6338504))
+
+### Styling
+
+- Clippy stuff ([fb65755](fb657557d4ab661f0997644d9d30e85ba04dc331))
+
 ## 0.1.0-beta.3 - 2026-01-07
 
-[c25db4e](c25db4e09f23591d11b64871fa91aee1ce1565bd)...[eacb1f4](eacb1f4ad9c6338376e2d68e4b0a9f056eeaf4d6)
+[c25db4e](c25db4e09f23591d11b64871fa91aee1ce1565bd)...[44417e2](44417e24214d83033ef615cd4944e202b34fd4c2)
 
 ### Bug Fixes
 
 - Fix a bug where the program would panick if the devlog text contained Korean characters (#1) ([eeeff72](eeeff727a7043713dab25a3eabbd1f0b804d40c4))
+
+### Miscellaneous Tasks
+
+- Release flavorcli version 0.1.0-beta.3 ([44417e2](44417e24214d83033ef615cd4944e202b34fd4c2))
 
 ## 0.1.0-beta.2 - 2026-01-06
 
