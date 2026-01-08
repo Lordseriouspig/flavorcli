@@ -27,7 +27,31 @@ use log::{debug, info};
 #[derive(Debug, Args)]
 pub struct StoreList {
     // Defines list store items command (level 3)
-    // TODO: Region flag, json flag, flag to choose table fields, sort flag
+    /// Returns data as raw JSON
+    #[clap(long)]
+    pub json: bool,
+    /// Region column to show
+    #[clap(long, value_enum)]
+    pub region: Option<Regions>,
+    // TODO: flag to choose table fields, sort flag
+}
+
+#[derive(clap::ValueEnum, Clone, Copy, Debug)]
+pub enum Regions {
+    #[value(name = "australia")]
+    Au,
+    #[value(name = "canada")]
+    Ca,
+    #[value(name = "europe")]
+    Eu,
+    #[value(name = "india")]
+    In,
+    #[value(name = "united-kingdom")]
+    Uk,
+    #[value(name = "united-states")]
+    Us,
+    #[value(name = "world")]
+    Xx,
 }
 
 impl StoreList {
@@ -67,9 +91,18 @@ impl StoreList {
         } else {
             spinner.finish_and_clear();
             info!("Retrieved items successfully.");
-            let items: Vec<Store> = res.json().await?;
-            debug!("Successfully parsed {} store items", items.len());
-            print_store_table(items);
+            if self.json {
+                let items_json = res.text().await?;
+                debug!("Returning raw JSON data");
+                println!("{}", items_json);
+            } else {
+                let items: Vec<Store> = res.json().await?;
+                debug!("Successfully parsed {} store items", items.len());
+                print_store_table(
+                    items,
+                    self.region.map(|r| format!("{:?}", r).to_lowercase()),
+                );
+            }
         }
 
         Ok(())

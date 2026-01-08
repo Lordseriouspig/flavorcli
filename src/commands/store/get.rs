@@ -28,7 +28,19 @@ use log::{debug, info};
 pub struct StoreGet {
     // Defines get store item command (level 3)
     /// The store item ID to retrieve
-    pub item_id: u64, // TODO: --short, --detailed, --json
+    pub item_id: u64,
+
+    /// Returns data as raw JSON
+    #[clap(long, conflicts_with_all = ["short", "detailed"])]
+    pub json: bool,
+
+    /// Omits some metadata
+    #[clap(long, short, conflicts_with_all = ["json", "detailed"])]
+    pub short: bool,
+
+    /// Adds random other metadata
+    #[clap(long, short, conflicts_with_all = ["json", "short"], alias = "long")]
+    pub detailed: bool,
 }
 
 impl StoreGet {
@@ -70,9 +82,15 @@ impl StoreGet {
         } else {
             spinner.finish_and_clear();
             info!("Retrieved store item successfully.");
-            let store_item: Store = res.json().await?;
-            debug!("Successfully parsed store item data");
-            print_store(&store_item);
+            if self.json {
+                let item_json = res.text().await?;
+                debug!("Returning raw JSON data");
+                println!("{}", item_json);
+            } else {
+                let store_item: Store = res.json().await?;
+                debug!("Successfully parsed store item data");
+                print_store(&store_item, self.short, self.detailed);
+            }
         }
 
         Ok(())

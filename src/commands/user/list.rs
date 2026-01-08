@@ -30,6 +30,10 @@ pub struct UserList {
     /// Page number for pagination
     #[clap(long, short)]
     pub page: Option<u32>,
+
+    /// Returns data as raw JSON
+    #[clap(long)]
+    pub json: bool,
 }
 
 impl UserList {
@@ -78,11 +82,16 @@ impl UserList {
         } else {
             spinner.finish_and_clear();
             info!("Retrieved users successfully.");
-            let users: UserVec = res.json().await?;
-            debug!("Successfully parsed {} users", users.users.len());
-            print_user_table(&users.users, &users.pagination);
+            if self.json {
+                let users_json = res.text().await?;
+                debug!("Returning raw JSON data");
+                println!("{}", users_json);
+            } else {
+                let users: UserVec = res.json().await?;
+                debug!("Successfully parsed {} users", users.users.len());
+                print_user_table(&users.users, &users.pagination);
+            }
         }
-
         Ok(())
     }
 }

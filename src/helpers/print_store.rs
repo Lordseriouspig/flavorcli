@@ -17,26 +17,27 @@
 
 use crate::models::store::AghContents;
 use crate::models::store::Store;
+use crate::{field_long, heading, list, long_text, title};
 use owo_colors::OwoColorize;
-use textwrap::fill;
 
-pub fn print_store(i: &Store) {
-    println!("{}\n{}", i.name.bold().yellow(), "-".repeat(40));
-    println!("{:<20}: {}", "ID".blue(), i.id);
+pub fn print_store(i: &Store, short: bool, detailed: bool) {
+    title!(i.name);
+    field_long!("ID", i.id);
     let stock_str = i
         .stock
         .map(|s| s.to_string())
         .unwrap_or_else(|| "∞".to_string());
-    println!("{:<20}: {}", "Stock".blue(), stock_str);
-    println!("{:<20}: {}", "Type".blue(), i.type_);
-    println!("{:<20}: {}", "Description".blue(), i.description);
+    field_long!("Stock", stock_str);
+    field_long!("Type", i.type_);
+    field_long!("Description", i.description);
 
-    if let Some(long_desc) = &i.long_description && !long_desc.is_empty() {
-        println!("\n{}", "Long Description:".bold().cyan());
-        println!("{}", fill(long_desc, 72));
+    if let Some(long_desc) = &i.long_description
+        && !long_desc.is_empty()
+    {
+        long_text!("Long Description", long_desc);
     }
 
-    println!("\n{}", "Regional Info:".bold().cyan());
+    heading!("Regional Info:");
     println!(
         "{:<20}: {} {}{}",
         "🇦🇺 Australia".blue(),
@@ -115,76 +116,70 @@ pub fn print_store(i: &Store) {
         }
     );
 
-    println!("\n{}", "Buying Info:".bold().cyan());
-    println!("{:<20}: {}", "Limited?".blue(), i.limited);
-    println!("{:<20}: {}", "Stock".blue(), stock_str);
-    if i.sale_percentage.is_some() {
-        println!(
-            "{:<20}: {}",
-            "Sale Percentage".blue(),
-            i.sale_percentage.unwrap()
-        );
-    }
-    if i.max_qty.is_some() {
-        println!("{:<20}: {}", "Max Qty".blue(), i.max_qty.unwrap());
-    }
-    println!(
-        "{:<20}: {}",
-        "One Per Person Ever?".blue(),
-        i.one_per_person_ever
-    );
-    println!("{:<20}: {}", "Buyable By Self?".blue(), i.buyable_by_self);
-    if let Some(tag) = &i.accessory_tag && !tag.is_empty() {
-        println!("{:<20}: {}", "Accessory Tag".blue(), tag);
-    }
-
-    if !i.attached_shop_item_ids.is_empty()
-        && i.attached_shop_item_ids.iter().any(|id| id.is_some())
-    {
-        println!("\n{}", "Attached Item IDs:".bold().cyan());
-        for id in i.attached_shop_item_ids.iter().flatten() {
-            println!("  - {}", id);
+    if !short {
+        heading!("Buying Info:");
+        field_long!("Limited?", i.limited);
+        field_long!("Stock", stock_str);
+        if i.sale_percentage.is_some() {
+            field_long!("Sale Percentage", i.sale_percentage.unwrap());
         }
+        if i.max_qty.is_some() {
+            field_long!("Max Qty", i.max_qty.unwrap());
+        }
+        field_long!("One Per Person Ever?", i.one_per_person_ever);
+        field_long!("Buyable By Self?", i.buyable_by_self);
+        if let Some(tag) = &i.accessory_tag
+            && !tag.is_empty()
+        {
+            field_long!("Accessory Tag", tag);
+        }
+
+        if !i.attached_shop_item_ids.is_empty()
+            && i.attached_shop_item_ids.iter().any(|id| id.is_some())
+        {
+            heading!("Attached Item IDs:");
+            list!(i.attached_shop_item_ids.iter().flatten())
+        }
+
+        long_text!("Image URL", &i.image_url);
     }
 
-    println!("\n{}", "Image URL:".bold().cyan());
-    println!("{}", i.image_url);
-
-    println!("\n{}", "Random metadata:".bold().cyan()); //TODO: Hide when --detailed is not supplied
-    if !i.old_prices.is_empty() {
-        println!(
-            "{:<20}: {}",
-            "Old Prices".blue(),
-            i.old_prices
-                .iter()
-                .map(|p| p.to_string())
-                .collect::<Vec<String>>()
-                .join(", ")
-        );
-    }
-    println!("{:<20}: {}", "Show In Carousel?".blue(), i.show_in_carousel);
-    if !matches!(&i.agh_contents, AghContents::Null)
-        && !matches!(&i.agh_contents, AghContents::String(s) if s.is_empty())
-    {
-        println!("\n{}", "AGH Contents:".bold().cyan());
-        match &i.agh_contents {
-            AghContents::Choice(c) => {
-                println!("{:<20}: Base quantity: {}", "Choice".blue(), c.base_qty);
-                for choice in &c.choice {
-                    println!("{:<20}  - {}", "", choice);
+    if detailed {
+        heading!("Random metadata:");
+        if !i.old_prices.is_empty() {
+            field_long!(
+                "Old Prices",
+                i.old_prices
+                    .iter()
+                    .map(|p| p.to_string())
+                    .collect::<Vec<String>>()
+                    .join(", ")
+            );
+        }
+        field_long!("Show In Carousel?", i.show_in_carousel);
+        if !matches!(&i.agh_contents, AghContents::Null)
+            && !matches!(&i.agh_contents, AghContents::String(s) if s.is_empty())
+        {
+            heading!("AGH Contents:");
+            match &i.agh_contents {
+                AghContents::Choice(c) => {
+                    field_long!("Choice: Base quantity", c.base_qty);
+                    for choice in &c.choice {
+                        println!("{:<20}  - {}", "", choice);
+                    }
                 }
-            }
-            AghContents::Items(items) => {
-                println!("{:<20}: Items:", "Items".blue());
-                for item in items {
-                    println!(
-                        "{:<20}  - SKU: {}, Quantity: {}",
-                        "", item.sku, item.quantity
-                    );
+                AghContents::Items(items) => {
+                    field_long!("Items:", "");
+                    for item in items {
+                        println!(
+                            "{:<20}  - SKU: {}, Quantity: {}",
+                            "", item.sku, item.quantity
+                        );
+                    }
                 }
+                AghContents::String(s) => println!("{:<20}: {}", "String".blue(), s),
+                AghContents::Null => {}
             }
-            AghContents::String(s) => println!("{:<20}: {}", "String".blue(), s),
-            AghContents::Null => {}
         }
     }
 }

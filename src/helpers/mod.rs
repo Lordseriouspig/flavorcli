@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 
+pub mod formatters;
 pub mod get_key;
 pub mod print_devlog;
 pub mod print_devlog_table;
@@ -24,3 +25,4 @@ pub mod print_store;
 pub mod print_store_table;
 pub mod print_user;
 pub mod print_user_table;
+pub mod resolve_devlogs;

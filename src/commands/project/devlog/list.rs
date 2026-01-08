@@ -19,10 +19,11 @@ use crate::helpers::get_key::get_key;
 use crate::helpers::print_devlog_table::print_devlog_table;
 use crate::models::authdata::AuthData;
 use crate::models::devlog_vec::DevlogVec;
+use crate::models::project::Project;
 use anyhow;
 use clap::Args;
 use indicatif::{ProgressBar, ProgressStyle};
-use log::{debug, info};
+use log::{debug, info, warn};
 use owo_colors::OwoColorize;
 
 #[derive(Debug, Args)]
@@ -34,6 +35,10 @@ pub struct ProjectDevlogList {
     /// Page number for pagination. Defaults to 1.
     #[clap(long, short)]
     pub page: Option<u32>,
+
+    /// Returns data as raw JSON
+    #[clap(long)]
+    pub json: bool,
 }
 
 impl ProjectDevlogList {
@@ -90,19 +95,83 @@ impl ProjectDevlogList {
         } else {
             spinner.finish_and_clear();
             info!("Retrieved devlogs successfully.");
-            let devlogs: DevlogVec = res.json().await?;
-            debug!("Successfully parsed {} devlogs", devlogs.devlogs.len());
-            if self.project_id.is_some() {
-                println!(
-                    "{}{}{}",
-                    "Devlogs for project with ID: '".bold().cyan(), // TODO: Get project name instead of ID
-                    self.project_id.as_ref().unwrap().bold().yellow(),
-                    "'".bold().cyan()
-                );
+            if self.json {
+                let devlogs_json = res.text().await?;
+                debug!("Returning raw JSON data");
+                println!("{}", devlogs_json);
+            } else {
+                let devlogs: DevlogVec = res.json().await?;
+                debug!("Successfully parsed {} devlogs", devlogs.devlogs.len());
+                if self.project_id.is_some() {
+                    match self.get_project_name().await {
+                        Ok(name) => {
+                            println!(
+                                "{}{}{}",
+                                "Devlogs for project: '".bold().cyan(),
+                                name.bold().yellow(),
+                                "'".bold().cyan()
+                            );
+                        }
+                        Err(e) => {
+                            warn!("Failed to get project name: {}", e);
+                            println!(
+                                "{}{}{}",
+                                "Devlogs for project with ID: '".bold().cyan(),
+                                self.project_id.as_ref().unwrap().bold().yellow(),
+                                "'".bold().cyan()
+                            );
+                        }
+                    }
+                }
+                print_devlog_table(&devlogs.devlogs, &devlogs.pagination);
             }
-            print_devlog_table(&devlogs.devlogs, &devlogs.pagination);
         }
 
         Ok(())
+    }
+
+    pub async fn get_project_name(&self) -> anyhow::Result<String> {
+        let auth: AuthData = get_key()?;
+        let spinner = ProgressBar::new_spinner();
+        spinner.set_style(
+            ProgressStyle::with_template("{spinner} {msg}")?
+                .tick_strings(&["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"]),
+        );
+        spinner.set_message("Retrieving project...");
+        spinner.enable_steady_tick(std::time::Duration::from_millis(80));
+        let client = reqwest::Client::new();
+        let project_id = self
+            .project_id
+            .ok_or_else(|| anyhow::anyhow!("Project ID is required to retrieve project name"))?;
+        let url = format!(
+            "https://flavortown.hackclub.com/api/v1/projects/{}",
+            project_id
+        );
+        debug!("Sending GET request to {}", url);
+        let res = client
+            .get(&url)
+            .header("Authorization", auth.token.clone())
+            .header("X-Flavortown-Ext-333", "true")
+            .send()
+            .await?;
+        debug!("Received response with status: {}", res.status());
+        if !res.status().is_success() {
+            spinner.finish_and_clear();
+            anyhow::bail!(
+                "Request failed with status: {}. {}",
+                res.status(),
+                match res.status().as_u16() {
+                    401 => "Is your token correct?",
+                    404 => "Is the project ID correct?",
+                    _ => "Please try again later.",
+                }
+            );
+        } else {
+            spinner.finish_and_clear();
+            info!("Retrieved project successfully.");
+            let project: Project = res.json().await?;
+            debug!("Successfully parsed project data");
+            Ok(project.title)
+        }
     }
 }

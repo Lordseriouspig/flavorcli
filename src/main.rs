@@ -43,7 +43,6 @@ async fn main() {
     let _guard = sentry::init(("https://0e97a5a43a3fbf1c698d56f77aac426f@o4509766495043584.ingest.de.sentry.io/4510661862031440", sentry::ClientOptions {
         release: sentry::release_name!(),
         send_default_pii: true,
-        debug: true,
         ..Default::default()
     }));
 

@@ -35,7 +35,11 @@ pub struct ProjectList {
     /// Query string to filter projects
     #[clap(long, alias = "search")]
     pub query: Option<String>,
-    // TODO: JSON flag, Flag to choose table fields.
+
+    /// Returns data as raw JSON
+    #[clap(long)]
+    pub json: bool,
+    // TODO: Flag to choose table fields.
 }
 
 impl ProjectList {
@@ -90,19 +94,24 @@ impl ProjectList {
         } else {
             spinner.finish_and_clear();
             info!("Retrieved projects successfully.");
-            let projects: ProjectVec = res.json().await?;
-            debug!("Successfully parsed {} projects", projects.projects.len());
-            if self.query.is_some() {
-                println!(
-                    "{}{}{}",
-                    "Search result(s) for query '".bold().cyan(),
-                    self.query.as_ref().unwrap().italic().bold().yellow(),
-                    "'".bold().cyan()
-                );
+            if self.json {
+                let projects_json = res.text().await?;
+                debug!("Returning raw JSON data");
+                println!("{}", projects_json);
+            } else {
+                let projects: ProjectVec = res.json().await?;
+                debug!("Successfully parsed {} projects", projects.projects.len());
+                if self.query.is_some() {
+                    println!(
+                        "{}{}{}",
+                        "Search result(s) for query '".bold().cyan(),
+                        self.query.as_ref().unwrap().italic().bold().yellow(),
+                        "'".bold().cyan()
+                    );
+                }
+                print_project_table(&projects.projects, &projects.pagination);
             }
-            print_project_table(&projects.projects, &projects.pagination);
         }
-
         Ok(())
     }
 }

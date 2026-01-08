@@ -28,7 +28,21 @@ use log::{debug, info};
 pub struct ProjectGet {
     // Defines get project command (level 3)
     /// The project ID to retrieve
-    pub project_id: u64, // TODO: JSON flag, short flag (short output), long/resolve flag (resolve devlogs)
+    pub project_id: u64,
+
+    /// Returns data as raw JSON
+    #[clap(long, conflicts_with = "resolve")]
+    pub json: bool,
+
+    /// Resolves and displays devlogs in a project (May take longer)
+    #[clap(
+        long,
+        short,
+        alias = "long",
+        alias = "detailed",
+        conflicts_with = "json"
+    )]
+    pub resolve: bool,
 }
 
 impl ProjectGet {
@@ -73,11 +87,16 @@ impl ProjectGet {
         } else {
             spinner.finish_and_clear();
             info!("Retrieved project successfully.");
-            let project: Project = res.json().await?;
-            debug!("Successfully parsed project data");
-            print_project(&project);
+            if self.json {
+                let project_json = res.text().await?;
+                debug!("Returning raw JSON data");
+                println!("{}", project_json);
+            } else {
+                let project: Project = res.json().await?;
+                debug!("Successfully parsed project data");
+                print_project(&project, self.resolve).await;
+            }
+            Ok(())
         }
-
-        Ok(())
     }
 }
