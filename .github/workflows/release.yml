@@ -172,7 +172,7 @@ jobs:
               GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             with:
               tag_name: ${{ env.version }}
-              name: flavorcli-${{ env.version }}
+              name: ${{ env.version }}
               body: ${{ steps.gen_notes.outputs.notes }}
               draft: true
               prerelease: ${{ contains(env.version, '-beta') || contains(env.version, '-alpha') || contains(env.version, '-rc') }}
