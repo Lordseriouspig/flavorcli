@@ -15,10 +15,14 @@
 // You should have received a copy of the GNU General Public License
 // along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 
-use crate::{helpers::{print_devlog::print_devlog, resolve_devlogs::resolve_devlogs}, models::project::Project};
+use crate::{field, heading, list, long_text, title};
+use crate::{
+    helpers::{print_devlog::print_devlog, resolve_devlogs::resolve_devlogs},
+    models::project::Project,
+};
 use chrono::{DateTime, Local};
+use log::warn;
 use owo_colors::OwoColorize;
-use crate::{title, heading, field, long_text, list};
 
 fn format_time(dt: &str) -> String {
     let dt = DateTime::parse_from_rfc3339(dt).unwrap();
@@ -35,15 +39,53 @@ pub async fn print_project(p: &Project, resolve: bool) {
     long_text!("Description", &p.description);
 
     heading!("Links:");
-    field!("Repo", if p.repo_url.is_empty() { "-" } else { &p.repo_url });
-    field!("Demo", if p.demo_url.is_empty() { "-" } else { &p.demo_url });
-    field!("Readme", if p.readme_url.is_empty() { "-" } else { &p.readme_url });
+    field!(
+        "Repo",
+        if p.repo_url.is_empty() {
+            "-"
+        } else {
+            &p.repo_url
+        }
+    );
+    field!(
+        "Demo",
+        if p.demo_url.is_empty() {
+            "-"
+        } else {
+            &p.demo_url
+        }
+    );
+    field!(
+        "Readme",
+        if p.readme_url.is_empty() {
+            "-"
+        } else {
+            &p.readme_url
+        }
+    );
 
     if resolve {
         println!("\n{}", "Devlogs:".bold().cyan());
-        for devlog in resolve_devlogs(&p.devlog_ids).await.unwrap_or_default() {
-            print_devlog(&devlog,true);
-            println!();
+        match resolve_devlogs(&p.devlog_ids).await {
+            Ok(devlogs) => {
+                if devlogs.is_empty() {
+                    println!("- None -");
+                } else {
+                    for devlog in devlogs {
+                        print_devlog(&devlog, true);
+                        println!();
+                    }
+                }
+            }
+            Err(e) => {
+                warn!("{} {}", "Unable to resolve devlogs:".red(), e);
+                println!("\n{}", "Devlog IDs:".bold().cyan());
+                if p.devlog_ids.is_empty() {
+                    println!("- None -");
+                } else {
+                    list!(&p.devlog_ids);
+                }
+            }
         }
     } else {
         println!("\n{}", "Devlog IDs:".bold().cyan());

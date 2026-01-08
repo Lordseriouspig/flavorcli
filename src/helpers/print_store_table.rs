@@ -121,10 +121,7 @@ pub fn print_store_table(mut items: Vec<Store>, region: Option<impl AsRef<str>>)
                 _ => {} // Unknown region, skip column
             }
         }
-        row.extend_from_slice(&[
-            Cell::new(type_),
-            Cell::new(attatched_to),
-        ]);
+        row.extend_from_slice(&[Cell::new(type_), Cell::new(attatched_to)]);
         table.add_row(row);
     }
 

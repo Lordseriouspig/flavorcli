@@ -31,21 +31,15 @@ pub struct StoreGet {
     pub item_id: u64,
 
     /// Returns data as raw JSON
-    #[clap(long, conflicts_with = "short", conflicts_with = "detailed")]
+    #[clap(long, conflicts_with_all = ["short", "detailed"])]
     pub json: bool,
 
     /// Omits some metadata
-    #[clap(long, short, conflicts_with = "json", conflicts_with = "detailed")]
+    #[clap(long, short, conflicts_with_all = ["json", "detailed"])]
     pub short: bool,
 
     /// Adds random other metadata
-    #[clap(
-        long,
-        short,
-        conflicts_with = "json",
-        conflicts_with = "short",
-        alias = "long"
-    )]
+    #[clap(long, short, conflicts_with_all = ["json", "short"], alias = "long")]
     pub detailed: bool,
 }
 

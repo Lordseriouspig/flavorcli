@@ -26,7 +26,7 @@ use log::{debug, info, warn};
 pub struct AuthSet {
     // Defines set command (level 3)
     /// Your Flavortown ID (find it in the URL of your profile)
-    pub user_id: u64, // TODD: Get rid of this in favor of using users/me
+    pub user_id: u64, // TODO: Get rid of this in favor of using users/me
     /// Your Flavortown authentication token
     pub token: String,
     /// Disables token verification (not recommended)

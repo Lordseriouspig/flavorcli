@@ -16,8 +16,8 @@
 // along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 
 use crate::models::user::User;
+use crate::{field, heading, list, long_text, title};
 use owo_colors::OwoColorize;
-use crate::{title, heading, field, long_text, list};
 
 fn format_duration(seconds: u32) -> String {
     let hours = seconds / 3600;

@@ -17,7 +17,7 @@
 
 use crate::models::store::AghContents;
 use crate::models::store::Store;
-use crate::{title, heading, field_long, long_text, list};
+use crate::{field_long, heading, list, long_text, title};
 use owo_colors::OwoColorize;
 
 pub fn print_store(i: &Store, short: bool, detailed: bool) {
@@ -31,7 +31,8 @@ pub fn print_store(i: &Store, short: bool, detailed: bool) {
     field_long!("Type", i.type_);
     field_long!("Description", i.description);
 
-    if let Some(long_desc) = &i.long_description && !long_desc.is_empty()
+    if let Some(long_desc) = &i.long_description
+        && !long_desc.is_empty()
     {
         long_text!("Long Description", long_desc);
     }

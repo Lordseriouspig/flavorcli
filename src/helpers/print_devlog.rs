@@ -16,9 +16,9 @@
 // along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 
 use crate::models::devlog::Devlog;
+use crate::{field, heading, long_text, title};
 use chrono::{DateTime, Local};
 use owo_colors::OwoColorize;
-use crate::{title, heading, field, long_text};
 
 fn format_time(dt: &str) -> String {
     let dt = DateTime::parse_from_rfc3339(dt).unwrap();
