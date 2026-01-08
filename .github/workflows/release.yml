@@ -1,0 +1,145 @@
+# Copyright (C) 2026 Lordseriouspig
+# 
+# This file is part of flavorcli.
+# 
+# flavorcli is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# 
+# flavorcli is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
+
+name: Release
+
+permissions:
+  contents: write
+  packages: write
+
+on:
+  push:
+    tags:
+      - v*.*.*  # semver tags
+
+jobs:
+    build-windows:
+        name: Build for Windows
+        runs-on: windows-latest
+        steps:
+          - name: Checkout code
+            uses: actions/checkout@v4
+
+          - name: Install Rust toolchain
+            uses: actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af #@v1
+            with:
+              profile: minimal
+              toolchain: stable
+              components: clippy
+              override: true
+
+          - name: Build release binary
+            run: cargo build --release
+
+          - name: Zip Binaries
+            run: |
+              $version = $env:GITHUB_REF -replace 'refs/tags/', ''
+              echo "version=$version" >> $env:GITHUB_ENV
+              Compress-Archive -Path .\target\release\flavorcli.exe, .\CHANGELOG.md, .\README.MD, .\LICENSE, .\install-win.ps1, .\uninstall-win.ps1 -DestinationPath flavorcli-${version}-windows-x86_64.zip
+          
+          - name: Upload Binary
+            uses: actions/upload-artifact@v4
+            with:
+              name: flavorcli-${{ env.version }}-windows-x86_64
+              path: flavorcli-*-windows-x86_64.zip
+
+    build-linux:
+        name: Build for Linux
+        runs-on: ubuntu-latest
+        steps:
+          - name: Checkout code
+            uses: actions/checkout@v4
+
+          - name: Install Rust toolchain
+            uses: actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af #@v1
+            with:
+              profile: minimal
+              toolchain: stable
+              components: clippy
+              override: true
+
+          - name: Build release binary
+            run: cargo build --release
+
+          - name: Zip Binaries
+            run: |
+              version=${GITHUB_REF#refs/tags/}
+              echo "version=${version}" >> $GITHUB_ENV
+              zip flavorcli-${version}-linux-x86_64.zip target/release/flavorcli CHANGELOG.md README.MD LICENSE install-linux.sh uninstall-linux.sh
+          
+          - name: Upload Binary
+            uses: actions/upload-artifact@v4
+            with:
+              name: flavorcli-${{ env.version }}-linux-x86_64
+              path: flavorcli-*-linux-x86_64.zip
+
+    publish-release:
+        name: Publish Release
+        needs: [build-windows, build-linux]
+        runs-on: ubuntu-latest
+        permissions:
+          contents: write
+        steps:
+          - name: Checkout code (full history)
+            uses: actions/checkout@v4
+            with:
+              fetch-depth: 0
+
+          - name: Set version from tag
+            run: |
+              version=${GITHUB_REF#refs/tags/}
+              echo "version=${version}" >> $GITHUB_ENV
+
+          - name: Download Windows artifact
+            uses: actions/download-artifact@v4
+            with:
+              name: flavorcli-${{ env.version }}-windows-x86_64
+              path: artifacts/windows
+
+          - name: Download Linux artifact
+            uses: actions/download-artifact@v4
+            with:
+              name: flavorcli-${{ env.version }}-linux-x86_64
+              path: artifacts/linux
+
+          - name: Install Rust toolchain
+            uses: dtolnay/rust-toolchain@stable
+
+          - name: Install git-cliff
+            run: cargo install git-cliff
+
+          - id: gen_notes
+            name: Generate release notes
+            run: |
+              git-cliff --tag "$VERSION" > release_notes.md
+              echo "notes<<EOF" >> $GITHUB_OUTPUT
+              cat release_notes.md >> $GITHUB_OUTPUT
+              echo "EOF" >> $GITHUB_OUTPUT
+
+          - name: Create draft release and upload assets
+            uses: softprops/action-gh-release@v2
+            env:
+              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            with:
+              tag_name: ${{ env.version }}
+              name: flavorcli-${{ env.version }}
+              body: ${{ steps.gen_notes.outputs.notes }}
+              draft: true
+              prerelease: ${{ contains(env.version, '-beta') || contains(env.version, '-alpha') || contains(env.version, '-rc') }}
+              files: |
+                artifacts/windows/flavorcli-${{ env.version }}-windows-x86_64.zip
+                artifacts/linux/flavorcli-${{ env.version }}-linux-x86_64.zip
