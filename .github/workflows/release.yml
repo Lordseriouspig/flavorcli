@@ -34,6 +34,18 @@ jobs:
           - name: Checkout code
             uses: actions/checkout@v4
 
+          - name: Cache Rust
+            uses: actions/cache@v4
+            with:
+                path: |
+                    ~/.cargo/registry
+                    ~/.cargo/git
+                    ~/.cargo/bin
+                    ~/.rustup
+                key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+                restore-keys: |
+                    ${{ runner.os }}-cargo-
+
           - name: Install Rust toolchain
             uses: actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af #@v1
             with:
@@ -63,6 +75,18 @@ jobs:
         steps:
           - name: Checkout code
             uses: actions/checkout@v4
+
+          - name: Cache Rust
+            uses: actions/cache@v4
+            with:
+                path: |
+                    ~/.cargo/registry
+                    ~/.cargo/git
+                    ~/.cargo/bin
+                    ~/.rustup
+                key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+                restore-keys: |
+                    ${{ runner.os }}-cargo-
 
           - name: Install Rust toolchain
             uses: actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af #@v1
@@ -97,10 +121,19 @@ jobs:
         permissions:
           contents: write
         steps:
-          - name: Checkout code (full history)
+          - name: Checkout code
             uses: actions/checkout@v4
             with:
               fetch-depth: 0
+
+          - name: Cache Rust
+            uses: actions/cache@v4
+            with:
+                path: |
+                    ~/.cargo/bin
+                key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+                restore-keys: |
+                    ${{ runner.os }}-cargo-
 
           - name: Set version from tag
             run: |
@@ -123,12 +156,12 @@ jobs:
             uses: dtolnay/rust-toolchain@stable
 
           - name: Install git-cliff
-            run: cargo install git-cliff
+            run: cargo install git-cliff --version 2.11.0 --locked
 
           - id: gen_notes
             name: Generate release notes
             run: |
-              git-cliff --tag "$VERSION" > release_notes.md
+              git-cliff --tag "$VERSION" --current > release_notes.md
               echo "notes<<EOF" >> $GITHUB_OUTPUT
               cat release_notes.md >> $GITHUB_OUTPUT
               echo "EOF" >> $GITHUB_OUTPUT
