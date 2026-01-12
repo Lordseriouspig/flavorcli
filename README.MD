@@ -73,10 +73,9 @@ Ensure you have the cargo install directory in your PATH.
    
 ![An image of the settings modal, the section you're looking for (The API key section btw) is at the bottom. That should be enough to help you find it, right?](https://hc-cdn.hel1.your-objectstorage.com/s/v3/f6e817ef5ec2b794_image.png)
 
-4. Get your User ID. Either hover over the link, and note down the number that shows, or click on the link and note the number in the URL bar.
-![An image pointing to your name in the sidebar.](https://hc-cdn.hel1.your-objectstorage.com/s/v3/69a83acd6aba05dc_image.png)
+4. FlavorCLI no longer requires you to get your user ID! Having said that, if you do wish to use the ``--no-verify`` tag when setting your auth, you *do* still need to add your user ID. You may also choose to override the user ID linked to your token for some reason.
 
-5. Run ``ft auth set <USER_ID> <TOKEN>``[^3]
+1. Run ``ft auth set <TOKEN>``[^3]
 [^3]: You can use ``ft auth delete`` at any time to delete your API Key. Your API Key is stored on device with your device's keychain. If you want to set auth for each command, add the ``--auth <APIKEY>`` flag
 
 ### Using the commands

@@ -16,6 +16,7 @@
 // along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 
 use crate::models::authdata::AuthData;
+use crate::models::user::User;
 use anyhow;
 use clap::Args;
 use indicatif::{ProgressBar, ProgressStyle};
@@ -25,12 +26,15 @@ use log::{debug, info, warn};
 #[derive(Debug, Args)]
 pub struct AuthSet {
     // Defines set command (level 3)
-    /// Your Flavortown ID (find it in the URL of your profile)
-    pub user_id: u64, // TODO: Get rid of this in favor of using users/me
     /// Your Flavortown authentication token
     pub token: String,
-    /// Disables token verification (not recommended)
+
+    /// Your Flavortown ID (find it in the URL of your profile)
     #[clap(long)]
+    pub user_id: Option<u64>,
+
+    /// Disables token verification (not recommended)
+    #[clap(long, requires("user_id"))]
     pub no_verify: bool,
 }
 
@@ -38,9 +42,11 @@ impl AuthSet {
     pub async fn execute(&self) -> anyhow::Result<()> {
         debug!(
             "Executing auth set command (user_id: {}, no_verify: {})",
-            self.user_id, self.no_verify
+            self.user_id.unwrap_or(0),
+            self.no_verify
         );
         let entry = Entry::new("flavorcli", "auth_token")?;
+        let mut user: Option<User> = None;
 
         // Verify Token
         if !self.no_verify {
@@ -54,10 +60,7 @@ impl AuthSet {
             spinner.enable_steady_tick(std::time::Duration::from_millis(80));
 
             let client = reqwest::Client::new();
-            let url = format!(
-                "https://flavortown.hackclub.com/api/v1/users/{}",
-                self.user_id
-            );
+            let url = "https://flavortown.hackclub.com/api/v1/users/me".to_string();
             debug!("Sending GET request to {}", url);
             let res = client
                 .get(&url)
@@ -74,13 +77,10 @@ impl AuthSet {
                 );
             } else {
                 spinner.finish_and_clear();
+                user = Some(res.json().await?);
                 info!(
-                    "Token verified. Welcome, {}!",
-                    res.json::<serde_json::Value>()
-                        .await?
-                        .get("display_name")
-                        .and_then(|v| v.as_str())
-                        .unwrap_or("user")
+                    "Token verified, welcome {}!",
+                    user.as_ref().unwrap().display_name
                 );
             }
         } else {
@@ -89,7 +89,10 @@ impl AuthSet {
 
         let auth = AuthData {
             token: self.token.clone(),
-            user_id: self.user_id,
+            user_id: self
+                .user_id
+                .or_else(|| user.as_ref().map(|u| u.id as u64))
+                .ok_or_else(|| anyhow::anyhow!("No user ID found"))?,
         };
 
         let json = serde_json::to_string(&auth)?;
