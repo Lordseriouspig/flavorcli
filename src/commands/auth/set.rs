@@ -87,11 +87,13 @@ impl AuthSet {
             warn!("Token verification is disabled.");
         }
 
+        if self.user_id.is_some() { info!("Overriding user ID to: {}", self.user_id.unwrap()); };
+
         let auth = AuthData {
             token: self.token.clone(),
             user_id: self
                 .user_id
-                .or_else(|| user.as_ref().map(|u| u.id as u64))
+                .or_else(|| { let id = user.as_ref().map(|u| u.id as u64); info!("Automagically determined user ID: {:?}", id); id })
                 .ok_or_else(|| anyhow::anyhow!("No user ID found"))?,
         };
 
