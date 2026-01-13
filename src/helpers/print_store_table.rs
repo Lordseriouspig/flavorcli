@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 
+use crate::commands::store::list::StoreFields;
 use crate::models::store::Store;
 use comfy_table::modifiers::UTF8_ROUND_CORNERS;
 use comfy_table::presets::UTF8_FULL;
@@ -34,7 +35,122 @@ fn sanitize(text: &str) -> String {
         .collect()
 }
 
-pub fn print_store_table(mut items: Vec<Store>, region: Option<impl AsRef<str>>) {
+fn format_id(id: u32) -> Cell {
+    Cell::new(id.to_string())
+}
+fn format_name(name: &str) -> Cell {
+    let formatted = if name.chars().count() > 30 {
+        format!("{}...", name.chars().take(27).collect::<String>())
+    } else {
+        name.to_string()
+    };
+    Cell::new(sanitize(&formatted))
+}
+fn format_description(description: &str) -> Cell {
+    let formatted = if description.chars().count() > 50 {
+        format!("{}...", description.chars().take(47).collect::<String>())
+    } else {
+        description.to_string()
+    };
+    Cell::new(sanitize(&formatted))
+}
+fn format_stock(stock: Option<u32>) -> Cell {
+    Cell::new(stock.map(|s| s.to_string()).unwrap_or_else(|| "∞".to_string()))
+}
+fn format_type(type_: &str) -> Cell {
+    let formatted = type_.strip_prefix("ShopItem::").unwrap_or(type_).to_string();
+    Cell::new(formatted)
+}
+fn format_attached_to(attached_shop_item_ids: &Vec<Option<u32>>) -> Cell {
+    let joined = attached_shop_item_ids
+        .iter()
+        .filter_map(|id| id.map(|i| i.to_string()))
+        .collect::<Vec<String>>()
+        .join(", ");
+    Cell::new(joined)
+}
+fn format_bool(value: bool) -> Cell {
+    Cell::new(if value { "Yes" } else { "No" })
+}
+fn format_long_description(long_description: &Option<String>) -> Cell {
+    let formatted = match long_description {
+        Some(desc) => {
+            if desc.chars().count() > 50 {
+                format!("{}...", desc.chars().take(47).collect::<String>())
+            } else {
+                desc.to_string()
+            }
+        }
+        None => "N/A".to_string(),
+    };
+    Cell::new(sanitize(&formatted))
+}
+fn format_max_qty(max_qty: &Option<u32>) -> Cell {
+    Cell::new(match max_qty {
+        Some(qty) => qty.to_string(),
+        None => "∞".to_string(),
+    })
+}
+fn format_sale_percentage(old_prices: &Vec<u32>) -> Cell {
+    let formatted = if old_prices.len() >= 2 {
+        let original_price = old_prices[old_prices.len() - 2] as f64;
+        let current_price = old_prices[old_prices.len() - 1] as f64;
+        if original_price > 0.0 {
+            let discount = ((original_price - current_price) / original_price) * 100.0;
+            format!("{:.2}%", discount)
+        } else {
+            "0.00%".to_string()
+        }
+    } else {
+        "N/A".to_string()
+    };
+    Cell::new(formatted)
+}
+fn format_image_url(url: &str) -> Cell {
+    let formatted = if url.chars().count() > 30 {
+        format!("{}...", url.chars().take(27).collect::<String>())
+    } else {
+        url.to_string()
+    };
+    Cell::new(formatted)
+}
+fn format_accessory_tag(tag: &Option<String>) -> Cell {
+    Cell::new(tag.clone().unwrap_or_else(|| "N/A".to_string()))
+}
+fn format_regional(
+    item: &Store,
+    region_filter: &Option<String>,
+    show_all_regions: bool,
+) -> Vec<Cell> {
+    if show_all_regions {
+        return vec![
+            color_cell(item.enabled.enabled_au, item.ticket_cost.au),
+            color_cell(item.enabled.enabled_ca, item.ticket_cost.ca),
+            color_cell(item.enabled.enabled_eu, item.ticket_cost.eu),
+            color_cell(item.enabled.enabled_in, item.ticket_cost.in_),
+            color_cell(item.enabled.enabled_uk, item.ticket_cost.uk),
+            color_cell(item.enabled.enabled_us, item.ticket_cost.us),
+            color_cell(item.enabled.enabled_xx, item.ticket_cost.xx),
+        ];
+    }
+
+    if let Some(region_code) = region_filter {
+        match region_code.as_str() {
+            "AU" => vec![color_cell(item.enabled.enabled_au, item.ticket_cost.au)],
+            "CA" => vec![color_cell(item.enabled.enabled_ca, item.ticket_cost.ca)],
+            "EU" => vec![color_cell(item.enabled.enabled_eu, item.ticket_cost.eu)],
+            "IN" => vec![color_cell(item.enabled.enabled_in, item.ticket_cost.in_)],
+            "UK" => vec![color_cell(item.enabled.enabled_uk, item.ticket_cost.uk)],
+            "US" => vec![color_cell(item.enabled.enabled_us, item.ticket_cost.us)],
+            "XX" => vec![color_cell(item.enabled.enabled_xx, item.ticket_cost.xx)],
+            _ => Vec::new(),
+        }
+    } else {
+        Vec::new()
+    }
+}
+
+pub fn print_store_table(mut items: Vec<Store>, region: Option<impl AsRef<str>>, fields: Option<Vec<crate::commands::store::list::StoreFields>>) {
     items.sort_by_key(|item| item.id);
     if items.is_empty() {
         println!("No items found.");
@@ -50,82 +166,87 @@ pub fn print_store_table(mut items: Vec<Store>, region: Option<impl AsRef<str>>)
         .apply_modifier(UTF8_ROUND_CORNERS)
         .set_content_arrangement(ContentArrangement::Disabled);
 
-    // Build header dynamically based on region filter
-    let mut header = vec!["ID", "Name", "Description", "Stock"];
-
-    if show_all_regions {
-        header.extend_from_slice(&["AU", "CA", "EU", "IN", "UK", "US", "XX"]);
-    } else if let Some(ref region_code) = region_filter {
-        header.push(region_code.as_str());
-    }
-
-    header.extend_from_slice(&["Type", "Attached to"]);
-    table.set_header(header);
-
-    for item in items {
-        let id = item.id.to_string();
-        let name = if item.name.chars().count() > 30 {
-            format!("{}...", item.name.chars().take(27).collect::<String>())
-        } else {
-            item.name.clone()
-        };
-        let desc = if item.description.chars().count() > 50 {
-            format!(
-                "{}...",
-                item.description.chars().take(47).collect::<String>()
-            )
-        } else {
-            item.description.clone()
-        };
-        let stock = item
-            .stock
-            .map(|s| s.to_string())
-            .unwrap_or_else(|| "∞".to_string());
-        let type_ = item
-            .type_
-            .as_str()
-            .strip_prefix("ShopItem::")
-            .unwrap_or(item.type_.as_str())
-            .to_string();
-        let attatched_to = item
-            .attached_shop_item_ids
-            .iter()
-            .filter_map(|id| id.map(|i| i.to_string()))
-            .collect::<Vec<String>>()
-            .join(", ");
-
-        let mut row = vec![
-            Cell::new(id),
-            Cell::new(sanitize(&name)),
-            Cell::new(sanitize(&desc)),
-            Cell::new(stock),
-        ];
-
-        // Add region columns based on filter
-        if show_all_regions {
-            row.extend_from_slice(&[
-                color_cell(item.enabled.enabled_au, item.ticket_cost.au),
-                color_cell(item.enabled.enabled_ca, item.ticket_cost.ca),
-                color_cell(item.enabled.enabled_eu, item.ticket_cost.eu),
-                color_cell(item.enabled.enabled_in, item.ticket_cost.in_),
-                color_cell(item.enabled.enabled_uk, item.ticket_cost.uk),
-                color_cell(item.enabled.enabled_us, item.ticket_cost.us),
-                color_cell(item.enabled.enabled_xx, item.ticket_cost.xx),
-            ]);
-        } else if let Some(ref region_code) = region_filter {
-            match region_code.as_str() {
-                "AU" => row.push(color_cell(item.enabled.enabled_au, item.ticket_cost.au)),
-                "CA" => row.push(color_cell(item.enabled.enabled_ca, item.ticket_cost.ca)),
-                "EU" => row.push(color_cell(item.enabled.enabled_eu, item.ticket_cost.eu)),
-                "IN" => row.push(color_cell(item.enabled.enabled_in, item.ticket_cost.in_)),
-                "UK" => row.push(color_cell(item.enabled.enabled_uk, item.ticket_cost.uk)),
-                "US" => row.push(color_cell(item.enabled.enabled_us, item.ticket_cost.us)),
-                "XX" => row.push(color_cell(item.enabled.enabled_xx, item.ticket_cost.xx)),
-                _ => {} // Unknown region, skip column
+    if let Some(selected_fields) = fields {
+        // Build table based on supplied fields
+        let mut header = Vec::<&str>::new();
+        // Get the fields the user supplies and add the headers
+        for field in &selected_fields {
+            match field {
+                StoreFields::Id => header.push("ID"),
+                StoreFields::Name => header.push("Name"),
+                StoreFields::Description => header.push("Description"),
+                StoreFields::Stock => header.push("Stock"),
+                StoreFields::Type => header.push("Type"),
+                StoreFields::AttachedTo => header.push("Attached to"),
+                StoreFields::Limited => header.push("Limited"),
+                StoreFields::BuyableBySelf => header.push("Buyable By Self"),
+                StoreFields::ShowInCarousel => header.push("Show In Carousel"),
+                StoreFields::AccessoryTag => header.push("Accessory Tag"),
+                StoreFields::LongDescription => header.push("Long Description"),
+                StoreFields::ImageUrl => header.push("Image URL"),
+                StoreFields::MaxQty => header.push("Max Qty"),
+                StoreFields::OnePerPersonEver => header.push("One Per Person Ever"),
+                StoreFields::SalePercentage => header.push("Sale Percentage"),
+                StoreFields::Regional => {
+                    if show_all_regions {
+                        header.extend_from_slice(&["AU", "CA", "EU", "IN", "UK", "US", "XX"]);
+                    } else if let Some(ref region_code) = region_filter {
+                        header.push(region_code.as_str());
+                    }
+                }
             }
         }
-        row.extend_from_slice(&[Cell::new(type_), Cell::new(attatched_to)]);
-        table.add_row(row);
+        table.set_header(header);
+        for item in items {
+            let mut row: Vec<Cell> = Vec::new();
+            for field in &selected_fields {
+                match field {
+                    StoreFields::Id => row.push(format_id(item.id)),
+                    StoreFields::Name => row.push(format_name(&item.name)),
+                    StoreFields::Description => row.push(format_description(&item.description)),
+                    StoreFields::Stock => row.push(format_stock(item.stock)),
+                    StoreFields::Type => row.push(format_type(&item.type_)),
+                    StoreFields::AttachedTo => row.push(format_attached_to(&item.attached_shop_item_ids)),
+                    StoreFields::Limited => row.push(format_bool(item.limited)),
+                    StoreFields::BuyableBySelf => row.push(format_bool(item.buyable_by_self)),
+                    StoreFields::ShowInCarousel => row.push(format_bool(item.show_in_carousel)),
+                    StoreFields::AccessoryTag => row.push(format_accessory_tag(&item.accessory_tag)),
+                    StoreFields::LongDescription => row.push(format_long_description(&item.long_description)),
+                    StoreFields::ImageUrl => row.push(format_image_url(&item.image_url)),
+                    StoreFields::MaxQty => row.push(format_max_qty(&item.max_qty)),
+                    StoreFields::OnePerPersonEver => row.push(format_bool(item.one_per_person_ever)),
+                    StoreFields::SalePercentage => row.push(format_sale_percentage(&item.old_prices)),
+                    StoreFields::Regional => row.extend(format_regional(&item, &region_filter, show_all_regions)),
+                }
+            }
+            table.add_row(row);
+        }
+    } else {
+        // Build table based on defaults
+        // Build header dynamically based on region filter
+        let mut header = vec!["ID", "Name", "Description", "Stock"];
+
+        if show_all_regions {
+            header.extend_from_slice(&["AU", "CA", "EU", "IN", "UK", "US", "XX"]);
+        } else if let Some(ref region_code) = region_filter {
+            header.push(region_code.as_str());
+        }
+
+        header.extend_from_slice(&["Type", "Attached to"]);
+        table.set_header(header);
+
+        for item in items {
+            let mut row = vec![
+                format_id(item.id),
+                format_name(&item.name),
+                format_description(&item.description),
+                format_stock(item.stock),
+            ];
+
+            row.extend_from_slice(&format_regional(&item, &region_filter, show_all_regions));
+            row.extend_from_slice(&[format_type(&item.type_), format_attached_to(&item.attached_shop_item_ids)]);
+            table.add_row(row);
+        }
     }
 
     println!("{}", table);

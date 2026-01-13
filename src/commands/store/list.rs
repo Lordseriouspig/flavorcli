@@ -28,12 +28,36 @@ use log::{debug, info};
 pub struct StoreList {
     // Defines list store items command (level 3)
     /// Returns data as raw JSON
-    #[clap(long)]
+    #[clap(long, conflicts_with_all = ["region", "fields"])]
     pub json: bool,
+
     /// Region column to show
-    #[clap(long, value_enum)]
+    #[clap(long, value_enum, conflicts_with = "json")]
     pub region: Option<Regions>,
-    // TODO: flag to choose table fields, sort flag
+
+    /// Fields to output in the table (advanced)
+    #[clap(long, value_enum, conflicts_with = "json", value_delimiter = ',')]
+    pub fields: Option<Vec<StoreFields>>,
+}
+
+#[derive(clap::ValueEnum, Clone, Copy, Debug, PartialEq, Eq)]
+pub enum StoreFields {
+    Id,
+    Name,
+    Description,
+    Stock,
+    Type,
+    AttachedTo,
+    Limited,
+    BuyableBySelf,
+    ShowInCarousel,
+    AccessoryTag,
+    LongDescription,
+    ImageUrl,
+    MaxQty,
+    OnePerPersonEver,
+    SalePercentage,
+    Regional,
 }
 
 #[derive(clap::ValueEnum, Clone, Copy, Debug)]
@@ -101,6 +125,7 @@ impl StoreList {
                 print_store_table(
                     items,
                     self.region.map(|r| format!("{:?}", r).to_lowercase()),
+                    self.fields.clone(),
                 );
             }
         }
