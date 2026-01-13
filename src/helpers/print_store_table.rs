@@ -16,6 +16,7 @@
 // along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 
 use crate::commands::store::list::StoreFields;
+use crate::commands::store::list::{SortFields, SortOrder};
 use crate::models::store::Store;
 use comfy_table::modifiers::UTF8_ROUND_CORNERS;
 use comfy_table::presets::UTF8_FULL;
@@ -150,8 +151,136 @@ fn format_regional(
     }
 }
 
-pub fn print_store_table(mut items: Vec<Store>, region: Option<impl AsRef<str>>, fields: Option<Vec<crate::commands::store::list::StoreFields>>) {
-    items.sort_by_key(|item| item.id);
+pub fn print_store_table(mut items: Vec<Store>, region: Option<impl AsRef<str>>, fields: Option<Vec<crate::commands::store::list::StoreFields>>, sort: crate::commands::store::list::SortFields, sort_order: crate::commands::store::list::SortOrder, sort_region: Option<impl AsRef<str>>) {
+    match sort {
+        SortFields::Id => {
+            if sort_order == SortOrder::Asc {
+                items.sort_by_key(|item| item.id.clone());
+            } else {
+                items.sort_by_key(|item| std::cmp::Reverse(item.id.clone()));
+            }
+        }
+        SortFields::Name => {
+            if sort_order == SortOrder::Asc {
+                items.sort_by_key(|item| item.name.clone());
+            } else {
+                items.sort_by_key(|item| std::cmp::Reverse(item.name.clone()));
+            }
+        }
+        SortFields::Stock => {
+            if sort_order == SortOrder::Asc {
+                items.sort_by_key(|item| item.stock.unwrap_or(u32::MAX));
+            } else {
+                items.sort_by_key(|item| std::cmp::Reverse(item.stock.unwrap_or(u32::MAX)));
+            }
+        }
+        SortFields::Type => {
+            if sort_order == SortOrder::Asc {
+                items.sort_by_key(|item| item.type_.clone());
+            } else {
+                items.sort_by_key(|item| std::cmp::Reverse(item.type_.clone()));
+            }
+        }
+        SortFields::Limited => {
+            if sort_order == SortOrder::Asc {
+                items.sort_by_key(|item| item.limited);
+            } else {
+                items.sort_by_key(|item| std::cmp::Reverse(item.limited));
+            }
+        }
+        SortFields::BuyableBySelf => {
+            if sort_order == SortOrder::Asc {
+                items.sort_by_key(|item| item.buyable_by_self);
+            } else {
+                items.sort_by_key(|item| std::cmp::Reverse(item.buyable_by_self));
+            }
+        }
+        SortFields::ShowInCarousel => {
+            if sort_order == SortOrder::Asc {
+                items.sort_by_key(|item| item.show_in_carousel);
+            } else {
+                items.sort_by_key(|item| std::cmp::Reverse(item.show_in_carousel));
+            }
+        }
+        SortFields::MaxQty => {
+            if sort_order == SortOrder::Asc {
+                items.sort_by_key(|item| item.max_qty.unwrap_or(u32::MAX));
+            } else {
+                items.sort_by_key(|item| std::cmp::Reverse(item.max_qty.unwrap_or(u32::MAX)));
+            }
+        }
+        SortFields::OnePerPersonEver => {
+            if sort_order == SortOrder::Asc {
+                items.sort_by_key(|item| item.one_per_person_ever);
+            } else {
+                items.sort_by_key(|item| std::cmp::Reverse(item.one_per_person_ever));
+            }
+        }
+        SortFields::SalePercentage => {
+            if sort_order == SortOrder::Asc {
+                items.sort_by_key(|item| item.sale_percentage.unwrap_or(0));
+            } else {
+                items.sort_by_key(|item| std::cmp::Reverse(item.sale_percentage.unwrap_or(0)));
+            }
+        }
+        SortFields::Regional => {
+            if let Some(region_code) = sort_region {
+                match region_code.as_ref() {
+                    "AU" => {
+                        if sort_order == SortOrder::Asc {
+                            items.sort_by(|a, b| a.ticket_cost.au.partial_cmp(&b.ticket_cost.au).unwrap_or(std::cmp::Ordering::Equal));
+                        } else {
+                            items.sort_by(|a, b| b.ticket_cost.au.partial_cmp(&a.ticket_cost.au).unwrap_or(std::cmp::Ordering::Equal));
+                        }
+                    }
+                    "CA" => {
+                        if sort_order == SortOrder::Asc {
+                            items.sort_by(|a, b| a.ticket_cost.ca.partial_cmp(&b.ticket_cost.ca).unwrap_or(std::cmp::Ordering::Equal));
+                        } else {
+                            items.sort_by(|a, b| b.ticket_cost.ca.partial_cmp(&a.ticket_cost.ca).unwrap_or(std::cmp::Ordering::Equal));
+                        }
+                    }
+                    "EU" => {
+                        if sort_order == SortOrder::Asc {
+                            items.sort_by(|a, b| a.ticket_cost.eu.partial_cmp(&b.ticket_cost.eu).unwrap_or(std::cmp::Ordering::Equal));
+                        } else {
+                            items.sort_by(|a, b| b.ticket_cost.eu.partial_cmp(&a.ticket_cost.eu).unwrap_or(std::cmp::Ordering::Equal));
+                        }
+                    }
+                    "IN" => {
+                        if sort_order == SortOrder::Asc {
+                            items.sort_by(|a, b| a.ticket_cost.in_.partial_cmp(&b.ticket_cost.in_).unwrap_or(std::cmp::Ordering::Equal));
+                        } else {
+                            items.sort_by(|a, b| b.ticket_cost.in_.partial_cmp(&a.ticket_cost.in_).unwrap_or(std::cmp::Ordering::Equal));
+                        }
+                    }
+                    "UK" => {
+                        if sort_order == SortOrder::Asc {
+                            items.sort_by(|a, b| a.ticket_cost.uk.partial_cmp(&b.ticket_cost.uk).unwrap_or(std::cmp::Ordering::Equal));
+                        } else {
+                            items.sort_by(|a, b| b.ticket_cost.uk.partial_cmp(&a.ticket_cost.uk).unwrap_or(std::cmp::Ordering::Equal));
+                        }
+                    }
+                    "US" => {
+                        if sort_order == SortOrder::Asc {
+                            items.sort_by(|a, b| a.ticket_cost.us.partial_cmp(&b.ticket_cost.us).unwrap_or(std::cmp::Ordering::Equal));
+                        } else {
+                            items.sort_by(|a, b| b.ticket_cost.us.partial_cmp(&a.ticket_cost.us).unwrap_or(std::cmp::Ordering::Equal));
+                        }
+                    }
+                    "XX" => {
+                        if sort_order == SortOrder::Asc {
+                            items.sort_by(|a, b| a.ticket_cost.xx.partial_cmp(&b.ticket_cost.xx).unwrap_or(std::cmp::Ordering::Equal));
+                        } else {
+                            items.sort_by(|a, b| b.ticket_cost.xx.partial_cmp(&a.ticket_cost.xx).unwrap_or(std::cmp::Ordering::Equal));
+                        }
+                    }
+                    _ => {}
+                }
+            }
+        }
+    }
+
     if items.is_empty() {
         println!("No items found.");
         return;

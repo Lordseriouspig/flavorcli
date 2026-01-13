@@ -28,7 +28,7 @@ use log::{debug, info};
 pub struct StoreList {
     // Defines list store items command (level 3)
     /// Returns data as raw JSON
-    #[clap(long, conflicts_with_all = ["region", "fields"])]
+    #[clap(long, conflicts_with_all = ["region", "fields", "sort"])]
     pub json: bool,
 
     /// Region column to show
@@ -38,6 +38,15 @@ pub struct StoreList {
     /// Fields to output in the table (advanced)
     #[clap(long, value_enum, conflicts_with = "json", value_delimiter = ',')]
     pub fields: Option<Vec<StoreFields>>,
+
+    #[clap(long, value_enum, conflicts_with = "json", default_value="id", requires_if("regional","sort_region"))]
+    pub sort: SortFields,
+
+    #[clap(long, value_enum, requires = "sort", conflicts_with = "json")]
+    pub sort_region: Option<Regions>,
+
+    #[clap(long, value_enum, requires = "sort", default_value="asc")]
+    pub sort_order: SortOrder,
 }
 
 #[derive(clap::ValueEnum, Clone, Copy, Debug, PartialEq, Eq)]
@@ -58,6 +67,27 @@ pub enum StoreFields {
     OnePerPersonEver,
     SalePercentage,
     Regional,
+}
+
+#[derive(clap::ValueEnum, Clone, Copy, Debug, PartialEq, Eq)]
+pub enum SortFields {
+    Id,
+    Name,
+    Stock,
+    Type,
+    Limited,
+    BuyableBySelf,
+    ShowInCarousel,
+    MaxQty,
+    OnePerPersonEver,
+    SalePercentage,
+    Regional,
+}
+
+#[derive(clap::ValueEnum, Clone, Copy, Debug, PartialEq, Eq)]
+pub enum SortOrder {
+    Asc,
+    Desc,
 }
 
 #[derive(clap::ValueEnum, Clone, Copy, Debug)]
@@ -126,6 +156,9 @@ impl StoreList {
                     items,
                     self.region.map(|r| format!("{:?}", r).to_lowercase()),
                     self.fields.clone(),
+                    self.sort.clone(),
+                    self.sort_order.clone(),
+                    self.sort_region.map(|r| format!("{:?}", r).to_uppercase())
                 );
             }
         }
