@@ -29,7 +29,7 @@ use std::collections::HashMap;
 pub struct ProjectUpdate {
     // Defines update project command (level 3)
     /// The project ID to update
-    pub project_id: u64,
+    pub project_id: u32,
 
     /// The title of the new project
     #[clap(long)]

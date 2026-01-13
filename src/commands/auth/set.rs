@@ -31,7 +31,7 @@ pub struct AuthSet {
 
     /// Your Flavortown ID (find it in the URL of your profile)
     #[clap(long)]
-    pub user_id: Option<u64>,
+    pub user_id: Option<u32>,
 
     /// Disables token verification (not recommended)
     #[clap(long, requires("user_id"))]
@@ -96,7 +96,7 @@ impl AuthSet {
             user_id: self
                 .user_id
                 .or_else(|| {
-                    let id = user.as_ref().map(|u| u.id as u64);
+                    let id = user.as_ref().map(|u| u.id as u32);
                     info!("Automagically determined user ID: {:?}", id);
                     id
                 })

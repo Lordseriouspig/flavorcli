@@ -36,7 +36,7 @@ fn sanitize(text: &str) -> String {
         .collect()
 }
 
-fn format_id(u: u64) -> Cell {
+fn format_id(u: u32) -> Cell {
     Cell::new(u.to_string())
 }
 fn format_title(s: &str) -> Cell {
@@ -69,7 +69,7 @@ fn format_url(s: &str) -> Cell {
 fn format_time_cell(dt: &str) -> Cell {
     Cell::new(format_time(dt))
 }
-fn format_devlog_ids(ids: &Vec<u64>) -> Cell {
+fn format_devlog_ids(ids: &Vec<u32>) -> Cell {
     let display = if ids.is_empty() {
         "-".to_string()
     } else {

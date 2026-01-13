@@ -20,5 +20,5 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, Serialize, Deserialize)]
 pub struct AuthData {
     pub token: String,
-    pub user_id: u64,
+    pub user_id: u32,
 }

@@ -62,7 +62,7 @@ pub enum ProjectFields {
     ReadmeUrl,
     CreatedAt,
     UpdatedAt,
-    DevlogIds
+    DevlogIds,
 }
 
 impl ProjectList {
@@ -132,7 +132,11 @@ impl ProjectList {
                         "'".bold().cyan()
                     );
                 }
-                print_project_table(&projects.projects, &projects.pagination, self.fields.clone());
+                print_project_table(
+                    &projects.projects,
+                    &projects.pagination,
+                    self.fields.clone(),
+                );
             }
         }
         Ok(())

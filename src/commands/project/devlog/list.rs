@@ -30,7 +30,7 @@ use owo_colors::OwoColorize;
 pub struct ProjectDevlogList {
     // Defines list devlogs command (level 4)
     /// The project ID to list devlogs for. Will list ALL devlogs if not provided.
-    pub project_id: Option<u64>,
+    pub project_id: Option<u32>,
 
     /// Page number for pagination. Defaults to 1.
     #[clap(long, short)]

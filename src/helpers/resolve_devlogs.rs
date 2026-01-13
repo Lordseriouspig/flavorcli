@@ -20,7 +20,7 @@ use anyhow::Result;
 use indicatif::{ProgressBar, ProgressStyle};
 use log::{debug, info};
 
-pub async fn resolve_devlogs(devlog_ids: &[u64]) -> Result<Vec<Devlog>> {
+pub async fn resolve_devlogs(devlog_ids: &[u32]) -> Result<Vec<Devlog>> {
     let auth: AuthData = get_key()?;
     let spinner = ProgressBar::new_spinner();
     let mut resolved_devlogs = Vec::new();

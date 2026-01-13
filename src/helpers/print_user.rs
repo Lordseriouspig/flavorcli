@@ -36,8 +36,7 @@ pub async fn print_user(u: &User, resolve: u8) {
 
     if resolve > 0 {
         heading!("Projects:");
-        let project_ids: Vec<u64> = u.project_ids.iter().map(|&id| id as u64).collect();
-        match resolve_projects(&project_ids).await {
+        match resolve_projects(&u.project_ids).await {
             Ok(projects) => {
                 if projects.is_empty() {
                     println!("- None -");

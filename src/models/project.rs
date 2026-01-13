@@ -27,7 +27,7 @@ where
 
 #[derive(Debug, Deserialize)]
 pub struct Project {
-    pub id: u64,
+    pub id: u32,
     pub title: String,
     pub description: String,
     pub ship_status: String,
@@ -39,5 +39,5 @@ pub struct Project {
     pub readme_url: String,
     pub created_at: String,
     pub updated_at: String,
-    pub devlog_ids: Vec<u64>,
+    pub devlog_ids: Vec<u32>,
 }

@@ -28,7 +28,7 @@ use log::{debug, info};
 pub struct StoreGet {
     // Defines get store item command (level 3)
     /// The store item ID to retrieve
-    pub item_id: u64,
+    pub item_id: u32,
 
     /// Returns data as raw JSON
     #[clap(long, conflicts_with_all = ["short", "detailed"])]
