@@ -54,7 +54,10 @@ pub fn print_project_table(projects: &[Project], pagination: &Pagination) {
             project.title.clone()
         };
         let desc = if project.description.chars().count() > 50 {
-            format!("{}...", project.description.chars().take(47).collect::<String>())
+            format!(
+                "{}...",
+                project.description.chars().take(47).collect::<String>()
+            )
         } else {
             project.description.clone()
         };

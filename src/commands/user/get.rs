@@ -33,6 +33,7 @@ pub struct UserGet {
     /// Returns data as raw JSON
     #[clap(long)]
     pub json: bool,
+    // TODO: Resolve flag
 }
 
 impl UserGet {

@@ -70,7 +70,10 @@ pub fn print_store_table(mut items: Vec<Store>, region: Option<impl AsRef<str>>)
             item.name.clone()
         };
         let desc = if item.description.chars().count() > 50 {
-            format!("{}...", item.description.chars().take(47).collect::<String>())
+            format!(
+                "{}...",
+                item.description.chars().take(47).collect::<String>()
+            )
         } else {
             item.description.clone()
         };
