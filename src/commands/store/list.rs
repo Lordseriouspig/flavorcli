@@ -36,11 +36,23 @@ pub struct StoreList {
     pub region: Option<Regions>,
 
     /// Fields to output in the table (advanced)
-    #[clap(long, value_enum, conflicts_with = "json", value_delimiter = ',', default_value = "id,name,description,stock,regional,type,attached-to")]
+    #[clap(
+        long,
+        value_enum,
+        conflicts_with = "json",
+        value_delimiter = ',',
+        default_value = "id,name,description,stock,regional,type,attached-to"
+    )]
     pub fields: Vec<StoreFields>,
 
     /// Sort the table output
-    #[clap(long, value_enum, conflicts_with = "json", default_value="id", requires_if("regional","sort_region"))]
+    #[clap(
+        long,
+        value_enum,
+        conflicts_with = "json",
+        default_value = "id",
+        requires_if("regional", "sort_region")
+    )]
     pub sort: SortFields,
 
     /// Choose the region to sort by if you selected "regional" as the sort order
@@ -48,7 +60,7 @@ pub struct StoreList {
     pub sort_region: Option<Regions>,
 
     /// Choose the direction of sort order
-    #[clap(long, value_enum, requires = "sort", default_value="asc")]
+    #[clap(long, value_enum, requires = "sort", default_value = "asc")]
     pub sort_order: SortOrder,
 }
 
@@ -161,7 +173,7 @@ impl StoreList {
                     self.fields.clone(),
                     self.sort.clone(),
                     self.sort_order.clone(),
-                    self.sort_region.map(|r| format!("{:?}", r).to_uppercase())
+                    self.sort_region.map(|r| format!("{:?}", r).to_uppercase()),
                 );
             }
         }

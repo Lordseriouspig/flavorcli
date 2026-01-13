@@ -39,9 +39,29 @@ pub struct ProjectDevlogList {
     /// Returns data as raw JSON
     #[clap(long)]
     pub json: bool,
-    // TODO: Flag to choose table fields
+
+    /// Fields to output in the table (advanced)
+    #[clap(
+        long,
+        value_enum,
+        conflicts_with = "json",
+        value_delimiter = ',',
+        default_value = "id,body,duration,likes-count,comments-count,updated-at"
+    )]
+    pub fields: Vec<DevlogFields>,
 }
 
+#[derive(clap::ValueEnum, Clone, Copy, Debug, PartialEq, Eq)]
+pub enum DevlogFields {
+    Id,
+    Body,
+    CommentsCount,
+    Duration,
+    LikesCount,
+    ScrapbookUrl,
+    CreatedAt,
+    UpdatedAt,
+}
 
 impl ProjectDevlogList {
     pub async fn execute(&self) -> anyhow::Result<()> {
@@ -125,7 +145,7 @@ impl ProjectDevlogList {
                         }
                     }
                 }
-                print_devlog_table(&devlogs.devlogs, &devlogs.pagination);
+                print_devlog_table(&devlogs.devlogs, &devlogs.pagination, self.fields.clone());
             }
         }
 

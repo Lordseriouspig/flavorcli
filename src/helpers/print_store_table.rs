@@ -56,10 +56,17 @@ fn format_description(description: &str) -> Cell {
     Cell::new(sanitize(&formatted))
 }
 fn format_stock(stock: Option<u32>) -> Cell {
-    Cell::new(stock.map(|s| s.to_string()).unwrap_or_else(|| "∞".to_string()))
+    Cell::new(
+        stock
+            .map(|s| s.to_string())
+            .unwrap_or_else(|| "∞".to_string()),
+    )
 }
 fn format_type(type_: &str) -> Cell {
-    let formatted = type_.strip_prefix("ShopItem::").unwrap_or(type_).to_string();
+    let formatted = type_
+        .strip_prefix("ShopItem::")
+        .unwrap_or(type_)
+        .to_string();
     Cell::new(formatted)
 }
 fn format_attached_to(attached_shop_item_ids: &Vec<Option<u32>>) -> Cell {
@@ -146,7 +153,14 @@ fn format_regional(
     }
 }
 
-pub fn print_store_table(mut items: Vec<Store>, region: Option<impl AsRef<str>>, fields: Vec<StoreFields>, sort: SortFields, sort_order: SortOrder, sort_region: Option<impl AsRef<str>>) {
+pub fn print_store_table(
+    mut items: Vec<Store>,
+    region: Option<impl AsRef<str>>,
+    fields: Vec<StoreFields>,
+    sort: SortFields,
+    sort_order: SortOrder,
+    sort_region: Option<impl AsRef<str>>,
+) {
     match sort {
         SortFields::Id => {
             if sort_order == SortOrder::Asc {
@@ -223,51 +237,121 @@ pub fn print_store_table(mut items: Vec<Store>, region: Option<impl AsRef<str>>,
                 match region_code.as_ref() {
                     "AU" => {
                         if sort_order == SortOrder::Asc {
-                            items.sort_by(|a, b| a.ticket_cost.au.partial_cmp(&b.ticket_cost.au).unwrap_or(std::cmp::Ordering::Equal));
+                            items.sort_by(|a, b| {
+                                a.ticket_cost
+                                    .au
+                                    .partial_cmp(&b.ticket_cost.au)
+                                    .unwrap_or(std::cmp::Ordering::Equal)
+                            });
                         } else {
-                            items.sort_by(|a, b| b.ticket_cost.au.partial_cmp(&a.ticket_cost.au).unwrap_or(std::cmp::Ordering::Equal));
+                            items.sort_by(|a, b| {
+                                b.ticket_cost
+                                    .au
+                                    .partial_cmp(&a.ticket_cost.au)
+                                    .unwrap_or(std::cmp::Ordering::Equal)
+                            });
                         }
                     }
                     "CA" => {
                         if sort_order == SortOrder::Asc {
-                            items.sort_by(|a, b| a.ticket_cost.ca.partial_cmp(&b.ticket_cost.ca).unwrap_or(std::cmp::Ordering::Equal));
+                            items.sort_by(|a, b| {
+                                a.ticket_cost
+                                    .ca
+                                    .partial_cmp(&b.ticket_cost.ca)
+                                    .unwrap_or(std::cmp::Ordering::Equal)
+                            });
                         } else {
-                            items.sort_by(|a, b| b.ticket_cost.ca.partial_cmp(&a.ticket_cost.ca).unwrap_or(std::cmp::Ordering::Equal));
+                            items.sort_by(|a, b| {
+                                b.ticket_cost
+                                    .ca
+                                    .partial_cmp(&a.ticket_cost.ca)
+                                    .unwrap_or(std::cmp::Ordering::Equal)
+                            });
                         }
                     }
                     "EU" => {
                         if sort_order == SortOrder::Asc {
-                            items.sort_by(|a, b| a.ticket_cost.eu.partial_cmp(&b.ticket_cost.eu).unwrap_or(std::cmp::Ordering::Equal));
+                            items.sort_by(|a, b| {
+                                a.ticket_cost
+                                    .eu
+                                    .partial_cmp(&b.ticket_cost.eu)
+                                    .unwrap_or(std::cmp::Ordering::Equal)
+                            });
                         } else {
-                            items.sort_by(|a, b| b.ticket_cost.eu.partial_cmp(&a.ticket_cost.eu).unwrap_or(std::cmp::Ordering::Equal));
+                            items.sort_by(|a, b| {
+                                b.ticket_cost
+                                    .eu
+                                    .partial_cmp(&a.ticket_cost.eu)
+                                    .unwrap_or(std::cmp::Ordering::Equal)
+                            });
                         }
                     }
                     "IN" => {
                         if sort_order == SortOrder::Asc {
-                            items.sort_by(|a, b| a.ticket_cost.in_.partial_cmp(&b.ticket_cost.in_).unwrap_or(std::cmp::Ordering::Equal));
+                            items.sort_by(|a, b| {
+                                a.ticket_cost
+                                    .in_
+                                    .partial_cmp(&b.ticket_cost.in_)
+                                    .unwrap_or(std::cmp::Ordering::Equal)
+                            });
                         } else {
-                            items.sort_by(|a, b| b.ticket_cost.in_.partial_cmp(&a.ticket_cost.in_).unwrap_or(std::cmp::Ordering::Equal));
+                            items.sort_by(|a, b| {
+                                b.ticket_cost
+                                    .in_
+                                    .partial_cmp(&a.ticket_cost.in_)
+                                    .unwrap_or(std::cmp::Ordering::Equal)
+                            });
                         }
                     }
                     "UK" => {
                         if sort_order == SortOrder::Asc {
-                            items.sort_by(|a, b| a.ticket_cost.uk.partial_cmp(&b.ticket_cost.uk).unwrap_or(std::cmp::Ordering::Equal));
+                            items.sort_by(|a, b| {
+                                a.ticket_cost
+                                    .uk
+                                    .partial_cmp(&b.ticket_cost.uk)
+                                    .unwrap_or(std::cmp::Ordering::Equal)
+                            });
                         } else {
-                            items.sort_by(|a, b| b.ticket_cost.uk.partial_cmp(&a.ticket_cost.uk).unwrap_or(std::cmp::Ordering::Equal));
+                            items.sort_by(|a, b| {
+                                b.ticket_cost
+                                    .uk
+                                    .partial_cmp(&a.ticket_cost.uk)
+                                    .unwrap_or(std::cmp::Ordering::Equal)
+                            });
                         }
                     }
                     "US" => {
                         if sort_order == SortOrder::Asc {
-                            items.sort_by(|a, b| a.ticket_cost.us.partial_cmp(&b.ticket_cost.us).unwrap_or(std::cmp::Ordering::Equal));
+                            items.sort_by(|a, b| {
+                                a.ticket_cost
+                                    .us
+                                    .partial_cmp(&b.ticket_cost.us)
+                                    .unwrap_or(std::cmp::Ordering::Equal)
+                            });
                         } else {
-                            items.sort_by(|a, b| b.ticket_cost.us.partial_cmp(&a.ticket_cost.us).unwrap_or(std::cmp::Ordering::Equal));
+                            items.sort_by(|a, b| {
+                                b.ticket_cost
+                                    .us
+                                    .partial_cmp(&a.ticket_cost.us)
+                                    .unwrap_or(std::cmp::Ordering::Equal)
+                            });
                         }
                     }
                     "XX" => {
                         if sort_order == SortOrder::Asc {
-                            items.sort_by(|a, b| a.ticket_cost.xx.partial_cmp(&b.ticket_cost.xx).unwrap_or(std::cmp::Ordering::Equal));
+                            items.sort_by(|a, b| {
+                                a.ticket_cost
+                                    .xx
+                                    .partial_cmp(&b.ticket_cost.xx)
+                                    .unwrap_or(std::cmp::Ordering::Equal)
+                            });
                         } else {
-                            items.sort_by(|a, b| b.ticket_cost.xx.partial_cmp(&a.ticket_cost.xx).unwrap_or(std::cmp::Ordering::Equal));
+                            items.sort_by(|a, b| {
+                                b.ticket_cost
+                                    .xx
+                                    .partial_cmp(&a.ticket_cost.xx)
+                                    .unwrap_or(std::cmp::Ordering::Equal)
+                            });
                         }
                     }
                     _ => {}
@@ -329,17 +413,23 @@ pub fn print_store_table(mut items: Vec<Store>, region: Option<impl AsRef<str>>,
                 StoreFields::Description => row.push(format_description(&item.description)),
                 StoreFields::Stock => row.push(format_stock(item.stock)),
                 StoreFields::Type => row.push(format_type(&item.type_)),
-                StoreFields::AttachedTo => row.push(format_attached_to(&item.attached_shop_item_ids)),
+                StoreFields::AttachedTo => {
+                    row.push(format_attached_to(&item.attached_shop_item_ids))
+                }
                 StoreFields::Limited => row.push(format_bool(item.limited)),
                 StoreFields::BuyableBySelf => row.push(format_bool(item.buyable_by_self)),
                 StoreFields::ShowInCarousel => row.push(format_bool(item.show_in_carousel)),
                 StoreFields::AccessoryTag => row.push(format_accessory_tag(&item.accessory_tag)),
-                StoreFields::LongDescription => row.push(format_long_description(&item.long_description)),
+                StoreFields::LongDescription => {
+                    row.push(format_long_description(&item.long_description))
+                }
                 StoreFields::ImageUrl => row.push(format_image_url(&item.image_url)),
                 StoreFields::MaxQty => row.push(format_max_qty(&item.max_qty)),
                 StoreFields::OnePerPersonEver => row.push(format_bool(item.one_per_person_ever)),
                 StoreFields::SalePercentage => row.push(format_sale_percentage(&item.old_prices)),
-                StoreFields::Regional => row.extend(format_regional(&item, &region_filter, show_all_regions)),
+                StoreFields::Regional => {
+                    row.extend(format_regional(&item, &region_filter, show_all_regions))
+                }
             }
         }
         table.add_row(row);

@@ -36,7 +36,13 @@ pub struct UserList {
     pub json: bool,
 
     /// Fields to output in the table (advanced)
-    #[clap(long, value_enum, conflicts_with = "json", value_delimiter = ',', default_value = "id,display-name,cookies")]
+    #[clap(
+        long,
+        value_enum,
+        conflicts_with = "json",
+        value_delimiter = ',',
+        default_value = "id,display-name,cookies"
+    )]
     pub fields: Vec<UserFields>,
     // I'm not going to implement sorting on my end as the server side pagination already sorts them by modified time, so it would be misleading
 }

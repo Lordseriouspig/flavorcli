@@ -17,13 +17,14 @@
 
 use crate::models::devlog::Devlog;
 use crate::models::devlog_vec::Pagination;
+use crate::commands::project::devlog::list::DevlogFields;
 use chrono::{DateTime, Local};
 use comfy_table::modifiers::UTF8_ROUND_CORNERS;
 use comfy_table::presets::UTF8_FULL;
 use comfy_table::*;
 use owo_colors::OwoColorize;
 
-fn format_time(dt: &str) -> String {
+fn format_time(dt: &str) -> String { // TODO: Move functions like this into a utils file or something
     let dt = DateTime::parse_from_rfc3339(dt).unwrap();
     let local_dt = dt.with_timezone(&Local);
     local_dt.format("%Y-%m-%d %H:%M").to_string()
@@ -42,7 +43,35 @@ fn sanitize(text: &str) -> String {
         .collect()
 }
 
-pub fn print_devlog_table(devlogs: &[Devlog], pagination: &Pagination) {
+fn format_id(u: u32) -> Cell {
+    Cell::new(u.to_string())
+}
+fn format_body(s: &str) -> Cell {
+    let body = if s.chars().count() > 50 {
+        format!("{}...", s.chars().take(47).collect::<String>())
+    } else {
+        s.to_string()
+    };
+    Cell::new(sanitize(&body))
+}
+fn format_u32(u: u32) -> Cell {
+    Cell::new(u.to_string())
+}
+fn format_duration_cell(seconds: u32) -> Cell {
+    Cell::new(format_duration(seconds))
+}
+fn format_scrapbook_url(url: &Option<String>) -> Cell {
+    let display_url = match url {
+        Some(u) => u.clone(),
+        None => "N/A".to_string(),
+    };
+    Cell::new(display_url)
+}
+fn format_time_cell(dt: &str) -> Cell {
+    Cell::new(format_time(dt))
+}
+
+pub fn print_devlog_table(devlogs: &[Devlog], pagination: &Pagination, fields: Vec<DevlogFields>) {
     if devlogs.is_empty() {
         println!("No devlogs found.");
         return;
@@ -51,20 +80,38 @@ pub fn print_devlog_table(devlogs: &[Devlog], pagination: &Pagination) {
     table
         .load_preset(UTF8_FULL)
         .apply_modifier(UTF8_ROUND_CORNERS)
-        .set_content_arrangement(ContentArrangement::Dynamic)
-        .set_header(vec!["ID", "Body", "Time", "Likes", "Comments", "Updated"]);
+        .set_content_arrangement(ContentArrangement::Dynamic);
+
+    // Build header
+    let mut header = Vec::<&str>::new();
+    for field in &fields {
+        match field {
+            DevlogFields::Id => { header.push("ID"); },
+            DevlogFields::Body => { header.push("Body"); },
+            DevlogFields::CommentsCount => { header.push("Comments"); },
+            DevlogFields::Duration => { header.push("Duration"); },
+            DevlogFields::LikesCount => { header.push("Likes"); },
+            DevlogFields::ScrapbookUrl => { header.push("Scrapbook URL"); },
+            DevlogFields::CreatedAt => { header.push("Created"); },
+            DevlogFields::UpdatedAt => { header.push("Updated"); },
+        }
+    }
+    table.set_header(header);
     for devlog in devlogs {
-        let id = devlog.id.to_string();
-        let body = if devlog.body.chars().count() > 50 {
-            format!("{}...", devlog.body.chars().take(47).collect::<String>())
-        } else {
-            devlog.body.clone()
-        };
-        let time = format_duration(devlog.duration_seconds);
-        let likes = devlog.likes_count.to_string();
-        let comments = devlog.comments_count.to_string();
-        let updated = format_time(&devlog.updated_at);
-        table.add_row(vec![id, sanitize(&body), time, likes, comments, updated]);
+        let mut row: Vec<Cell> = Vec::new();
+        for field in &fields {
+            match field {
+                DevlogFields::Id => row.push(format_id(devlog.id)),
+                DevlogFields::Body => row.push(format_body(&devlog.body)),
+                DevlogFields::CommentsCount => row.push(format_u32(devlog.comments_count)),
+                DevlogFields::Duration => row.push(format_duration_cell(devlog.duration_seconds)),
+                DevlogFields::LikesCount => row.push(format_u32(devlog.likes_count)),
+                DevlogFields::ScrapbookUrl => row.push(format_scrapbook_url(&devlog.scrapbook_url)),
+                DevlogFields::CreatedAt => row.push(format_time_cell(&devlog.created_at)),
+                DevlogFields::UpdatedAt => row.push(format_time_cell(&devlog.updated_at)),
+            }
+        }
+        table.add_row(row);
     }
     let footer_text = if let Some(next) = pagination.next_page {
         format!(
