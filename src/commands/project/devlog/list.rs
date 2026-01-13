@@ -39,7 +39,9 @@ pub struct ProjectDevlogList {
     /// Returns data as raw JSON
     #[clap(long)]
     pub json: bool,
+    // TODO: Flag to choose table fields
 }
+
 
 impl ProjectDevlogList {
     pub async fn execute(&self) -> anyhow::Result<()> {

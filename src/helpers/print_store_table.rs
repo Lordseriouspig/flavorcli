@@ -108,12 +108,7 @@ fn format_sale_percentage(old_prices: &Vec<u32>) -> Cell {
     Cell::new(formatted)
 }
 fn format_image_url(url: &str) -> Cell {
-    let formatted = if url.chars().count() > 30 {
-        format!("{}...", url.chars().take(27).collect::<String>())
-    } else {
-        url.to_string()
-    };
-    Cell::new(formatted)
+    Cell::new(url) // i really dont see a better way to format urls w/o truncating them (which I cant do otherwise it'd make the field useless), and hyperlinks dont work in tables well.
 }
 fn format_accessory_tag(tag: &Option<String>) -> Cell {
     Cell::new(tag.clone().unwrap_or_else(|| "N/A".to_string()))
@@ -151,7 +146,7 @@ fn format_regional(
     }
 }
 
-pub fn print_store_table(mut items: Vec<Store>, region: Option<impl AsRef<str>>, fields: Option<Vec<crate::commands::store::list::StoreFields>>, sort: crate::commands::store::list::SortFields, sort_order: crate::commands::store::list::SortOrder, sort_region: Option<impl AsRef<str>>) {
+pub fn print_store_table(mut items: Vec<Store>, region: Option<impl AsRef<str>>, fields: Vec<StoreFields>, sort: SortFields, sort_order: SortOrder, sort_region: Option<impl AsRef<str>>) {
     match sort {
         SortFields::Id => {
             if sort_order == SortOrder::Asc {
@@ -295,87 +290,59 @@ pub fn print_store_table(mut items: Vec<Store>, region: Option<impl AsRef<str>>,
         .apply_modifier(UTF8_ROUND_CORNERS)
         .set_content_arrangement(ContentArrangement::Disabled);
 
-    if let Some(selected_fields) = fields {
-        // Build table based on supplied fields
-        let mut header = Vec::<&str>::new();
-        // Get the fields the user supplies and add the headers
-        for field in &selected_fields {
+    // Build table header
+    let mut header = Vec::<&str>::new();
+    // Get the fields the user supplies and add the headers
+    for field in &fields {
+        match field {
+            StoreFields::Id => header.push("ID"),
+            StoreFields::Name => header.push("Name"),
+            StoreFields::Description => header.push("Description"),
+            StoreFields::Stock => header.push("Stock"),
+            StoreFields::Type => header.push("Type"),
+            StoreFields::AttachedTo => header.push("Attached to"),
+            StoreFields::Limited => header.push("Limited"),
+            StoreFields::BuyableBySelf => header.push("Buyable By Self"),
+            StoreFields::ShowInCarousel => header.push("Show In Carousel"),
+            StoreFields::AccessoryTag => header.push("Accessory Tag"),
+            StoreFields::LongDescription => header.push("Long Description"),
+            StoreFields::ImageUrl => header.push("Image URL"),
+            StoreFields::MaxQty => header.push("Max Qty"),
+            StoreFields::OnePerPersonEver => header.push("One Per Person Ever"),
+            StoreFields::SalePercentage => header.push("Sale Percentage"),
+            StoreFields::Regional => {
+                if show_all_regions {
+                    header.extend_from_slice(&["AU", "CA", "EU", "IN", "UK", "US", "XX"]);
+                } else if let Some(ref region_code) = region_filter {
+                    header.push(region_code.as_str());
+                }
+            }
+        }
+    }
+    table.set_header(header);
+    for item in items {
+        let mut row: Vec<Cell> = Vec::new();
+        for field in &fields {
             match field {
-                StoreFields::Id => header.push("ID"),
-                StoreFields::Name => header.push("Name"),
-                StoreFields::Description => header.push("Description"),
-                StoreFields::Stock => header.push("Stock"),
-                StoreFields::Type => header.push("Type"),
-                StoreFields::AttachedTo => header.push("Attached to"),
-                StoreFields::Limited => header.push("Limited"),
-                StoreFields::BuyableBySelf => header.push("Buyable By Self"),
-                StoreFields::ShowInCarousel => header.push("Show In Carousel"),
-                StoreFields::AccessoryTag => header.push("Accessory Tag"),
-                StoreFields::LongDescription => header.push("Long Description"),
-                StoreFields::ImageUrl => header.push("Image URL"),
-                StoreFields::MaxQty => header.push("Max Qty"),
-                StoreFields::OnePerPersonEver => header.push("One Per Person Ever"),
-                StoreFields::SalePercentage => header.push("Sale Percentage"),
-                StoreFields::Regional => {
-                    if show_all_regions {
-                        header.extend_from_slice(&["AU", "CA", "EU", "IN", "UK", "US", "XX"]);
-                    } else if let Some(ref region_code) = region_filter {
-                        header.push(region_code.as_str());
-                    }
-                }
+                StoreFields::Id => row.push(format_id(item.id)),
+                StoreFields::Name => row.push(format_name(&item.name)),
+                StoreFields::Description => row.push(format_description(&item.description)),
+                StoreFields::Stock => row.push(format_stock(item.stock)),
+                StoreFields::Type => row.push(format_type(&item.type_)),
+                StoreFields::AttachedTo => row.push(format_attached_to(&item.attached_shop_item_ids)),
+                StoreFields::Limited => row.push(format_bool(item.limited)),
+                StoreFields::BuyableBySelf => row.push(format_bool(item.buyable_by_self)),
+                StoreFields::ShowInCarousel => row.push(format_bool(item.show_in_carousel)),
+                StoreFields::AccessoryTag => row.push(format_accessory_tag(&item.accessory_tag)),
+                StoreFields::LongDescription => row.push(format_long_description(&item.long_description)),
+                StoreFields::ImageUrl => row.push(format_image_url(&item.image_url)),
+                StoreFields::MaxQty => row.push(format_max_qty(&item.max_qty)),
+                StoreFields::OnePerPersonEver => row.push(format_bool(item.one_per_person_ever)),
+                StoreFields::SalePercentage => row.push(format_sale_percentage(&item.old_prices)),
+                StoreFields::Regional => row.extend(format_regional(&item, &region_filter, show_all_regions)),
             }
         }
-        table.set_header(header);
-        for item in items {
-            let mut row: Vec<Cell> = Vec::new();
-            for field in &selected_fields {
-                match field {
-                    StoreFields::Id => row.push(format_id(item.id)),
-                    StoreFields::Name => row.push(format_name(&item.name)),
-                    StoreFields::Description => row.push(format_description(&item.description)),
-                    StoreFields::Stock => row.push(format_stock(item.stock)),
-                    StoreFields::Type => row.push(format_type(&item.type_)),
-                    StoreFields::AttachedTo => row.push(format_attached_to(&item.attached_shop_item_ids)),
-                    StoreFields::Limited => row.push(format_bool(item.limited)),
-                    StoreFields::BuyableBySelf => row.push(format_bool(item.buyable_by_self)),
-                    StoreFields::ShowInCarousel => row.push(format_bool(item.show_in_carousel)),
-                    StoreFields::AccessoryTag => row.push(format_accessory_tag(&item.accessory_tag)),
-                    StoreFields::LongDescription => row.push(format_long_description(&item.long_description)),
-                    StoreFields::ImageUrl => row.push(format_image_url(&item.image_url)),
-                    StoreFields::MaxQty => row.push(format_max_qty(&item.max_qty)),
-                    StoreFields::OnePerPersonEver => row.push(format_bool(item.one_per_person_ever)),
-                    StoreFields::SalePercentage => row.push(format_sale_percentage(&item.old_prices)),
-                    StoreFields::Regional => row.extend(format_regional(&item, &region_filter, show_all_regions)),
-                }
-            }
-            table.add_row(row);
-        }
-    } else {
-        // Build table based on defaults
-        // Build header dynamically based on region filter
-        let mut header = vec!["ID", "Name", "Description", "Stock"];
-
-        if show_all_regions {
-            header.extend_from_slice(&["AU", "CA", "EU", "IN", "UK", "US", "XX"]);
-        } else if let Some(ref region_code) = region_filter {
-            header.push(region_code.as_str());
-        }
-
-        header.extend_from_slice(&["Type", "Attached to"]);
-        table.set_header(header);
-
-        for item in items {
-            let mut row = vec![
-                format_id(item.id),
-                format_name(&item.name),
-                format_description(&item.description),
-                format_stock(item.stock),
-            ];
-
-            row.extend_from_slice(&format_regional(&item, &region_filter, show_all_regions));
-            row.extend_from_slice(&[format_type(&item.type_), format_attached_to(&item.attached_shop_item_ids)]);
-            table.add_row(row);
-        }
+        table.add_row(row);
     }
 
     println!("{}", table);
