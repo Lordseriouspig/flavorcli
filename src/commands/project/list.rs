@@ -39,7 +39,30 @@ pub struct ProjectList {
     /// Returns data as raw JSON
     #[clap(long)]
     pub json: bool,
-    // TODO: Flag to choose table fields.
+
+    /// Fields to output in the table (advanced)
+    #[clap(
+        long,
+        value_enum,
+        conflicts_with = "json",
+        value_delimiter = ',',
+        default_value = "id,title,description,updated-at"
+    )]
+    pub fields: Vec<ProjectFields>,
+}
+
+#[derive(clap::ValueEnum, Clone, Copy, Debug, PartialEq, Eq)]
+pub enum ProjectFields {
+    Id,
+    Title,
+    Description,
+    ShipStatus,
+    RepoUrl,
+    DemoUrl,
+    ReadmeUrl,
+    CreatedAt,
+    UpdatedAt,
+    DevlogIds
 }
 
 impl ProjectList {
@@ -109,7 +132,7 @@ impl ProjectList {
                         "'".bold().cyan()
                     );
                 }
-                print_project_table(&projects.projects, &projects.pagination);
+                print_project_table(&projects.projects, &projects.pagination, self.fields.clone());
             }
         }
         Ok(())
