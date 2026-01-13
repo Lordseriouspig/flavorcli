@@ -65,7 +65,7 @@ pub async fn print_project(p: &Project, resolve: bool) {
     );
 
     if resolve {
-        println!("\n{}", "Devlogs:".bold().cyan());
+        heading!("Devlogs:");
         match resolve_devlogs(&p.devlog_ids).await {
             Ok(devlogs) => {
                 if devlogs.is_empty() {
@@ -79,7 +79,7 @@ pub async fn print_project(p: &Project, resolve: bool) {
             }
             Err(e) => {
                 warn!("{} {}", "Unable to resolve devlogs:".red(), e);
-                println!("\n{}", "Devlog IDs:".bold().cyan());
+                heading!("Devlog IDs:");
                 if p.devlog_ids.is_empty() {
                     println!("- None -");
                 } else {

@@ -31,9 +31,12 @@ pub struct UserGet {
     pub user_id: Option<u32>,
 
     /// Returns data as raw JSON
-    #[clap(long)]
+    #[clap(long, conflicts_with = "resolve")]
     pub json: bool,
-    // TODO: Resolve flag
+
+    /// Resolves project IDs, or when specified twice, devlog ids as well (may be VERY long)
+    #[clap(long, short, alias="long", alias="detailed", conflicts_with = "json", action = clap::ArgAction::Count)]
+    pub resolve: u8,
 }
 
 impl UserGet {
@@ -86,7 +89,7 @@ impl UserGet {
             } else {
                 let user: User = res.json().await?;
                 debug!("Successfully parsed user data");
-                print_user(&user);
+                print_user(&user, self.resolve).await;
             }
         }
 

@@ -15,16 +15,17 @@
 // You should have received a copy of the GNU General Public License
 // along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 
+use crate::commands::project::devlog::list::DevlogFields;
 use crate::models::devlog::Devlog;
 use crate::models::devlog_vec::Pagination;
-use crate::commands::project::devlog::list::DevlogFields;
 use chrono::{DateTime, Local};
 use comfy_table::modifiers::UTF8_ROUND_CORNERS;
 use comfy_table::presets::UTF8_FULL;
 use comfy_table::*;
 use owo_colors::OwoColorize;
 
-fn format_time(dt: &str) -> String { // TODO: Move functions like this into a utils file or something
+fn format_time(dt: &str) -> String {
+    // TODO: Move functions like this into a utils file or something
     let dt = DateTime::parse_from_rfc3339(dt).unwrap();
     let local_dt = dt.with_timezone(&Local);
     local_dt.format("%Y-%m-%d %H:%M").to_string()
@@ -86,14 +87,30 @@ pub fn print_devlog_table(devlogs: &[Devlog], pagination: &Pagination, fields: V
     let mut header = Vec::<&str>::new();
     for field in &fields {
         match field {
-            DevlogFields::Id => { header.push("ID"); },
-            DevlogFields::Body => { header.push("Body"); },
-            DevlogFields::CommentsCount => { header.push("Comments"); },
-            DevlogFields::Duration => { header.push("Duration"); },
-            DevlogFields::LikesCount => { header.push("Likes"); },
-            DevlogFields::ScrapbookUrl => { header.push("Scrapbook URL"); },
-            DevlogFields::CreatedAt => { header.push("Created"); },
-            DevlogFields::UpdatedAt => { header.push("Updated"); },
+            DevlogFields::Id => {
+                header.push("ID");
+            }
+            DevlogFields::Body => {
+                header.push("Body");
+            }
+            DevlogFields::CommentsCount => {
+                header.push("Comments");
+            }
+            DevlogFields::Duration => {
+                header.push("Duration");
+            }
+            DevlogFields::LikesCount => {
+                header.push("Likes");
+            }
+            DevlogFields::ScrapbookUrl => {
+                header.push("Scrapbook URL");
+            }
+            DevlogFields::CreatedAt => {
+                header.push("Created");
+            }
+            DevlogFields::UpdatedAt => {
+                header.push("Updated");
+            }
         }
     }
     table.set_header(header);

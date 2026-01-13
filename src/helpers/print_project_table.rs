@@ -15,9 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 
+use crate::commands::project::list::ProjectFields;
 use crate::models::project::Project;
 use crate::models::project_vec::Pagination;
-use crate::commands::project::list::ProjectFields;
 use chrono::{DateTime, Local};
 use comfy_table::modifiers::UTF8_ROUND_CORNERS;
 use comfy_table::presets::UTF8_FULL;
@@ -81,7 +81,11 @@ fn format_devlog_ids(ids: &Vec<u64>) -> Cell {
     Cell::new(sanitize(&display))
 }
 
-pub fn print_project_table(projects: &[Project], pagination: &Pagination, fields: Vec<ProjectFields>) {
+pub fn print_project_table(
+    projects: &[Project],
+    pagination: &Pagination,
+    fields: Vec<ProjectFields>,
+) {
     if projects.is_empty() {
         println!("No projects found.");
         return;

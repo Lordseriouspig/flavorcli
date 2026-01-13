@@ -15,8 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 
+use crate::helpers::{print_project::print_project, resolve_projects::resolve_projects};
 use crate::models::user::User;
 use crate::{field, heading, list, long_text, title};
+use log::warn;
 use owo_colors::OwoColorize;
 
 fn format_duration(seconds: u32) -> String {
@@ -26,17 +28,43 @@ fn format_duration(seconds: u32) -> String {
     format!("{:02}:{:02}:{:02}", hours, minutes, secs)
 }
 
-pub fn print_user(u: &User) {
+pub async fn print_user(u: &User, resolve: u8) {
     title!(u.display_name);
     field!("ID", u.id);
     field!("Slack ID", u.slack_id);
     long_text!("Avatar URL", &u.avatar);
 
-    heading!("Project IDs:");
-    if u.project_ids.is_empty() {
-        println!("- None -");
+    if resolve > 0 {
+        heading!("Projects:");
+        let project_ids: Vec<u64> = u.project_ids.iter().map(|&id| id as u64).collect();
+        match resolve_projects(&project_ids).await {
+            Ok(projects) => {
+                if projects.is_empty() {
+                    println!("- None -");
+                } else {
+                    for project in projects {
+                        print_project(&project, resolve > 1).await;
+                        println!();
+                    }
+                }
+            }
+            Err(e) => {
+                warn!("{} {}", "Unable to resolve projects:".red(), e);
+                heading!("Project IDs:");
+                if u.project_ids.is_empty() {
+                    println!("- None -");
+                } else {
+                    list!(&u.project_ids);
+                }
+            }
+        }
     } else {
-        list!(&u.project_ids);
+        heading!("Project IDs:");
+        if u.project_ids.is_empty() {
+            println!("- None -");
+        } else {
+            list!(&u.project_ids);
+        }
     }
 
     heading!("Statistics:");
