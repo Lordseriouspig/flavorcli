@@ -16,4 +16,17 @@
  You should have received a copy of the GNU General Public License
  along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 -->
+Auth set allows you to set your auth token for use in other commands. It is stored securely in your device's keychain.
 
+## Usage
+```bash
+flavor auth set [OPTIONS] <TOKEN>
+```
+
+## Options
+-  `<TOKEN>`  Your Flavortown authentication token
+
+## Flags
+-  **`-v, --verbose...`:**         Increase logging verbosity
+-  **`-q, --quiet...`:**           Decrease logging verbosity
+-  **`-h, --help  `:**             Print help

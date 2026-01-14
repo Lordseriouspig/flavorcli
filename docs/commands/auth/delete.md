@@ -17,3 +17,16 @@
  along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 -->
 
+Auth set allows you to delete your stored auth token.
+
+## Usage
+```bash
+flavor auth delete [OPTIONS]
+```
+
+## Flags
+-  **`    --user-id <USER_ID>`:**  Your Flavortown ID (find it in the URL of your profile)
+-  **`    --no-verify`:**          Disables token verification (not recommended)
+-  **`-v, --verbose...`:**         Increase logging verbosity
+-  **`-q, --quiet...`:**           Decrease logging verbosity
+-  **`-h, --help  `:**             Print help
