@@ -33,11 +33,11 @@ pub struct ProjectUpdate {
 
     /// The title of the new project
     #[clap(long)]
-    pub title: String,
+    pub title: Option<String>,
 
     /// The description of the new project
     #[clap(long)]
-    pub description: String,
+    pub description: Option<String>,
 
     /// A link to the project's repository
     #[clap(long)]
@@ -79,9 +79,12 @@ impl ProjectUpdate {
         );
         let mut body = HashMap::new();
 
-        body.insert("title", self.title.clone());
-        body.insert("description", self.description.clone());
-
+        if let Some(title) = &self.title {
+            body.insert("title", title.clone());
+        }
+        if let Some(description) = &self.description {
+            body.insert("description", description.clone());
+        }
         if let Some(repo_url) = &self.repo_url {
             body.insert("repo_url", repo_url.clone());
         }
