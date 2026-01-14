@@ -78,8 +78,8 @@ Ensure you have the cargo install directory in your PATH.
 1. Run ``ft auth set <TOKEN>``[^3]
 [^3]: You can use ``ft auth delete`` at any time to delete your API Key. Your API Key is stored on device with your device's keychain. If you want to set auth for each command, add the ``--auth <APIKEY>`` flag
 
-### Using the commands
-Uhm, just use ``ft --help`` ig. (TODO: write proper guides on how to use the commands that definitely exist)
+## Full Documentation
+The full documentation is available on [GitBook](about:blank) or in the [Docs Folder](/docs/) <!-- TODO: Add GitBook Link here -->
 
 ## Features
 * Stores and verifies your API Key in your OS' keychain when using ``ft auth set <USER_ID> <TOKEN>``.
