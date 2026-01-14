@@ -25,10 +25,13 @@
 [![Last Commit](https://img.shields.io/github/last-commit/lordseriouspig/flavorcli)](https://github.com/Lordseriouspig/flavorcli/commits/main/ "Commit History")
 [![rust-clippy analyze](https://github.com/Lordseriouspig/flavorcli/actions/workflows/rust-clippy.yml/badge.svg)](https://github.com/Lordseriouspig/flavorcli/actions/workflows/rust-clippy.yml)
 
-> [!CAUTION]
-> FlavorCLI *only kinda works* as of right now. I'm still working on writing some more commands and am still waiting on some more API routes to be added. Right now there's only read routes available.
-
 FlavorCLI is a fully-featured implementation of the Flavortown API, allowing for easier and streamlined interaction with HackClub's Flavortown.
+
+# Full Documentation
+The full documentation is available on [GitBook](about:blank) or in the [Docs Folder](/docs/). I've intentionally written these as more beginner friendly and less silly than this README. <!-- TODO: Add GitBook Link here -->
+
+# Quick Start
+Please note that this quick start guide may not be beginner friendly and is a bit silly.
 
 ## Installation
 ### Prebuilt (Recommended)
@@ -37,7 +40,7 @@ At some point, FlavorCLI will be available on all[^1] major package managers.
 To download and install precompiled binaries from GitHub, follow these steps:
 1. Download the ZIP file for your platform
 2. Unzip the contents
-3. Inside, you will see the precompiled binary, plus this readme, a copy of the licence, and an installer and uninstaller script for convience.
+3. Inside, you will see the precompiled binary, plus this readme, a copy of the licence, and an installer and uninstaller script for convenience.
 4. (Optional) Execute the installer script.
    1. If you are on windows, run ``powershell.exe -ExecutionPolicy Bypass -File "install-win.ps1"``
    2. If you are on linux, run ``chmod +x install-linux.sh``
@@ -77,9 +80,6 @@ Ensure you have the cargo install directory in your PATH.
 
 1. Run ``ft auth set <TOKEN>``[^3]
 [^3]: You can use ``ft auth delete`` at any time to delete your API Key. Your API Key is stored on device with your device's keychain. If you want to set auth for each command, add the ``--auth <APIKEY>`` flag
-
-## Full Documentation
-The full documentation is available on [GitBook](about:blank) or in the [Docs Folder](/docs/) <!-- TODO: Add GitBook Link here -->
 
 ## Features
 * Stores and verifies your API Key in your OS' keychain when using ``ft auth set <USER_ID> <TOKEN>``.

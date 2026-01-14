@@ -19,7 +19,9 @@
 
 # Summary
 
+* [Installation](./installation.md)
 * [Getting Started](./getting_started.md)
+* [Adding FlavorCLI to PATH](./add_to_path.md)
 
 ## Commands
 * [Commands Basics](./commands/basics/README.md)
