@@ -17,3 +17,19 @@
  along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 -->
 
+Commands that allow you to view and manage your devlogs.
+
+## Usage
+```bash
+flavor project devlog [FLAGS] <COMMAND>
+```
+
+### Commands
+-  **[`set`](./set.md):**     Set your authentication token
+-  **[`delete`](delete.md):**  Delete your authentication token
+-  **[`help`](./delete.md):**    Print this message or the help of the given command(s)
+
+### Flags
+-  **`-v, --verbose...`:**  Increase logging verbosity
+-  **`-q, --quiet...`:**    Decrease logging verbosity
+-  **`-h, --help`:**        Print help

@@ -21,7 +21,7 @@ Commands that allow you to manage your authorization to Flavortown
 
 ## Usage
 ```bash
-flavor auth [OPTIONS] <COMMAND>
+flavor auth [FLAGS] <COMMAND>
 ```
 
 ### Commands
