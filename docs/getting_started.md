@@ -40,6 +40,7 @@ To do this, follow these steps:
 2. Click the gear icon near your name in the sidebar
 
 ![Press the gear icon next to log our and cookies in the sidebar](https://hc-cdn.hel1.your-objectstorage.com/s/v3/cf6d791565750c61_image.png)
+
 3. Scroll down on that menu and copy your API key.
 
 ![Copy your API key in the settings modal](https://hc-cdn.hel1.your-objectstorage.com/s/v3/79dd5ba8da854bef_image.png)
