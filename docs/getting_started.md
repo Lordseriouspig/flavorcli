@@ -39,11 +39,10 @@ To do this, follow these steps:
 1. Head over to https://flavortown.hackclub.com/
 2. Click the gear icon near your name in the sidebar
 
-![alt text](https://hc-cdn.hel1.your-objectstorage.com/s/v3/cf6d791565750c61_image.png)
-
+![Press the gear icon next to log our and cookies in the sidebar](https://hc-cdn.hel1.your-objectstorage.com/s/v3/cf6d791565750c61_image.png)
 3. Scroll down on that menu and copy your API key.
 
-![alt text](https://hc-cdn.hel1.your-objectstorage.com/s/v3/79dd5ba8da854bef_image.png)
+![Copy your API key in the settings modal](https://hc-cdn.hel1.your-objectstorage.com/s/v3/79dd5ba8da854bef_image.png)
 
 {% hint style="danger" %}
 Make sure you keep this token secret! If someone you do not trust gains access to this token, they will be able to access your **entire Flavortown account**. If you believe someone has gained access to your token, please regenerate it with the refresh button in the settings menu. You will have to follow the following steps again to add it back into FlavorCLI.
