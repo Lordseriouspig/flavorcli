@@ -42,7 +42,3 @@
 * [User Commands](./commands/user/README.md)
   * [User Get](./commands/user/get.md)
   * [User List](./commands/user/list.md)
-
-## Development
-* [Contributing](./development/contributing/README.md)
-* [Structure](./development/structure/README.md)
