@@ -25,9 +25,9 @@ flavor project devlog [FLAGS] <COMMAND>
 ```
 
 ### Commands
--  **[`set`](./set.md):**     Set your authentication token
--  **[`delete`](delete.md):**  Delete your authentication token
--  **[`help`](./delete.md):**    Print this message or the help of the given command(s)
+-  **[`list`](./list.md):**     List devlogs for a project
+-  **[`get`](./get.md):**  Get a specific devlog by its ID
+-  **`help`:**    Print this message or the help of the given command(s)
 
 ### Flags
 -  **`-v, --verbose...`:**  Increase logging verbosity

@@ -26,8 +26,8 @@ flavor auth [FLAGS] <COMMAND>
 
 ### Commands
 -  **[`set`](./set.md):**     Set your authentication token
--  **[`delete`](delete.md):**  Delete your authentication token
--  **[`help`](./delete.md):**    Print this message or the help of the given command(s)
+-  **[`delete`](./delete.md):**  Delete your authentication token
+-  **`help`:**    Print this message or the help of the given command(s)
 
 ### Flags
 -  **`-v, --verbose...`:**  Increase logging verbosity

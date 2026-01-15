@@ -17,3 +17,19 @@
  along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 -->
 
+The store commands allow you to browse the Flavortown store.
+
+## Usage
+```bash
+flavor store [FLAGS] <COMMAND>
+```
+
+### Commands:
+-  **[``list``](./list.md):**  List store items (requires a lot of screen space)
+-  **[``get``](./get.md):**   Get a specific store item by its ID
+-  **``help``:**  Print this message or the help of the given subcommand(s)
+
+### Flags:
+-  **``-v, --verbose...``:**  Increase logging verbosity
+-  **``-q, --quiet...``:**    Decrease logging verbosity
+-  **``-h, --help``:**        Print help

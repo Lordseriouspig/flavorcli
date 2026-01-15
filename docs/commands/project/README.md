@@ -30,7 +30,7 @@ flavor.exe project [FLAGS] <COMMAND>
 -  **[`devlog`](./devlog/README.md):**  Commands that allow you to view devlogs for a project
 -  **[`create`](./create.md):**  Create a new project
 -  **[`update`](./update.md):**  Update an existing project
--  **[`help`](./help.md):**    Print this message or the help of the given subcommand(s)
+-  **`help`:**    Print this message or the help of the given subcommand(s)
 
 ### Flags
 -  **`-v, --verbose...`:**  Increase logging verbosity
