@@ -28,7 +28,7 @@
 FlavorCLI is a fully-featured implementation of the Flavortown API, allowing for easier and streamlined interaction with HackClub's Flavortown.
 
 # Full Documentation
-The full documentation is available on [GitBook](about:blank) or in the [Docs Folder](/docs/). I've intentionally written these as more beginner friendly and less silly than this README. <!-- TODO: Add GitBook Link here -->
+The full documentation is available on [GitBook]([about:blank](https://flavorcli.gitbook.io/flavorcli-docs/)) or in the [Docs Folder](/docs/). I've intentionally written these as more beginner friendly and less silly than this README.
 
 # Quick Start
 Please note that this quick start guide may not be beginner friendly and is a bit silly.

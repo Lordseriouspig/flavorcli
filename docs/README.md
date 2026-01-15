@@ -21,7 +21,7 @@
 <!-- gotta love the crude attempt at a cross-platform note -->
 {% hint style="info" %}
 > [!TIP]
-> This page is also available on GitBook! <!-- TODO: Insert link here -->
+> This page is also available on [GitBook](https://flavorcli.gitbook.io/flavorcli-docs/)!
 {% endhint %}
 
 Welcome to the FlavorCLI docs! Here you may find all the information you need to use FlavorCLI.
