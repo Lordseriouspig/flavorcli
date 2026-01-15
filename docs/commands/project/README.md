@@ -17,3 +17,22 @@
  along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 -->
 
+The project commands allow you to view and manage projects and devlogs on Flavortown.
+
+## Usage
+```bash
+flavor.exe project [FLAGS] <COMMAND>
+```
+
+### Commands
+-  **[`list`](./list.md):**    List projects
+-  **[`get`](./get.md):**     Get a specific project by its ID
+-  **[`devlog`](./devlog/README.md):**  Commands that allow you to view devlogs for a project
+-  **[`create`](./create.md):**  Create a new project
+-  **[`update`](./update.md):**  Update an existing project
+-  **[`help`](./help.md):**    Print this message or the help of the given subcommand(s)
+
+### Flags
+-  **`-v, --verbose...`:**  Increase logging verbosity
+-  **`-q, --quiet...`:**    Decrease logging verbosity
+-  **`-h, --help`:**        Print help
