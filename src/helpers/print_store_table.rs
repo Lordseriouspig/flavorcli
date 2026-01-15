@@ -241,14 +241,14 @@ pub fn print_store_table(
                                 a.ticket_cost
                                     .au
                                     .partial_cmp(&b.ticket_cost.au)
-                                    .unwrap_or(std::cmp::Ordering::Equal)
+                                    .unwrap_or(std::cmp::Ordering::Greater)
                             });
                         } else {
                             items.sort_by(|a, b| {
                                 b.ticket_cost
                                     .au
                                     .partial_cmp(&a.ticket_cost.au)
-                                    .unwrap_or(std::cmp::Ordering::Equal)
+                                    .unwrap_or(std::cmp::Ordering::Greater)
                             });
                         }
                     }
@@ -258,14 +258,14 @@ pub fn print_store_table(
                                 a.ticket_cost
                                     .ca
                                     .partial_cmp(&b.ticket_cost.ca)
-                                    .unwrap_or(std::cmp::Ordering::Equal)
+                                    .unwrap_or(std::cmp::Ordering::Greater)
                             });
                         } else {
                             items.sort_by(|a, b| {
                                 b.ticket_cost
                                     .ca
                                     .partial_cmp(&a.ticket_cost.ca)
-                                    .unwrap_or(std::cmp::Ordering::Equal)
+                                    .unwrap_or(std::cmp::Ordering::Greater)
                             });
                         }
                     }
@@ -275,31 +275,31 @@ pub fn print_store_table(
                                 a.ticket_cost
                                     .eu
                                     .partial_cmp(&b.ticket_cost.eu)
-                                    .unwrap_or(std::cmp::Ordering::Equal)
+                                    .unwrap_or(std::cmp::Ordering::Greater)
                             });
                         } else {
                             items.sort_by(|a, b| {
                                 b.ticket_cost
                                     .eu
                                     .partial_cmp(&a.ticket_cost.eu)
-                                    .unwrap_or(std::cmp::Ordering::Equal)
+                                    .unwrap_or(std::cmp::Ordering::Greater)
                             });
                         }
                     }
                     "IN" => {
                         if sort_order == SortOrder::Asc {
-                            items.sort_by(|a, b| {
+                            items.sort_by(|a, b: &Store| {
                                 a.ticket_cost
                                     .in_
                                     .partial_cmp(&b.ticket_cost.in_)
-                                    .unwrap_or(std::cmp::Ordering::Equal)
+                                    .unwrap_or(std::cmp::Ordering::Greater)
                             });
                         } else {
                             items.sort_by(|a, b| {
                                 b.ticket_cost
                                     .in_
                                     .partial_cmp(&a.ticket_cost.in_)
-                                    .unwrap_or(std::cmp::Ordering::Equal)
+                                    .unwrap_or(std::cmp::Ordering::Greater)
                             });
                         }
                     }
@@ -309,14 +309,14 @@ pub fn print_store_table(
                                 a.ticket_cost
                                     .uk
                                     .partial_cmp(&b.ticket_cost.uk)
-                                    .unwrap_or(std::cmp::Ordering::Equal)
+                                    .unwrap_or(std::cmp::Ordering::Greater)
                             });
                         } else {
                             items.sort_by(|a, b| {
                                 b.ticket_cost
                                     .uk
                                     .partial_cmp(&a.ticket_cost.uk)
-                                    .unwrap_or(std::cmp::Ordering::Equal)
+                                    .unwrap_or(std::cmp::Ordering::Greater)
                             });
                         }
                     }
@@ -326,14 +326,14 @@ pub fn print_store_table(
                                 a.ticket_cost
                                     .us
                                     .partial_cmp(&b.ticket_cost.us)
-                                    .unwrap_or(std::cmp::Ordering::Equal)
+                                    .unwrap_or(std::cmp::Ordering::Greater)
                             });
                         } else {
                             items.sort_by(|a, b| {
                                 b.ticket_cost
                                     .us
                                     .partial_cmp(&a.ticket_cost.us)
-                                    .unwrap_or(std::cmp::Ordering::Equal)
+                                    .unwrap_or(std::cmp::Ordering::Greater)
                             });
                         }
                     }
@@ -343,14 +343,14 @@ pub fn print_store_table(
                                 a.ticket_cost
                                     .xx
                                     .partial_cmp(&b.ticket_cost.xx)
-                                    .unwrap_or(std::cmp::Ordering::Equal)
+                                    .unwrap_or(std::cmp::Ordering::Greater)
                             });
                         } else {
                             items.sort_by(|a, b| {
                                 b.ticket_cost
                                     .xx
                                     .partial_cmp(&a.ticket_cost.xx)
-                                    .unwrap_or(std::cmp::Ordering::Equal)
+                                    .unwrap_or(std::cmp::Ordering::Greater)
                             });
                         }
                     }
