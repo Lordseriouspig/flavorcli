@@ -17,3 +17,19 @@
  along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 -->
 
+The user commands allow you to view information about users.
+
+## Usage
+```bash
+flavor user [OPTIONS] <COMMAND>
+```
+
+### Commands
+-  **[``list``](./list.md):**  Get a list of users
+-  **[``get``](./get.md):**   Get user information by ID
+-  **``help``:**  Print this message or the help of the given subcommand(s)
+
+### Options
+-  **``-v, --verbose...``:**  Increase logging verbosity
+-  **``-q, --quiet...``:**    Decrease logging verbosity
+-  **``-h, --help``:**        Print help
