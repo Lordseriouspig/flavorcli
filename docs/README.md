@@ -27,10 +27,59 @@
 Welcome to the FlavorCLI docs! Here you may find all the information you need to use FlavorCLI.
 To get started, take a look at the **Table of Contents** on the left. There you may find guides on many commands and concepts.
 
-<!-- 
-## Links
-TODO: Insert common links here
->
+
+## Quick Links
+<table data-view="cards">
+  <thead>
+    <tr>
+      <th></th>
+      <th></th>
+      <th data-hidden data-card-target data-type="content-ref"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Installation</strong></td>
+      <td>Install FlavorCLI on your system</td>
+      <td><a href="./installation.md">Installation</a></td>
+    </tr>
+    <tr>
+      <td><strong>Getting Started</strong></td>
+      <td>Setup and basic usage</td>
+      <td><a href="./getting_started.md">Getting Started</a></td>
+    </tr>
+    <tr>
+      <td><strong>Add to PATH</strong></td>
+      <td>Make FlavorCLI available everywhere</td>
+      <td><a href="./add_to_path.md">Add to PATH</a></td>
+    </tr>
+    <tr>
+      <td><strong>Command Basics</strong></td>
+      <td>How commands and flags work</td>
+      <td><a href="./commands/basics/README.md">Commands Basics</a></td>
+    </tr>
+    <tr>
+      <td><strong>Auth Commands</strong></td>
+      <td>Authenticate with the Flavortown API</td>
+      <td><a href="./commands/auth/README.md">Auth Commands</a></td>
+    </tr>
+    <tr>
+      <td><strong>Project Commands</strong></td>
+      <td>Create, update, and manage projects and devlogs</td>
+      <td><a href="./commands/project/README.md">Project Commands</a></td>
+    </tr>
+    <tr>
+      <td><strong>Store Commands</strong></td>
+      <td>Browse and query the store</td>
+      <td><a href="./commands/store/README.md">Store Commands</a></td>
+    </tr>
+    <tr>
+      <td><strong>User Commands</strong></td>
+      <td>Fetch and list user information</td>
+      <td><a href="./commands/user/README.md">User Commands</a></td>
+    </tr>
+  </tbody>
+</table>
 
 <!--
 ## FAQ
