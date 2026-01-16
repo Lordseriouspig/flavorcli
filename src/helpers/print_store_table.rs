@@ -99,7 +99,7 @@ fn format_max_qty(max_qty: &Option<u32>) -> Cell {
         None => "∞".to_string(),
     })
 }
-fn format_sale_percentage(old_prices: &Vec<u32>) -> Cell {
+fn format_sale_percentage(old_prices: &[u32]) -> Cell {
     let formatted = if old_prices.len() >= 2 {
         let original_price = old_prices[old_prices.len() - 2] as f64;
         let current_price = old_prices[old_prices.len() - 1] as f64;
@@ -164,9 +164,9 @@ pub fn print_store_table(
     match sort {
         SortFields::Id => {
             if sort_order == SortOrder::Asc {
-                items.sort_by_key(|item| item.id.clone());
+                items.sort_by_key(|item| item.id);
             } else {
-                items.sort_by_key(|item| std::cmp::Reverse(item.id.clone()));
+                items.sort_by_key(|item| std::cmp::Reverse(item.id));
             }
         }
         SortFields::Name => {
@@ -288,7 +288,7 @@ pub fn print_store_table(
                     }
                     "IN" => {
                         if sort_order == SortOrder::Asc {
-                            items.sort_by(|a, b: &Store| {
+                            items.sort_by(|a, b| {
                                 a.ticket_cost
                                     .in_
                                     .partial_cmp(&b.ticket_cost.in_)
