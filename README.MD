@@ -93,13 +93,15 @@ yay -S flavorcli
 * Get and list devlogs
 * Get and list store items
 * Get and list users
+* Manage Projects
+* Customisable tables and sorting
 
 ### Planned Features
-- [x] Actually *have* commands
-- [x] Make those commands reflect what can be done with the API, add **more**
-- [x] Authorization with Flavortown.
-- [x] API Key storage with keychain.
-- [x] Actually handle the commands lol.
-- [x] API Implementation
-- [ ] The rest is dependant on what additions are made to the API
-- [ ] Also a few flags are planned, i've marked them in comments and cannot be bothered to write them here haha
+When (if) the routes are added, I'll be adding the following features:
+[ ] Manage Devlogs
+[ ] Change your settings
+[ ] View your votes
+
+Once I finish that, I'll ship the project and work on:
+[ ] Full TUI
+[ ] Possibly more depending on feedback
