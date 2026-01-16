@@ -69,7 +69,7 @@ fn format_url(s: &str) -> Cell {
 fn format_time_cell(dt: &str) -> Cell {
     Cell::new(format_time(dt))
 }
-fn format_devlog_ids(ids: &Vec<u32>) -> Cell {
+fn format_devlog_ids(ids: &[u32]) -> Cell {
     let display = if ids.is_empty() {
         "-".to_string()
     } else {

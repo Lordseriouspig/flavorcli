@@ -69,7 +69,7 @@ fn format_type(type_: &str) -> Cell {
         .to_string();
     Cell::new(formatted)
 }
-fn format_attached_to(attached_shop_item_ids: &Vec<Option<u32>>) -> Cell {
+fn format_attached_to(attached_shop_item_ids: &[Option<u32>]) -> Cell {
     let joined = attached_shop_item_ids
         .iter()
         .filter_map(|id| id.map(|i| i.to_string()))

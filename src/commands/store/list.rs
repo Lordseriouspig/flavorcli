@@ -171,8 +171,8 @@ impl StoreList {
                     items,
                     self.region.map(|r| format!("{:?}", r).to_lowercase()),
                     self.fields.clone(),
-                    self.sort.clone(),
-                    self.sort_order.clone(),
+                    self.sort,
+                    self.sort_order,
                     self.sort_region.map(|r| format!("{:?}", r).to_uppercase()),
                 );
             }

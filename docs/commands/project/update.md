@@ -20,7 +20,7 @@
 Allows you to update an existing project that you own
 ## Usage
 ```bash
-flavor project update [OPTIONS] --title <TITLE> --description <DESCRIPTION> <PROJECT_ID>
+flavor project update [OPTIONS] <PROJECT_ID>
 ```
 
 ### Options

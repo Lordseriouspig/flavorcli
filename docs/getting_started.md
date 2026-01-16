@@ -18,7 +18,7 @@
 -->
 
 Welcome to FlavorCLI! The following page provides instructions on how to get started using flavortown!
-If you haven't done so yet, please follow the [Installation Instructions](./getting_started.md). Once you have installed your copy of FlavorCLI, come back here so we can get you started.
+If you haven't done so yet, please follow the [Installation Instructions](./installation.md). Once you have installed your copy of FlavorCLI, come back here so we can get you started.
 
 Great! So you've installed FlavorCLI, what next?
 The first thing you need to do is open your terminal of choice. Once you have done so, simply type in ``flavor`` and hit enter.
