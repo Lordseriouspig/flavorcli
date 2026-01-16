@@ -19,10 +19,9 @@
 
 ![FlavorCLI Banner](https://hc-cdn.hel1.your-objectstorage.com/s/v3/d80496dcf9688766_untitled__1_.png)
 <!-- gotta love the crude attempt at a cross-platform note -->
-{% hint style="info" %}
+
 > [!TIP]
-> This page is also available on [GitBook](https://flavorcli.gitbook.io/flavorcli-docs/)!
-{% endhint %}
+> This page best viewed on [GitBook](https://flavorcli.gitbook.io/flavorcli)! We highly recommend reading the docs there, as some formatting does not work in raw markdown properly, and it provides for easier navigation.
 
 Welcome to the FlavorCLI docs! Here you may find all the information you need to use FlavorCLI.
 To get started, take a look at the **Table of Contents** on the left. There you may find guides on many commands and concepts.
@@ -80,11 +79,6 @@ To get started, take a look at the **Table of Contents** on the left. There you 
     </tr>
   </tbody>
 </table>
-
-<!--
-## FAQ
-TODO: Insert FAQ here...
--->
 
 ## Definitions
 For the purpose of these docs, the following definitions will be used:
