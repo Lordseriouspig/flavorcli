@@ -2,41 +2,60 @@
 
 All notable changes to this project will be documented in this file.
 
+## {{version}} - 2026-01-16
+
+[7b7829b](7b7829b7329d9031b64b68e69c0aa71431e69a13)...[d23c231](d23c231d385dc8813caf47c6d1260789d1b0bf09)
+
+### Bug Fixes
+
+- Change sorting logic for regional ([a94299d](a94299d09263a34162a01179ca98875816aa4bd5))
+
+### Documentation
+
+- Basic docs structure ([25c3449](25c344941a50793139f89d6601536bca0243399d))
+- Add getting started page ([df8a67c](df8a67cd16b01e9e47893fccf7f0b37403642d4e))
+- Add installation page ([a3d9f97](a3d9f978d6b5921cc248399d77186f74e5565b89))
+- Add command basics page ([5cec7c8](5cec7c865af331a7a7ba0d76b615eda887f5f22d))
+- Add add to path instructions ([518a804](518a8046491a8cf184a86c718e7309d9c1ec98e5))
+- Add auth commands instructions ([f915297](f915297dca2146e6f1571e8fc0e7a0947ee0efdd))
+- Add devlog commands instructions ([bc1337c](bc1337cf20e52dca72f1e69935c7890a070a5bf7))
+- Add project docs ([2bd141e](2bd141e15a8dacd299c2bf5f73c31d5850b01c27))
+- Add store docs ([a762012](a762012f2cb3ab86a5af137ae64e1e1bd4c672af))
+- Add user command docs ([d1e34f5](d1e34f541dc3ce782306c79a7d5b16a7a4314288))
+- I am not in the mood to do dev docs so lets forget it ever existed ([20f42b2](20f42b21040e9c1bf35145d4756cea9d87d1b243))
+- Add docs links ([d533fbe](d533fbe082ced13c01d9fd28755d16ab70683126))
+- Add quick links ([a13ed5f](a13ed5ff77d76ee62ab69d0fa68cedfc34c90510))
+- Fix up note ([fd2bb16](fd2bb16e0f15986f5788c5756a29ac9dcf5c1f5b))
+- Note for flavortown users ([6c252a6](6c252a68b70d04ff95ea4387ba115220709a9507))
+
+### Features
+
+- Add project create and update commands ([16860c1](16860c1af4f6a391c25ce78d2b527e4f64bb69d3))
+- Add a flag to choose table fields in store list ([66849b7](66849b743eb6e68ffa757f7b73772d0725372ab0))
+- Add sorting for store list ([caaf1f5](caaf1f5fe2f4375859dcbaaed6f035364782d977))
+- Add table field choosing to user list ([27830e4](27830e4dc7bb394578f8cfb53e971221eed08238))
+- Add custom fields to project devlogs list ([3998cdd](3998cddb40771a19b31150feb7d93bb45038cc3a))
+- Add custom fields to project list ([f309870](f309870a88bf6fc0b2c5432c55fdef313c062d3d))
+- Add resolve flag to get user ([4ef1269](4ef1269a9bc45f37fb167e1841e7082052640821))
+- Allow update to not change title or description ([6ad5bc6](6ad5bc644caf661f254f778b6dfe37d2f99d58f0))
+
+### Miscellaneous Tasks
+
+- Fix release name ([b448016](b448016a577ad39c7c71416b3834223ba2c29e48))
+- Add -j to the zip command on linux ([e6276e4](e6276e4008df9ccfbcbec4d99672e12e6d4a2c26))
+- Small debug log ([717613d](717613d10a2ce33a8241b6c6a99508e64b5d59cc))
+- Add aur stuff ([1f043bd](1f043bd9fc3362f24ba1e73b558b8d5484cc128e))
+- Make linter happy ([1ad5e34](1ad5e3467a1d7ffe4bf1c20e97ecd1e770c353a2))
+- Lintttttttttttt ([ea8d0e4](ea8d0e4d785a65a2cbdd0384ad915656f7629041))
+
+### Refactor
+
+- Use /users/me insteaed of asking for user id by default ([0e2cf24](0e2cf2493bf5a57e434eb9e0a2791210eb4b09f2))
+- Use u32 consistantly ([a44e3a3](a44e3a300458296827bf25cbc989c90cd076d14b))
+
 ## 0.2.0-beta.1 - 2026-01-08
 
-[71dd9af](71dd9afa06317a8b4bd2ec97c07cfd6e6d4bd99f)...[76af6da](76af6dae293308a346eeadac772cd096d2ae9943)
-
-### Miscellaneous Tasks
-
-- Rm build script ([450c71e](450c71ef724ceec4eb723a1e81bd8fb3e851d042))
-
-## x.x.3 - 2026-01-08
-
-[5fc71cb](5fc71cb50242adfc467987978e1282ba51ba215e)...[71dd9af](71dd9afa06317a8b4bd2ec97c07cfd6e6d4bd99f)
-
-### Miscellaneous Tasks
-
-- Some release action enhancements ([71dd9af](71dd9afa06317a8b4bd2ec97c07cfd6e6d4bd99f))
-
-## x.x.2 - 2026-01-08
-
-[8c438d8](8c438d8164879c4652927392638ed49fd491d160)...[5fc71cb](5fc71cb50242adfc467987978e1282ba51ba215e)
-
-### Miscellaneous Tasks
-
-- Fix the action ([5fc71cb](5fc71cb50242adfc467987978e1282ba51ba215e))
-
-## x.x.1 - 2026-01-08
-
-[dca35aa](dca35aa1e51f52e3483732e4729a6f3ad6338504)...[8c438d8](8c438d8164879c4652927392638ed49fd491d160)
-
-### Miscellaneous Tasks
-
-- Create release action ([8c438d8](8c438d8164879c4652927392638ed49fd491d160))
-
-## x.x.x - 2026-01-07
-
-[44417e2](44417e24214d83033ef615cd4944e202b34fd4c2)...[dca35aa](dca35aa1e51f52e3483732e4729a6f3ad6338504)
+[44417e2](44417e24214d83033ef615cd4944e202b34fd4c2)...[7b7829b](7b7829b7329d9031b64b68e69c0aa71431e69a13)
 
 ### Bug Fixes
 
@@ -55,7 +74,10 @@ All notable changes to this project will be documented in this file.
 
 ### Miscellaneous Tasks
 
-- Update release.toml ([d721290](d7212904755ca7d86a3d37d5ac8773f945175232))
+- Create release action ([8c438d8](8c438d8164879c4652927392638ed49fd491d160))
+- Fix the action ([5fc71cb](5fc71cb50242adfc467987978e1282ba51ba215e))
+- Some release action enhancements ([71dd9af](71dd9afa06317a8b4bd2ec97c07cfd6e6d4bd99f))
+- Rm build script ([450c71e](450c71ef724ceec4eb723a1e81bd8fb3e851d042))
 
 ### Refactor
 
