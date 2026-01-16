@@ -28,7 +28,7 @@ use log::{debug, info};
 pub struct ProjectGet {
     // Defines get project command (level 3)
     /// The project ID to retrieve
-    pub project_id: u64,
+    pub project_id: u32,
 
     /// Returns data as raw JSON
     #[clap(long, conflicts_with = "resolve")]

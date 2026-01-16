@@ -17,9 +17,11 @@
 
 use clap::{Args, Subcommand};
 
+pub mod create;
 pub mod devlog;
 pub mod get;
 pub mod list;
+pub mod update;
 
 #[derive(Debug, Args)]
 pub struct ProjectsCommand {
@@ -38,4 +40,9 @@ pub enum ProjectSubcommand {
     /// Commands that allow you to view devlogs for a project
     #[clap(alias = "devlogs")]
     Devlog(devlog::ProjectDevlogs),
+    /// Create a new project
+    Create(create::ProjectCreate),
+    /// Update an existing project
+    #[clap(alias = "edit")]
+    Update(update::ProjectUpdate),
 }

@@ -29,9 +29,9 @@ pub struct ProjectDevlogGet {
     // Defines get devlog command (level 4)
     /// The project ID the devlog belongs to. Will search for this devlog across all projects if not provided.
     #[clap(long, short)]
-    pub project_id: Option<u64>,
+    pub project_id: Option<u32>,
     /// The devlog ID to retrieve
-    pub devlog_id: u64,
+    pub devlog_id: u32,
     /// Returns data as raw JSON
     #[clap(long, conflicts_with = "short")]
     pub json: bool,

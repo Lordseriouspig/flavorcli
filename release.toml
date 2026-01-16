@@ -1,4 +1,7 @@
-pre-release-hook = ["git", "cliff", "-o", "CHANGELOG.md", "--tag", "{{version}}"]
+pre-release-hook = ["powershell", "-ExecutionPolicy", "Bypass", "-File", "pre-release-hook.ps1"]
 allow-branch = ["main"]
 tag-message = "chore(release): release version {{version}}"
 pre-release-commit-message = "chore(release): bump version {{version}}"
+pre-release-replacements = [
+    {file="PKGBUILD", search="pkgver=.*", replace="pkgver={{version}}"},
+]

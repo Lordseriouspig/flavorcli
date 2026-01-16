@@ -28,12 +28,81 @@ use log::{debug, info};
 pub struct StoreList {
     // Defines list store items command (level 3)
     /// Returns data as raw JSON
-    #[clap(long)]
+    #[clap(long, conflicts_with_all = ["region", "fields", "sort"])]
     pub json: bool,
+
     /// Region column to show
-    #[clap(long, value_enum)]
+    #[clap(long, value_enum, conflicts_with = "json")]
     pub region: Option<Regions>,
-    // TODO: flag to choose table fields, sort flag
+
+    /// Fields to output in the table (advanced)
+    #[clap(
+        long,
+        value_enum,
+        conflicts_with = "json",
+        value_delimiter = ',',
+        default_value = "id,name,description,stock,regional,type,attached-to"
+    )]
+    pub fields: Vec<StoreFields>,
+
+    /// Sort the table output
+    #[clap(
+        long,
+        value_enum,
+        conflicts_with = "json",
+        default_value = "id",
+        requires_if("regional", "sort_region")
+    )]
+    pub sort: SortFields,
+
+    /// Choose the region to sort by if you selected "regional" as the sort order
+    #[clap(long, value_enum, requires = "sort", conflicts_with = "json")]
+    pub sort_region: Option<Regions>,
+
+    /// Choose the direction of sort order
+    #[clap(long, value_enum, requires = "sort", default_value = "asc")]
+    pub sort_order: SortOrder,
+}
+
+#[derive(clap::ValueEnum, Clone, Copy, Debug, PartialEq, Eq)]
+pub enum StoreFields {
+    Id,
+    Name,
+    Description,
+    Stock,
+    Type,
+    AttachedTo,
+    Limited,
+    BuyableBySelf,
+    ShowInCarousel,
+    AccessoryTag,
+    LongDescription,
+    ImageUrl,
+    MaxQty,
+    OnePerPersonEver,
+    SalePercentage,
+    Regional,
+}
+
+#[derive(clap::ValueEnum, Clone, Copy, Debug, PartialEq, Eq)]
+pub enum SortFields {
+    Id,
+    Name,
+    Stock,
+    Type,
+    Limited,
+    BuyableBySelf,
+    ShowInCarousel,
+    MaxQty,
+    OnePerPersonEver,
+    SalePercentage,
+    Regional,
+}
+
+#[derive(clap::ValueEnum, Clone, Copy, Debug, PartialEq, Eq)]
+pub enum SortOrder {
+    Asc,
+    Desc,
 }
 
 #[derive(clap::ValueEnum, Clone, Copy, Debug)]
@@ -101,6 +170,10 @@ impl StoreList {
                 print_store_table(
                     items,
                     self.region.map(|r| format!("{:?}", r).to_lowercase()),
+                    self.fields.clone(),
+                    self.sort,
+                    self.sort_order,
+                    self.sort_region.map(|r| format!("{:?}", r).to_uppercase()),
                 );
             }
         }

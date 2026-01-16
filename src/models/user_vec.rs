@@ -46,7 +46,10 @@ pub struct UserList {
     // The user object returned from list is slightly different to the one returned from get as of now. I'll remove this if that gets changed
     pub id: u32,
     #[serde(deserialize_with = "fix_displayname")]
+    pub slack_id: String,
     pub display_name: String,
+    pub avatar: String,
+    pub project_ids: Vec<u32>,
     #[serde(deserialize_with = "zero_if_null")]
     pub cookies: u32,
 }

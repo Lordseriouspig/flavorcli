@@ -34,6 +34,27 @@ pub struct UserList {
     /// Returns data as raw JSON
     #[clap(long)]
     pub json: bool,
+
+    /// Fields to output in the table (advanced)
+    #[clap(
+        long,
+        value_enum,
+        conflicts_with = "json",
+        value_delimiter = ',',
+        default_value = "id,display-name,cookies"
+    )]
+    pub fields: Vec<UserFields>,
+    // I'm not going to implement sorting on my end as the server side pagination already sorts them by modified time, so it would be misleading
+}
+
+#[derive(clap::ValueEnum, Clone, Copy, Debug, PartialEq, Eq)]
+pub enum UserFields {
+    Id,
+    SlackId,
+    DisplayName,
+    Avatar,
+    ProjectIds,
+    Cookies,
 }
 
 impl UserList {
@@ -89,7 +110,7 @@ impl UserList {
             } else {
                 let users: UserVec = res.json().await?;
                 debug!("Successfully parsed {} users", users.users.len());
-                print_user_table(&users.users, &users.pagination);
+                print_user_table(&users.users, &users.pagination, self.fields.clone());
             }
         }
         Ok(())

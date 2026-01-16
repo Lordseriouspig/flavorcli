@@ -30,7 +30,7 @@ use owo_colors::OwoColorize;
 pub struct ProjectDevlogList {
     // Defines list devlogs command (level 4)
     /// The project ID to list devlogs for. Will list ALL devlogs if not provided.
-    pub project_id: Option<u64>,
+    pub project_id: Option<u32>,
 
     /// Page number for pagination. Defaults to 1.
     #[clap(long, short)]
@@ -39,6 +39,28 @@ pub struct ProjectDevlogList {
     /// Returns data as raw JSON
     #[clap(long)]
     pub json: bool,
+
+    /// Fields to output in the table (advanced)
+    #[clap(
+        long,
+        value_enum,
+        conflicts_with = "json",
+        value_delimiter = ',',
+        default_value = "id,body,duration,likes-count,comments-count,updated-at"
+    )]
+    pub fields: Vec<DevlogFields>,
+}
+
+#[derive(clap::ValueEnum, Clone, Copy, Debug, PartialEq, Eq)]
+pub enum DevlogFields {
+    Id,
+    Body,
+    CommentsCount,
+    Duration,
+    LikesCount,
+    ScrapbookUrl,
+    CreatedAt,
+    UpdatedAt,
 }
 
 impl ProjectDevlogList {
@@ -123,7 +145,7 @@ impl ProjectDevlogList {
                         }
                     }
                 }
-                print_devlog_table(&devlogs.devlogs, &devlogs.pagination);
+                print_devlog_table(&devlogs.devlogs, &devlogs.pagination, self.fields.clone());
             }
         }
 

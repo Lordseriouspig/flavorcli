@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 
+use crate::commands::user::list::UserFields;
 use crate::models::user_vec::Pagination;
 use crate::models::user_vec::UserList;
 use comfy_table::modifiers::UTF8_ROUND_CORNERS;
@@ -22,7 +23,36 @@ use comfy_table::presets::UTF8_FULL;
 use comfy_table::*;
 use owo_colors::OwoColorize;
 
-pub fn print_user_table(users: &[UserList], pagination: &Pagination) {
+fn format_u32(u: u32) -> Cell {
+    // for id, cookies
+    Cell::new(u.to_string())
+}
+fn format_str(s: &str) -> Cell {
+    // for slack id, display name, avatar
+    Cell::new(s.to_string())
+}
+fn format_project_ids(project_ids: &[u32]) -> Cell {
+    let formatted = if project_ids.is_empty() {
+        "None".to_string()
+    } else if project_ids.len() > 5 {
+        let mut ids: Vec<String> = project_ids
+            .iter()
+            .take(5)
+            .map(|id| id.to_string())
+            .collect();
+        ids.push("...".to_string());
+        ids.join(", ")
+    } else {
+        project_ids
+            .iter()
+            .map(|id| id.to_string())
+            .collect::<Vec<String>>()
+            .join(", ")
+    };
+    Cell::new(formatted)
+}
+
+pub fn print_user_table(users: &[UserList], pagination: &Pagination, fields: Vec<UserFields>) {
     if users.is_empty() {
         println!("No users found.");
         return;
@@ -31,13 +61,46 @@ pub fn print_user_table(users: &[UserList], pagination: &Pagination) {
     table
         .load_preset(UTF8_FULL)
         .apply_modifier(UTF8_ROUND_CORNERS)
-        .set_content_arrangement(ContentArrangement::Dynamic)
-        .set_header(vec!["ID", "Display Name", "Cookies"]);
+        .set_content_arrangement(ContentArrangement::Disabled);
+
+    // Build header
+    let mut header = Vec::<&str>::new();
+    for field in &fields {
+        match field {
+            UserFields::Id => {
+                header.push("ID");
+            }
+            UserFields::SlackId => {
+                header.push("Slack ID");
+            }
+            UserFields::DisplayName => {
+                header.push("Display Name");
+            }
+            UserFields::Avatar => {
+                header.push("Avatar");
+            }
+            UserFields::ProjectIds => {
+                header.push("Project IDs");
+            }
+            UserFields::Cookies => {
+                header.push("Cookies");
+            }
+        }
+    }
+    table.set_header(header);
     for user in users {
-        let id = user.id.to_string();
-        let display_name = user.display_name.clone();
-        let cookies = user.cookies.to_string();
-        table.add_row(vec![id, display_name, cookies]);
+        let mut row: Vec<Cell> = Vec::new();
+        for field in &fields {
+            match field {
+                UserFields::Id => row.push(format_u32(user.id)),
+                UserFields::SlackId => row.push(format_str(&user.slack_id)),
+                UserFields::DisplayName => row.push(format_str(&user.display_name)),
+                UserFields::Avatar => row.push(format_str(&user.avatar)),
+                UserFields::ProjectIds => row.push(format_project_ids(&user.project_ids)),
+                UserFields::Cookies => row.push(format_u32(user.cookies)),
+            }
+        }
+        table.add_row(row);
     }
 
     let footer_text = if let Some(next) = pagination.next_page {

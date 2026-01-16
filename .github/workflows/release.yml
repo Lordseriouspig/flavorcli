@@ -106,7 +106,7 @@ jobs:
             run: |
               version=${GITHUB_REF#refs/tags/}
               echo "version=${version}" >> $GITHUB_ENV
-              zip flavorcli-${version}-linux-x86_64.zip target/release/flavor CHANGELOG.md README.MD LICENSE install-linux.sh uninstall-linux.sh
+              zip -j flavorcli-${version}-linux-x86_64.zip target/release/flavor CHANGELOG.md README.MD LICENSE install-linux.sh uninstall-linux.sh
           
           - name: Upload Binary
             uses: actions/upload-artifact@v4
@@ -179,3 +179,14 @@ jobs:
               files: |
                 artifacts/windows/flavorcli-${{ env.version }}-windows-x86_64.zip
                 artifacts/linux/flavorcli-${{ env.version }}-linux-x86_64.zip
+
+          - name: Publish AUR package
+            uses: KSXGitHub/github-actions-deploy-aur@v4.1.1
+            with:
+              pkgname: flavorcli
+              pkgbuild: ./PKGBUILD
+              commit_username: ${{ secrets.AUR_USERNAME }}
+              commit_email: ${{ secrets.AUR_EMAIL }}
+              ssh_private_key: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
+              commit_message: Update AUR package
+              ssh_keyscan_types: rsa,ecdsa,ed25519

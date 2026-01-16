@@ -15,24 +15,27 @@
 // You should have received a copy of the GNU General Public License
 // along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 
-use crate::{helpers::get_key::get_key, models::authdata::AuthData, models::devlog::Devlog};
+use crate::{helpers::get_key::get_key, models::authdata::AuthData, models::project::Project};
 use anyhow::Result;
 use indicatif::{ProgressBar, ProgressStyle};
 use log::{debug, info};
 
-pub async fn resolve_devlogs(devlog_ids: &[u32]) -> Result<Vec<Devlog>> {
+pub async fn resolve_projects(project_ids: &[u32]) -> Result<Vec<Project>> {
     let auth: AuthData = get_key()?;
     let spinner = ProgressBar::new_spinner();
-    let mut resolved_devlogs = Vec::new();
+    let mut resolved_projects = Vec::new();
     spinner.set_style(
         ProgressStyle::with_template("{spinner} {msg}")?
             .tick_strings(&["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"]),
     );
-    spinner.set_message("Resolving devlogs...");
+    spinner.set_message("Resolving projects...");
     spinner.enable_steady_tick(std::time::Duration::from_millis(80));
     let client = reqwest::Client::new();
-    for devlog in devlog_ids {
-        let url = format!("https://flavortown.hackclub.com/api/v1/devlogs/{}", devlog);
+    for project in project_ids {
+        let url = format!(
+            "https://flavortown.hackclub.com/api/v1/projects/{}",
+            project
+        );
         debug!("Sending GET request to {}", url);
         let res = client
             .get(&url)
@@ -47,16 +50,16 @@ pub async fn resolve_devlogs(devlog_ids: &[u32]) -> Result<Vec<Devlog>> {
                 res.status(),
                 match res.status().as_u16() {
                     401 => "Is your token correct?",
-                    404 => "Is the project ID and/or devlog ID correct?",
+                    404 => "Is the project ID correct?",
                     _ => "Please try again later.",
                 }
             );
         } else {
-            resolved_devlogs.push(res.json::<Devlog>().await?);
-            debug!("Successfully resolved devlog ID: {}", devlog);
+            resolved_projects.push(res.json::<Project>().await?);
+            debug!("Successfully resolved project ID: {}", project);
         }
     }
     spinner.finish_and_clear();
-    info!("Successfully resolved all devlogs");
-    Ok(resolved_devlogs)
+    info!("Successfully resolved all projects");
+    Ok(resolved_projects)
 }

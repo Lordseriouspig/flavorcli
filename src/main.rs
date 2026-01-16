@@ -103,6 +103,18 @@ async fn run(args: FlavorArgs) -> Result<()> {
                         }
                     }
                 }
+                commands::project::ProjectSubcommand::Create(create_cmd) => {
+                    debug!("Executing ProjectSubcommand::Create with args: {:?}", create_cmd);
+                    create_cmd.execute()
+                    .await
+                    .context("Failed to create project")?; // TODO: might need something to check if the error was caused when rendering the project and show a different message, as the project would have been created.
+                }
+                commands::project::ProjectSubcommand::Update(update_cmd) => {
+                    debug!("Executing ProjectSubcommand::Update with args: {:?}", update_cmd);
+                    update_cmd.execute()
+                    .await
+                    .context("Failed to update project")?;
+                }
             }
         }
         commands::Command::Store(store_cmd) => {
