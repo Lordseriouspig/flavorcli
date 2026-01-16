@@ -38,6 +38,11 @@ FlavorCLI is on a few package managers. These can be convenient if you already h
 2. Run ``cargo install flavorcli``
 3. Profit!
 
+### [AUR](https://aur.archlinux.org/packages/flavorcli/)
+1. Ensure you have an AUR helper installed, such as yay.
+2. Run ``yay -S flavorcli``
+3. Profit!
+
 #### Uninstall
 1. Ensure you *still* have cargo installed. Follow the instructions [here](https://doc.rust-lang.org/cargo/getting-started/installation.html) if you uninstalled it.
 2. Run ``cargo uninstall flavorcli``

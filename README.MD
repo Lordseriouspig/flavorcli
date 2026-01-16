@@ -56,6 +56,12 @@ cargo install flavorcli
 ```
 Ensure you have the cargo install directory in your PATH.
 
+#### AUR
+If you use Arch Linux, you can build using AUR with this command:
+```
+yay -S flavorcli
+```
+
 ### Build it yourself
 1. Download the source code or git clone the repo[^2]
 2. Download and install rust if it is not already installed
