@@ -28,6 +28,10 @@ To get started, take a look at the **Table of Contents** on the left. There you 
 
 
 ## Quick Links
+> **Important!**
+> If you are viewing this README on Flavortown, you **will not** be able to see the quick links or the table of contents! Please view this page on [GitBook](https://flavorcli.gitbook.io/flavorcli)!
+> https://flavorcli.gitbook.io/flavorcli
+
 <table data-view="cards">
   <thead>
     <tr>
