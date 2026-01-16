@@ -2,9 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
-## {{version}} - 2026-01-16
+## 0.3.0 - 2026-01-16
 
-[7b7829b](7b7829b7329d9031b64b68e69c0aa71431e69a13)...[d23c231](d23c231d385dc8813caf47c6d1260789d1b0bf09)
+[7b7829b](7b7829b7329d9031b64b68e69c0aa71431e69a13)...[04927ef](04927efd67448b16472e9ef7e5e5c2ca5a6b6393)
 
 ### Bug Fixes
 
