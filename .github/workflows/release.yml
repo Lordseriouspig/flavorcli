@@ -190,3 +190,27 @@ jobs:
               ssh_private_key: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
               commit_message: Update AUR package
               ssh_keyscan_types: rsa,ecdsa,ed25519
+
+          - name: Install Nix
+            uses: cachix/install-nix-action@v31
+            with:
+              extra_nix_config: experimental-features = nix-command flakes
+
+          - name: Update flake hash
+            run: |
+              VERSION=${GITHUB_REF#refs/tags/}
+              TARBALL_URL="https://github.com/lordseriouspig/flavorcli/archive/refs/tags/v${VERSION}.tar.gz"
+              NIX_HASH=$(nix hash url --type sha256 --sri "${TARBALL_URL}")
+
+              # Compute cargoHash from the Cargo.lock contained in the GitHub tarball
+              TMPDIR=$(mktemp -d)
+              curl -L "${TARBALL_URL}" | tar -xz -C "${TMPDIR}" --strip-components=1
+              CARGO_HASH=$(nix hash path --sri "${TMPDIR}/Cargo.lock")
+              sed -i "s|hash = \".*\";|hash = \"$NIX_HASH\";|" flake.nix
+              sed -i "s|cargoHash = \".*\";|cargoHash = \"$CARGO_HASH\";|" flake.nix
+              
+              git config user.name "github-actions[bot]"
+              git config user.email "actions@github.com"
+              git add flake.nix
+              git commit -m "Update flake.nix hash for $VERSION"
+              git push
