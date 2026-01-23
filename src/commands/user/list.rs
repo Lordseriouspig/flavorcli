@@ -19,6 +19,7 @@ use crate::helpers::get_key::get_key;
 use crate::helpers::print_user_table::print_user_table;
 use crate::models::authdata::AuthData;
 use crate::models::user_vec::UserVec;
+use owo_colors::OwoColorize;
 use anyhow;
 use clap::Args;
 use indicatif::{ProgressBar, ProgressStyle};
@@ -30,6 +31,10 @@ pub struct UserList {
     /// Page number for pagination
     #[clap(long, short)]
     pub page: Option<u32>,
+
+    /// Query string to filter users
+    #[clap(long, alias = "search")]
+    pub query: Option<String>,
 
     /// Returns data as raw JSON
     #[clap(long)]
@@ -75,6 +80,9 @@ impl UserList {
             if let Some(page) = self.page {
                 p.push(("page", page.to_string()));
             }
+            if let Some(query) = &self.query {
+                p.push(("query", query.clone()));
+            }
             p
         };
         debug!(
@@ -110,6 +118,14 @@ impl UserList {
             } else {
                 let users: UserVec = res.json().await?;
                 debug!("Successfully parsed {} users", users.users.len());
+                if self.query.is_some() {
+                    println!(
+                        "{}{}{}",
+                        "Search result(s) for query '".bold().cyan(),
+                        self.query.as_ref().unwrap().italic().bold().yellow(),
+                        "'".bold().cyan()
+                    );
+                };
                 print_user_table(&users.users, &users.pagination, self.fields.clone());
             }
         }
