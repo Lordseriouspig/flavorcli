@@ -19,22 +19,21 @@ path = "src/main.rs"
 
 [dependencies]
 clap = { version = "4.5.54", features = ["derive"] }
-reqwest = { version = "0.12.28", features = ["json"] }
+reqwest = { version = "0.13.1", features = ["json", "multipart", "stream", "query", "form"] }
 tokio = { version = "1.49.0", features = ["full"] }
 serde = { version = "1.0.228", features = ["derive"] }
-serde_json = "1.0.148"
+serde_json = "1.0.149"
 keyring = { version = "3.6.3", features = ["apple-native", "windows-native", "sync-secret-service"] }
 indicatif = "0.18.3"
-image = "0.25.9"
 anyhow = "1.0.100"
 log = "0.4.29"
 colog = "1.4.0"
 clap-verbosity-flag = "3.0.4"
 owo-colors = "4.2.3"
-chrono = "0.4.42"
+chrono = "0.4.43"
 textwrap = "0.16.2"
-comfy-table = "7.2.1"
-sentry = "0.46.0"
-sentry-anyhow = "0.46.0"
-sentry-log = "0.46.0"
+comfy-table = "7.2.2"
+sentry = "0.46.1"
+sentry-anyhow = "0.46.1"
+sentry-log = "0.46.1"
 env_logger = "0.11.8"
