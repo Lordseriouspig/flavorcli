@@ -21,10 +21,10 @@ The project create command allows you to create a new project.
 
 ## Usage
 ```bash
-flavor project create [FLAGS] --title <TITLE> --description <DESCRIPTION>
+flavor project create [OPTIONS] --title <TITLE> --description <DESCRIPTION>
 ```
 
-### Flags
+### Options
 -  **`--title <TITLE>`:**              The title of the new project
 -  **`--description <DESCRIPTION>`:**  The description of the new project
 -  **`--repo-url <REPO_URL>`:**        A link to the project's repository

@@ -21,13 +21,13 @@ The store get command allows you to get specific info about an item in the Flavo
 
 ## Usage
 ```
-flavor store get [FLAGS] <ITEM_ID>
+flavor store get [OPTIONS] <ITEM_ID>
 ```
 
-### Options
+### Arguments
 -  **``<ITEM_ID>``:**  The store item ID to retrieve
 
-### Flags
+### Options
 -   **``   --json``:**        Returns data as raw JSON
 -  **``-s, --short``:**       Omits some metadata
 -  **``-d, --detailed``:**    Adds random other metadata

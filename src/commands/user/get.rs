@@ -54,8 +54,8 @@ impl UserGet {
         let client = reqwest::Client::new();
         let url = format!(
             "https://flavortown.hackclub.com/api/v1/users/{}",
-            if self.user_id.is_some() {
-                self.user_id.unwrap().to_string()
+            if let Some(user_id) = &self.user_id {
+                user_id.to_string()
             } else {
                 "me".to_string()
             }

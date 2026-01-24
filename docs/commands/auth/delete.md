@@ -21,10 +21,10 @@ Auth set allows you to delete your stored auth token.
 
 ## Usage
 ```bash
-flavor auth delete [FLAGS]
+flavor auth delete [OPTIONS]
 ```
 
-### Flags
+### Options
 -  **`    --user-id <USER_ID>`:**  Your Flavortown ID (find it in the URL of your profile)
 -  **`    --no-verify`:**          Disables token verification (not recommended)
 -  **`-v, --verbose...`:**         Increase logging verbosity

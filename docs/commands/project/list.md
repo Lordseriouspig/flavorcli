@@ -21,10 +21,10 @@ Project list allows you to view a list of all projects and optionally search the
 
 ## Usage
 ```bash
-flavor project list [FLAGS]
+flavor project list [OPTIONS]
 ```
 
-## Flags
+## Options
 -  **``-p, --page <PAGE>``:**      Page number for pagination. Defaults to 1
 -   **``   --query <QUERY>``:**    Query string to filter projects
 -    **``  --json``:**             Returns data as raw JSON

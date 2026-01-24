@@ -120,11 +120,11 @@ pub fn print_store(i: &Store, short: bool, detailed: bool) {
         heading!("Buying Info:");
         field_long!("Limited?", i.limited);
         field_long!("Stock", stock_str);
-        if i.sale_percentage.is_some() {
-            field_long!("Sale Percentage", i.sale_percentage.unwrap());
+        if let Some(sale_percentage) = i.sale_percentage {
+            field_long!("Sale Percentage", sale_percentage);
         }
-        if i.max_qty.is_some() {
-            field_long!("Max Qty", i.max_qty.unwrap());
+        if let Some(max_qty) = i.max_qty {
+            field_long!("Max Qty", max_qty);
         }
         field_long!("One Per Person Ever?", i.one_per_person_ever);
         field_long!("Buyable By Self?", i.buyable_by_self);

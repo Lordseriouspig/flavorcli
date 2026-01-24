@@ -58,7 +58,7 @@ To get started, take a look at the **Table of Contents** on the left. There you 
     </tr>
     <tr>
       <td><strong>Command Basics</strong></td>
-      <td>How commands and flags work</td>
+      <td>How commands and arguments work</td>
       <td><a href="./commands/basics/README.md">Commands Basics</a></td>
     </tr>
     <tr>
@@ -88,5 +88,5 @@ To get started, take a look at the **Table of Contents** on the left. There you 
 For the purpose of these docs, the following definitions will be used:
 - **Commands** - Any action noun keyword that is used in the CLI to do things. I.E ``flavor user get``, where ``get`` is the command. For disambiguation, ``user get`` may be referred to as the command.
 - **Subcommands** - Any noun keyword that is used to split up commands. I.E ``flavor user get``, where ``user`` is the subcommand.
-- **Flags** - Any option for a command that is prefixed with a single `-` (short flags) or a double ``--`` (long flags). I.E ``flavor user get --help`` where ``--help`` is the flag. This includes flags that accept values, like ``flavor project create --title "cool project"``.
-- **Options** - Any option for a command that *is not* prefixed with a `-` or `--`. I.E ``flavor user get 190``, where ``190`` is the option.
+- **Options** - Any option for a command that is prefixed with a single `-` (short options) or a double ``--`` (long options). I.E ``flavor user get --help`` where ``--help`` is the option. This includes options that accept values, like ``flavor project create --title "cool project"``.
+- **Arguments** - Any option for a command that *is not* prefixed with a `-` or `--`. I.E ``flavor user get 190``, where ``190`` is the option.

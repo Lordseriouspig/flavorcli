@@ -21,15 +21,18 @@ Commands that allow you to view and manage your devlogs.
 
 ## Usage
 ```bash
-flavor project devlog [FLAGS] <COMMAND>
+flavor project devlog [OPTIONS] <COMMAND>
 ```
 
 ### Commands
 -  **[`list`](./list.md):**     List devlogs for a project
--  **[`get`](./get.md):**  Get a specific devlog by its ID
--  **`help`:**    Print this message or the help of the given command(s)
+-  **[`get`](./get.md):**       Get a specific devlog by its ID
+-  **[`create`](./create.md):** Create a new devlog for a project
+-  **[`update`](./update.md):** Update an existing devlog
+-  **[`delete`](./delete.md):** Delete a devlog
+-  **`help`:**                 Print this message or the help of the given command(s)
 
-### Flags
+### Options
 -  **`-v, --verbose...`:**  Increase logging verbosity
 -  **`-q, --quiet...`:**    Decrease logging verbosity
 -  **`-h, --help`:**        Print help

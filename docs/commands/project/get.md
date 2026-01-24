@@ -21,16 +21,16 @@ Project get allows you to get information about a specific project by its ID.
 
 ## Usage
 ```bash
-flavor project get [FLAGS] <PROJECT_ID>
+flavor project get [OPTIONS] <PROJECT_ID>
 ```
 
-### Options
+### Arguments
 -  **``<PROJECT_ID>``:**  The project ID to retrieve
 {% hint style="info" %}
 You can get Project IDs from the `flavor project list` command, or from the `flavor user get` command, where you can see all projects associated with a user. The project's URL on Flavortown also contains the project ID.
 {% endhint %}
 
-### Flags
+### Options
 -  **``    --json    ``:**    Returns data as raw JSON
 -  **``-r, --resolve``**     Resolves and displays devlogs in a project (May take longer)
 -  **``-v, --verbose...``**  Increase logging verbosity

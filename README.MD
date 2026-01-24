@@ -94,11 +94,12 @@ yay -S flavorcli
 * Get and list store items
 * Get and list users
 * Manage Projects
+* Create and Manage Devlogs!!!
 * Customisable tables and sorting
 
 ### Planned Features
 When (if) the routes are added, I'll be adding the following features:
-[ ] Manage Devlogs
+[x] Manage Devlogs
 [ ] Change your settings
 [ ] View your votes
 

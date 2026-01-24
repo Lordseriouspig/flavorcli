@@ -21,7 +21,7 @@ The store commands allow you to browse the Flavortown store.
 
 ## Usage
 ```bash
-flavor store [FLAGS] <COMMAND>
+flavor store [OPTIONS] <COMMAND>
 ```
 
 ### Commands:
@@ -29,7 +29,7 @@ flavor store [FLAGS] <COMMAND>
 -  **[``get``](./get.md):**   Get a specific store item by its ID
 -  **``help``:**  Print this message or the help of the given subcommand(s)
 
-### Flags:
+### Options:
 -  **``-v, --verbose...``:**  Increase logging verbosity
 -  **``-q, --quiet...``:**    Decrease logging verbosity
 -  **``-h, --help``:**        Print help

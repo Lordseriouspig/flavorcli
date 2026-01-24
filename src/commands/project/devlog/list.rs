@@ -124,7 +124,7 @@ impl ProjectDevlogList {
             } else {
                 let devlogs: DevlogVec = res.json().await?;
                 debug!("Successfully parsed {} devlogs", devlogs.devlogs.len());
-                if self.project_id.is_some() {
+                if let Some(project_id) = &self.project_id {
                     match self.get_project_name().await {
                         Ok(name) => {
                             println!(
@@ -139,7 +139,7 @@ impl ProjectDevlogList {
                             println!(
                                 "{}{}{}",
                                 "Devlogs for project with ID: '".bold().cyan(),
-                                self.project_id.as_ref().unwrap().bold().yellow(),
+                                project_id.bold().yellow(),
                                 "'".bold().cyan()
                             );
                         }

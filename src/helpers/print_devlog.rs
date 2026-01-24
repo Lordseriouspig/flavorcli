@@ -45,8 +45,21 @@ pub fn print_devlog(d: &Devlog, short: bool) {
 
     long_text!("Body", &d.body);
 
-    if d.scrapbook_url.is_some() && !short {
+    if let Some(scrapbook_url) = &d.scrapbook_url && !short {
         heading!("Scrapbook:");
-        field!("URL", d.scrapbook_url.as_ref().unwrap());
+        field!("URL", scrapbook_url);
+    }
+
+    if let Some(media_vec) = &d.media && !short {
+        heading!("Media:");
+        for (i, media) in media_vec.iter().enumerate() {
+            field!(
+                format!("Attachment #{}", i + 1),
+                format!(
+                    "https://flavortown.hackclub.com{} ({})",
+                    media.url, media.content_type
+                )
+            );
+        }
     }
 }

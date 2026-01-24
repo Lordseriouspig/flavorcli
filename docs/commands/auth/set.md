@@ -20,13 +20,13 @@ Auth set allows you to set your auth token for use in other commands. It is stor
 
 ## Usage
 ```bash
-flavor auth set [FLAGS] <TOKEN>
+flavor auth set [OPTIONS] <TOKEN>
 ```
 
-### Options
+### Arguments
 -  `<TOKEN>`  Your Flavortown authentication token
 
-### Flags
+### Options
 -  **`-v, --verbose...`:**         Increase logging verbosity
 -  **`-q, --quiet...`:**           Decrease logging verbosity
 -  **`-h, --help  `:**             Print help

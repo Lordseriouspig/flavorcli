@@ -17,19 +17,28 @@
  along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 -->
 
-Commands that allow you to manage your authorization to Flavortown
+Devlog Delete allows you to delete an already existing devlog by its ID from a specific project.
 
 ## Usage
 ```bash
-flavor auth [OPTIONS] <COMMAND>
+flavor project devlog delete [OPTIONS] <PROJECT_ID> <DEVLOG_ID>
 ```
 
-### Commands
--  **[`set`](./set.md):**     Set your authentication token
--  **[`delete`](./delete.md):**  Delete your authentication token
--  **`help`:**    Print this message or the help of the given command(s)
+### Arguments
+-  **`<PROJECT_ID>`:**  The id of the project to delete a devlog from
+-  **`<DEVLOG_ID>`:**   The id of the devlog to delete
 
 ### Options
 -  **`-v, --verbose...`:**  Increase logging verbosity
 -  **`-q, --quiet...`:**    Decrease logging verbosity
 -  **`-h, --help`:**        Print help
+
+## Examples
+### Delete a devlog by its ID from a specific project
+```bash
+flavor project devlog delete 333 15142
+```
+**Returns**
+```
+Deleted devlog successfully.
+```

@@ -1,4 +1,4 @@
-// Copyright (C) 2025 Lordseriouspig
+// Copyright (C) 2026 Lordseriouspig
 //
 // This file is part of flavorcli.
 //
@@ -16,57 +16,43 @@
 // along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 
 use crate::helpers::get_key::get_key;
-use crate::helpers::print_devlog::print_devlog;
 use crate::models::authdata::AuthData;
-use crate::models::devlog::Devlog;
 use anyhow;
 use clap::Args;
 use indicatif::{ProgressBar, ProgressStyle};
-use log::{debug, info};
+use log::debug;
 
 #[derive(Debug, Args)]
-pub struct ProjectDevlogGet {
-    // Defines get devlog command (level 4)
-    /// The project ID the devlog belongs to. Allows access to the devlog's attachments.
-    #[clap(long, short)]
-    pub project_id: Option<u32>,
-    /// The devlog ID to retrieve
+pub struct ProjectDevlogDelete {
+    // Defines delete devlog command (level 3)
+    /// The id of the project to delete a devlog from
+    pub project_id: u32,
+
+    /// The id of the devlog to delete
     pub devlog_id: u32,
-    /// Returns data as raw JSON
-    #[clap(long, conflicts_with = "short")]
-    pub json: bool,
-    /// Omits the devlog's metadata
-    #[clap(long, short, conflicts_with = "json")]
-    pub short: bool,
 }
 
-impl ProjectDevlogGet {
+impl ProjectDevlogDelete {
     pub async fn execute(&self) -> anyhow::Result<()> {
-        debug!(
-            "Executing devlog get command (project_id: {:?}, devlog_id: {})",
-            self.project_id, self.devlog_id
-        );
+        debug!("Executing devlog delete command.");
         let auth: AuthData = get_key()?;
         let spinner = ProgressBar::new_spinner();
         spinner.set_style(
             ProgressStyle::with_template("{spinner} {msg}")?
                 .tick_strings(&["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"]),
         );
-        spinner.set_message("Retrieving devlog...");
+        spinner.set_message("Deleting devlog...");
         spinner.enable_steady_tick(std::time::Duration::from_millis(80));
 
         let client = reqwest::Client::new();
         let url = format!(
-            "https://flavortown.hackclub.com{}",
-            if let Some(project_id) = self.project_id {
-                format!("/api/v1/projects/{}/devlogs/{}", project_id, self.devlog_id)
-            } else {
-                format!("/api/v1/devlogs/{}", self.devlog_id)
-            }
+            "https://flavortown.hackclub.com/api/v1/projects/{}/devlogs/{}",
+            self.project_id, self.devlog_id
         );
-        debug!("Sending GET request to {}", url);
+
+        debug!("Sending DELETE request to {}", url);
         let res = client
-            .get(&url)
+            .delete(&url)
             .header("Authorization", auth.token.clone())
             .header("X-Flavortown-Ext-333", "true")
             .send()
@@ -78,25 +64,29 @@ impl ProjectDevlogGet {
                 "Request failed with status: {}. {}",
                 res.status(),
                 match res.status().as_u16() {
-                    401 => "Is your token correct?",
-                    404 => "Is the project ID and/or devlog ID correct?",
-                    _ => "Please try again later.",
+                    401 => "Is your token correct?".to_string(),
+                    404 => "Is the Project ID and Devlog ID correct?".to_string(),
+                    422 => {
+                        let errors: serde_json::Value = res.json().await.unwrap_or_default();
+                        let messages = errors
+                            .get("errors")
+                            .and_then(|e| e.as_array())
+                            .map(|arr| {
+                                arr.iter()
+                                    .filter_map(|v| v.as_str())
+                                    .collect::<Vec<_>>()
+                                    .join("\n")
+                            })
+                            .unwrap_or_else(|| errors.to_string());
+                        format!("You did something wrong, didn't you?\n{}", messages)
+                    }
+                    _ => "Please try again later.".to_string(),
                 }
             );
         } else {
             spinner.finish_and_clear();
-            info!("Retrieved devlog successfully.");
-            if self.json {
-                let devlog_json = res.text().await?;
-                debug!("Returning raw JSON data");
-                println!("{}", devlog_json);
-            } else {
-                let devlog: Devlog = res.json().await?;
-                debug!("Successfully parsed devlog data");
-                print_devlog(&devlog, self.short);
-            }
+            println!("Deleted devlog successfully.");
+            Ok(())
         }
-
-        Ok(())
     }
 }

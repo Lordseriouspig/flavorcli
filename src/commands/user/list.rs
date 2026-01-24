@@ -23,6 +23,7 @@ use anyhow;
 use clap::Args;
 use indicatif::{ProgressBar, ProgressStyle};
 use log::{debug, info};
+use owo_colors::OwoColorize;
 
 #[derive(Debug, Args)]
 pub struct UserList {
@@ -30,6 +31,10 @@ pub struct UserList {
     /// Page number for pagination
     #[clap(long, short)]
     pub page: Option<u32>,
+
+    /// Query string to filter users
+    #[clap(long, alias = "search")]
+    pub query: Option<String>,
 
     /// Returns data as raw JSON
     #[clap(long)]
@@ -75,6 +80,9 @@ impl UserList {
             if let Some(page) = self.page {
                 p.push(("page", page.to_string()));
             }
+            if let Some(query) = &self.query {
+                p.push(("query", query.clone()));
+            }
             p
         };
         debug!(
@@ -110,6 +118,14 @@ impl UserList {
             } else {
                 let users: UserVec = res.json().await?;
                 debug!("Successfully parsed {} users", users.users.len());
+                if let Some(query) = &self.query {
+                    println!(
+                        "{}{}{}",
+                        "Search result(s) for query '".bold().cyan(),
+                        query.italic().bold().yellow(),
+                        "'".bold().cyan()
+                    );
+                };
                 print_user_table(&users.users, &users.pagination, self.fields.clone());
             }
         }
