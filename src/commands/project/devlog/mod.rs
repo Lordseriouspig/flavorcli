@@ -17,8 +17,11 @@
 
 use clap::{Args, Subcommand};
 
+pub mod create;
+pub mod delete;
 pub mod get;
 pub mod list;
+pub mod update;
 
 #[derive(Debug, Args)]
 pub struct ProjectDevlogs {
@@ -35,4 +38,15 @@ pub enum ProjectDevlogSubcommand {
 
     /// Get a specific devlog by its ID
     Get(get::ProjectDevlogGet),
+
+    /// Create a new devlog for a project
+    Create(create::ProjectDevlogCreate),
+
+    /// Update an existing devlog
+    #[clap(alias = "edit")]
+    Update(update::ProjectDevlogUpdate),
+
+    /// Delete a devlog
+    #[clap(alias = "destroy")]
+    Delete(delete::ProjectDevlogDelete),
 }

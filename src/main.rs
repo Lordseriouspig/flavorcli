@@ -101,6 +101,24 @@ async fn run(args: FlavorArgs) -> Result<()> {
                             .await
                             .context("Failed to list devlogs")?;
                         }
+                        commands::project::devlog::ProjectDevlogSubcommand::Create(create_cmd) => {
+                            debug!("Executing ProjectDevlogSubcommand::Create with args: {:?}", create_cmd);
+                            create_cmd.execute()
+                            .await
+                            .context("Failed to create devlog")?;
+                        }
+                        commands::project::devlog::ProjectDevlogSubcommand::Delete(delete_cmd) => {
+                            debug!("Executing ProjectDevlogSubcommand::Delete with args: {:?}", delete_cmd);
+                            delete_cmd.execute()
+                            .await
+                            .context("Failed to delete devlog")?;
+                        }
+                        commands::project::devlog::ProjectDevlogSubcommand::Update(update_cmd) => {
+                            debug!("Executing ProjectDevlogSubcommand::Update with args: {:?}", update_cmd);
+                            update_cmd.execute()
+                            .await
+                            .context("Failed to update devlog")?;
+                        }
                     }
                 }
                 commands::project::ProjectSubcommand::Create(create_cmd) => {

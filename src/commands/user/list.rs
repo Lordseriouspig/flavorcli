@@ -19,11 +19,11 @@ use crate::helpers::get_key::get_key;
 use crate::helpers::print_user_table::print_user_table;
 use crate::models::authdata::AuthData;
 use crate::models::user_vec::UserVec;
-use owo_colors::OwoColorize;
 use anyhow;
 use clap::Args;
 use indicatif::{ProgressBar, ProgressStyle};
 use log::{debug, info};
+use owo_colors::OwoColorize;
 
 #[derive(Debug, Args)]
 pub struct UserList {
