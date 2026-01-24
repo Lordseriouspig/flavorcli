@@ -26,6 +26,12 @@ where
 }
 
 #[derive(Debug, Deserialize)]
+pub struct DevlogMedia {
+    pub url: String,
+    pub content_type: String,
+}
+
+#[derive(Debug, Deserialize)]
 pub struct Devlog {
     pub id: u32,
     pub body: String,
@@ -36,4 +42,5 @@ pub struct Devlog {
     pub scrapbook_url: Option<String>,
     pub created_at: String,
     pub updated_at: String,
+    pub media: Option<Vec<DevlogMedia>>,
 }

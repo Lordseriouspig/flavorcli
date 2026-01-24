@@ -49,4 +49,11 @@ pub fn print_devlog(d: &Devlog, short: bool) {
         heading!("Scrapbook:");
         field!("URL", d.scrapbook_url.as_ref().unwrap());
     }
+
+    if d.media.is_some() && !short {
+        heading!("Media:");
+        for (i, media) in d.media.as_ref().unwrap().iter().enumerate() {
+            field!(format!("Attachment #{}", i + 1), format!("https://flavortown.hackclub.com{} ({})", media.url, media.content_type));
+        }
+    }
 }

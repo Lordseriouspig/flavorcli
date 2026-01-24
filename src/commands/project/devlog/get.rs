@@ -27,7 +27,7 @@ use log::{debug, info};
 #[derive(Debug, Args)]
 pub struct ProjectDevlogGet {
     // Defines get devlog command (level 4)
-    /// The project ID the devlog belongs to. Will search for this devlog across all projects if not provided.
+    /// The project ID the devlog belongs to. Allows access to the devlog's attachments.
     #[clap(long, short)]
     pub project_id: Option<u32>,
     /// The devlog ID to retrieve
