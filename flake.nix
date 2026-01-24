@@ -17,7 +17,7 @@
         packages = rec {
           flavorcli = pkgs.rustPlatform.buildRustPackage rec {
             pname = "flavorcli";
-            version = "0.3.0";
+            version = "1.0.0";
 
             src = pkgs.fetchFromGitHub {
               owner = "lordseriouspig";

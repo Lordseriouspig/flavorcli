@@ -2,9 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
-## Unreleased
+## 1.0.0 - 2026-01-24
 
-[04927ef](04927efd67448b16472e9ef7e5e5c2ca5a6b6393)...[681cf71](681cf717ad3c6e270d1a89cefe9306f7f51cde8f)
+[04927ef](04927efd67448b16472e9ef7e5e5c2ca5a6b6393)...[6f9cf24](6f9cf2486359728b2b5b37907709ded46d9f4455)
 
 ### Bug Fixes
 
