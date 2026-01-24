@@ -21,14 +21,14 @@ Devlog Delete allows you to delete an already existing devlog by its ID from a s
 
 ## Usage
 ```bash
-flavor project devlog delete [FLAGS] <PROJECT_ID> <DEVLOG_ID>
+flavor project devlog delete [OPTIONS] <PROJECT_ID> <DEVLOG_ID>
 ```
 
 ### Arguments
 -  **`<PROJECT_ID>`:**  The id of the project to delete a devlog from
 -  **`<DEVLOG_ID>`:**   The id of the devlog to delete
 
-### Flags
+### Options
 -  **`-v, --verbose...`:**  Increase logging verbosity
 -  **`-q, --quiet...`:**    Decrease logging verbosity
 -  **`-h, --help`:**        Print help

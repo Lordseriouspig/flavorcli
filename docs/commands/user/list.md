@@ -21,10 +21,10 @@ The user list command allows you to get a list of every user.
 
 ## Usage
 ```bash
-flavor user list [FLAGS]
+flavor user list [OPTIONS]
 ```
 
-### Flags
+### Options
 -  **``-p, --page <PAGE>``:**      Page number for pagination
 -    **``  --json``:**             Returns data as raw JSON
 -   **``   --fields <FIELDS>``:**  Fields to output in the table (advanced) [default: id,display-name,cookies] [possible values: id, slack-id, display-name, avatar, project-ids, cookies]

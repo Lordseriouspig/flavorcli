@@ -23,10 +23,10 @@ Allows you to update an existing project that you own
 flavor project update [OPTIONS] <PROJECT_ID>
 ```
 
-### Options
+### Arguments
 -  **``<PROJECT_ID>``:**  The project ID to update
 
-### Flags
+### Options
 -  **``--title <TITLE>``:**              The title of the new project
 -  **``--description <DESCRIPTION>``:**  The description of the new project
 -  **``--repo-url <REPO_URL>``:**        A link to the project's repository

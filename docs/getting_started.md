@@ -22,7 +22,7 @@ If you haven't done so yet, please follow the [Installation Instructions](./inst
 
 Great! So you've installed FlavorCLI, what next?
 The first thing you need to do is open your terminal of choice. Once you have done so, simply type in ``flavor`` and hit enter.
-Here you'll see all the commands you can use with FlavorCLI, along with their options. I've included documentation everywhere I can here, using the ``--help`` flag, but if you still need help, you can check out the other pages of the docs here.
+Here you'll see all the commands you can use with FlavorCLI, along with their options. I've included documentation everywhere I can here, using the ``--help`` option, but if you still need help, you can check out the other pages of the docs here.
 
 {% hint style="warning" %}
 If you get an error similar to ``"The term 'flavor' is not recognized as the name of a cmdlet, function, script file, or operable program."``, you do not have flavortown in your PATH variable. To add it, please follow [this guide](./add_to_path.md).
@@ -58,4 +58,4 @@ FlavorCLI will store your token securely on your device using your device's keyc
 {% endhint %}
 
 ## Next Steps
-Congratulations! You have now fully installed and set up FlavorCLI! From here, you may check out instructions on [how commands work](./commands/basics/README.md), or check out instructions on individual commands. If you ever find yourself stuck, feel free to check out these docs or use the ``--help`` flag.
+Congratulations! You have now fully installed and set up FlavorCLI! From here, you may check out instructions on [how commands work](./commands/basics/README.md), or check out instructions on individual commands. If you ever find yourself stuck, feel free to check out these docs or use the ``--help`` option.

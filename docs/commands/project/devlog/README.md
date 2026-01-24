@@ -21,7 +21,7 @@ Commands that allow you to view and manage your devlogs.
 
 ## Usage
 ```bash
-flavor project devlog [FLAGS] <COMMAND>
+flavor project devlog [OPTIONS] <COMMAND>
 ```
 
 ### Commands
@@ -29,7 +29,7 @@ flavor project devlog [FLAGS] <COMMAND>
 -  **[`get`](./get.md):**  Get a specific devlog by its ID
 -  **`help`:**    Print this message or the help of the given command(s)
 
-### Flags
+### Options
 -  **`-v, --verbose...`:**  Increase logging verbosity
 -  **`-q, --quiet...`:**    Decrease logging verbosity
 -  **`-h, --help`:**        Print help

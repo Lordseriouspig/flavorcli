@@ -21,7 +21,7 @@ Commands that allow you to manage your authorization to Flavortown
 
 ## Usage
 ```bash
-flavor auth [FLAGS] <COMMAND>
+flavor auth [OPTIONS] <COMMAND>
 ```
 
 ### Commands
@@ -29,7 +29,7 @@ flavor auth [FLAGS] <COMMAND>
 -  **[`delete`](./delete.md):**  Delete your authentication token
 -  **`help`:**    Print this message or the help of the given command(s)
 
-### Flags
+### Options
 -  **`-v, --verbose...`:**  Increase logging verbosity
 -  **`-q, --quiet...`:**    Decrease logging verbosity
 -  **`-h, --help`:**        Print help

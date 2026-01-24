@@ -21,13 +21,13 @@ The user get command allows you to get information about a specific user by thei
 
 ## Usage
 ```bash
-flavor user get [FLAGS] [USER_ID]
+flavor user get [OPTIONS] [USER_ID]
 ```
 
 ### Arguments
 -  **``[USER_ID]``:**  The user ID to retrieve. Defaults to you if not supplied
 
-Options:
+### Options
 -    **``  --json``:**        Returns data as raw JSON
 -  **``-r, --resolve...``:**  Resolves project IDs, or when specified twice, devlog ids as well (may be VERY long)
 -  **``-v, --verbose...``:**  Increase logging verbosity

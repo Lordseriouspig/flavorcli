@@ -21,7 +21,7 @@ The project commands allow you to view and manage projects and devlogs on Flavor
 
 ## Usage
 ```bash
-flavor.exe project [FLAGS] <COMMAND>
+flavor.exe project [OPTIONS] <COMMAND>
 ```
 
 ### Commands
@@ -32,7 +32,7 @@ flavor.exe project [FLAGS] <COMMAND>
 -  **[`update`](./update.md):**  Update an existing project
 -  **`help`:**    Print this message or the help of the given subcommand(s)
 
-### Flags
+### Options
 -  **`-v, --verbose...`:**  Increase logging verbosity
 -  **`-q, --quiet...`:**    Decrease logging verbosity
 -  **`-h, --help`:**        Print help

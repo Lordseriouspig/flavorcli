@@ -22,10 +22,10 @@ Devlog Create allows you to create a new devlog for a specific project.
 ## Usage
 
 ```bash
-flavor project devlog create [FLAGS] --body <BODY> <PROJECT_ID>
+flavor project devlog create [OPTIONS] --body <BODY> <PROJECT_ID>
 ```
 
-### Options
+### Arguments
 - **`<PROJECT_ID>`:**  The id of the project to add a devlog to
 
 {% hint style="info" %}
@@ -33,7 +33,7 @@ You can get Project IDs from the `flavor project list` command, or from the `fla
 {% endhint %}
 
 
-### Flags
+### Options
 -   **`   --body <BODY>`:**              The body of the new devlog
 -   **`   --attachment <ATTACHMENT>`:**  The paths to the attachments to add to the devlog
 -   **`   --json`:**                     Returns data as raw JSON

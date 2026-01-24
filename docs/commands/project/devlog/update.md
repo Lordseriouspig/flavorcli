@@ -21,13 +21,13 @@ Devlog Update allows you to update an existing devlog for a specific project.
 ## Usage
 
 ```bash
-flavor project devlog update [FLAGS] <PROJECT_ID> <DEVLOG_ID>
+flavor project devlog update [OPTIONS] <PROJECT_ID> <DEVLOG_ID>
 ```
-### Options
+### Arguments
 -  **`<PROJECT_ID>`:**  The id of the project to update a devlog in
 -  **`<DEVLOG_ID>`:**   The id of the devlog to update
 
-### Flags
+### Options
 -   **`   --body <BODY>`:**  The new body of the devlog
 -   **`   --json`:**         Returns data as raw JSON
 -    **`  --put`:**          Overrides the resource to be exactly what you specify (PUT instead of PATCH)

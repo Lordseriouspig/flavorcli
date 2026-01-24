@@ -21,10 +21,10 @@ Store list allows you to list every item in the Flavortown store.
 
 ## Usage
 ```bash
-flavor store list [FLAGS]
+flavor store list [OPTIONS]
 ```
 
-### Flags
+### Options
 -    **``--json``:**                       Returns data as raw JSON
 -    **``--region <REGION>``:**           Region column to show [possible values: australia, canada, europe, india, united-kingdom, united-states, world]
 -    **``--fields <FIELDS>``:**            Fields to output in the table (advanced) [default: id,name,description,stock,regional,type,attached-to] [possible values: id, name, description, stock, type, attached-to, limited, buyable-by-self, show-in-carousel, accessory-tag, long-description, image-url, max-qty, one-per-person-ever, sale-percentage, regional]
