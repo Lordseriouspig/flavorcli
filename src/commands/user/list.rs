@@ -118,11 +118,11 @@ impl UserList {
             } else {
                 let users: UserVec = res.json().await?;
                 debug!("Successfully parsed {} users", users.users.len());
-                if self.query.is_some() {
+                if let Some(query) = &self.query {
                     println!(
                         "{}{}{}",
                         "Search result(s) for query '".bold().cyan(),
-                        self.query.as_ref().unwrap().italic().bold().yellow(),
+                        query.italic().bold().yellow(),
                         "'".bold().cyan()
                     );
                 };

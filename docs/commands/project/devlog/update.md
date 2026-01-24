@@ -38,7 +38,7 @@ flavor project devlog update [OPTIONS] <PROJECT_ID> <DEVLOG_ID>
 ## Examples
 ### Update an existing devlog for a specific project
 ```bash
-flavor project devlog update 333 15142 --body "Hi guys! I'm really excited to be presenting the newest feature of FlavorCLI. And this devlog will be a bit different, as today, I am creating this devlog through FlavorCLI! Yes, that's right, you can now create devlogs through FlavorCLI. This should hopefully mean I'll be able to ship v1.0.0 very soon! You can also upload and delete devlogs through FlavorCLI too! Infact, I have just used the update command to add this new text!"
+flavor project devlog update 333 15142 --body "Hi guys! I'm really excited to be presenting the newest feature of FlavorCLI. And this devlog will be a bit different, as today, I am creating this devlog through FlavorCLI! Yes, that's right, you can now create devlogs through FlavorCLI. This should hopefully mean I'll be able to ship v1.0.0 very soon! You can also upload and delete devlogs through FlavorCLI too! In fact, I have just used the update command to add this new text!"
 ```
 **Returns**
 ```
@@ -56,7 +56,7 @@ FlavorCLI. And this devlog will be a bit different, as today, I am
 creating this devlog through FlavorCLI! Yes, that's right, you can now
 create devlogs through FlavorCLI. This should hopefully mean I'll be
 able to ship v1.0.0 very soon! You can also upload and delete devlogs
-through FlavorCLI too! Infact, I have just used the update command to
+through FlavorCLI too! In fact, I have just used the update command to
 add an attachment of me writing this devlog from the CLI, and add this
 new text!
 

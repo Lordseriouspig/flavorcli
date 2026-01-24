@@ -44,7 +44,7 @@ You can get Project IDs from the `flavor project list` command, or from the `fla
 ## Examples
 ### Create a new devlog for a specific project
 ```bash
-cargo run -- project devlog create 333 --body "Hi guys! I'm really excited to be presenting the newest feature of FlavorCLI. And this devlog will be a bit different, as today, I am creating this devlog through FlavorCLI! Yes, that's right, you can now create devlogs through FlavorCLI. This should hopefully mean I'll be able to ship v1.0.0 very soon! You can also upload and delete devlogs through FlavorCLI too!" --attachment "C:\Users\lachl\Downloads\Screenshot 2026-01-24 154304.png"
+flavor project devlog create 333 --body "Hi guys! I'm really excited to be presenting the newest feature of FlavorCLI. And this devlog will be a bit different, as today, I am creating this devlog through FlavorCLI! Yes, that's right, you can now create devlogs through FlavorCLI. This should hopefully mean I'll be able to ship v1.0.0 very soon! You can also upload and delete devlogs through FlavorCLI too!" --attachment "C:\Users\lachl\Downloads\Screenshot 2026-01-24 154304.png"
 ```
 **Returns**
 ```
