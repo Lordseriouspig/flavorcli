@@ -24,7 +24,6 @@ use clap::Args;
 use indicatif::{ProgressBar, ProgressStyle};
 use log::{debug, info};
 use reqwest::multipart;
-use std::path::PathBuf;
 
 #[derive(Debug, Args)]
 pub struct ProjectDevlogUpdate {
