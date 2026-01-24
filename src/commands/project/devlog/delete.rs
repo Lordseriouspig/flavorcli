@@ -53,7 +53,7 @@ impl ProjectDevlogDelete {
         debug!("Sending DELETE request to {}", url);
         let res = client
             .delete(&url)
-            .header("Authorization", auth.token.clone())
+            .header("Authorization", auth.token)
             .header("X-Flavortown-Ext-333", "true")
             .send()
             .await?;

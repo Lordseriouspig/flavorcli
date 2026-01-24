@@ -98,7 +98,7 @@ impl ProjectList {
         let res = client
             .get("https://flavortown.hackclub.com/api/v1/projects")
             .query(&params)
-            .header("Authorization", auth.token.clone())
+            .header("Authorization", auth.token)
             .header("X-Flavortown-Ext-333", "true")
             .send()
             .await?;
@@ -135,7 +135,7 @@ impl ProjectList {
                 print_project_table(
                     &projects.projects,
                     &projects.pagination,
-                    self.fields.clone(),
+                    &self.fields,
                 );
             }
         }

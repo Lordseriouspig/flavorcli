@@ -98,7 +98,7 @@ impl ProjectDevlogList {
         let res = client
             .get(&url)
             .query(&params)
-            .header("Authorization", auth.token.clone())
+            .header("Authorization", auth.token)
             .header("X-Flavortown-Ext-333", "true")
             .send()
             .await?;
@@ -145,7 +145,7 @@ impl ProjectDevlogList {
                         }
                     }
                 }
-                print_devlog_table(&devlogs.devlogs, &devlogs.pagination, self.fields.clone());
+                print_devlog_table(&devlogs.devlogs, &devlogs.pagination, &self.fields);
             }
         }
 
@@ -172,7 +172,7 @@ impl ProjectDevlogList {
         debug!("Sending GET request to {}", url);
         let res = client
             .get(&url)
-            .header("Authorization", auth.token.clone())
+            .header("Authorization", auth.token)
             .header("X-Flavortown-Ext-333", "true")
             .send()
             .await?;

@@ -86,7 +86,7 @@ impl ProjectDevlogCreate {
         );
         let res = client
             .post(&url)
-            .header("Authorization", auth.token.clone())
+            .header("Authorization", auth.token)
             .header("X-Flavortown-Ext-333", "true")
             .multipart(body)
             .send()

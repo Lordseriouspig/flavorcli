@@ -141,7 +141,7 @@ impl StoreList {
         let res = client
             .get("https://flavortown.hackclub.com/api/v1/store")
             //.query(&params)
-            .header("Authorization", auth.token.clone())
+            .header("Authorization", auth.token)
             .header("X-Flavortown-Ext-333", "true")
             .send()
             .await?;
@@ -170,7 +170,7 @@ impl StoreList {
                 print_store_table(
                     items,
                     self.region.map(|r| format!("{:?}", r).to_lowercase()),
-                    self.fields.clone(),
+                    &self.fields,
                     self.sort,
                     self.sort_order,
                     self.sort_region.map(|r| format!("{:?}", r).to_uppercase()),

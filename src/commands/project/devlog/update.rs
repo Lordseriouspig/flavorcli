@@ -79,14 +79,14 @@ impl ProjectDevlogUpdate {
         let res = if self.put {
             client
                 .put(&url)
-                .header("Authorization", auth.token.clone())
+                .header("Authorization", auth.token)
                 .header("X-Flavortown-Ext-333", "true")
                 .multipart(multipart)
                 .send()
         } else {
             client
                 .patch(&url)
-                .header("Authorization", auth.token.clone())
+                .header("Authorization", auth.token)
                 .header("X-Flavortown-Ext-333", "true")
                 .multipart(multipart)
                 .send()
