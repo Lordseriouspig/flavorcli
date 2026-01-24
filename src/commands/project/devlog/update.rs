@@ -39,10 +39,6 @@ pub struct ProjectDevlogUpdate {
     #[clap(long)]
     pub body: Option<String>,
 
-    /// The paths to the attachments to add to the devlog
-    #[clap(long)]
-    pub attachment: Option<Vec<PathBuf>>,
-
     /// Returns data as raw JSON
     #[clap(long)]
     pub json: bool,
@@ -71,30 +67,15 @@ impl ProjectDevlogUpdate {
         );
         let mut multipart = multipart::Form::new();
 
-        // Get attachments
-        if let Some(attachments) = &self.attachment {
-            for attachment in attachments {
-                let filename = attachment
-                    .file_name()
-                    .and_then(|s| s.to_str())
-                    .unwrap_or("file");
-                let part = multipart::Part::file(&attachment)
-                    .await?
-                    .file_name(filename.to_string());
-                multipart = multipart.part("attachments[]", part);
-            }
-        };
-
         if let Some(body_text) = &self.body {
             multipart = multipart.text("body", body_text.clone());
         }
 
         debug!(
-            "Sending {} request to {}\nbody: {}\nattachments: {}",
+            "Sending {} request to {}\nbody: {}",
             if self.put { "PUT" } else { "PATCH" },
             url,
             &self.body.as_ref().unwrap_or(&"".to_string()),
-            self.attachment.as_ref().map_or(0, |a| a.len())
         );
         let res = if self.put {
             client
