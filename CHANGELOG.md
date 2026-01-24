@@ -2,6 +2,42 @@
 
 All notable changes to this project will be documented in this file.
 
+## Unreleased
+
+[04927ef](04927efd67448b16472e9ef7e5e5c2ca5a6b6393)...[681cf71](681cf717ad3c6e270d1a89cefe9306f7f51cde8f)
+
+### Bug Fixes
+
+- Changelog issue ([b6dab9c](b6dab9cb470a3e0a3e78475d8090e537df80ebed))
+- Remove attachments from devlog update ([85df650](85df6503fbcc033f94731d9223bbc1bdacf72a45))
+
+### Documentation
+
+- Update docs ([c76869b](c76869b84b22ae53072f2b1e9a4bd5b3cee63015))
+- Add new devlog commands to docs ([966633f](966633fd99160a5d03ce1c7acac1e39b922438ff))
+- Change up terminology ([5e3ec70](5e3ec7019edb8dfc5ba846a5d4d9629f0456eff3))
+- Update features in README ([06ce595](06ce59526ed641812265ca36e784d8b0666b3bc5))
+
+### Features
+
+- Add query to users ([a23652c](a23652cc9a0bd2b8ea8c9c65e3d3440c45e27299))
+- Add create update and delete devlogs! ([0b98799](0b987993eae24dc384cb37c85907fec6395918ba))
+- Show devlog media when project id is supplied or it is available ([00c1cc1](00c1cc1f7b5216ba5cccce06119e185010e81d06))
+- Use futures in resolve project and devlog ([a81561d](a81561d3e321c9cdf245f0586ec5fd2020080b38))
+
+### Miscellaneous Tasks
+
+- Nix flake ([a9ef500](a9ef500db04e72db84ee6d5a2bd4c804bb0c71d0))
+- Remove unused import ([bc3d32f](bc3d32fc1bc970524c57445246c82ac75766d5fd))
+
+### Refactor
+
+- Remove some .clone() ([681cf71](681cf717ad3c6e270d1a89cefe9306f7f51cde8f))
+
+### Styling
+
+- Lintttttttttttt ([b150cd3](b150cd36babbca081640d4af91730480c63e824e))
+
 ## 0.3.0 - 2026-01-16
 
 [7b7829b](7b7829b7329d9031b64b68e69c0aa71431e69a13)...[04927ef](04927efd67448b16472e9ef7e5e5c2ca5a6b6393)
