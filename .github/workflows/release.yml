@@ -97,7 +97,7 @@ jobs:
               override: true
 
           - name: install apt deps
-            run: sudo apt install libdbus-1-dev pkg-config zip
+            run: sudo apt install libdbus-1-dev pkg-config zip jq
 
           - name: Build release binary
             run: cargo build --release
@@ -200,12 +200,13 @@ jobs:
             run: |
               VERSION=${GITHUB_REF#refs/tags/}
               TARBALL_URL="https://github.com/lordseriouspig/flavorcli/archive/refs/tags/v${VERSION}.tar.gz"
-              NIX_HASH=$(nix hash url --type sha256 --sri "${TARBALL_URL}")
+              NIX_HASH=$(nix store prefetch-file --json --hash-type sha256 --unpack "${TARBALL_URL}" | jq -r '.hash')
 
               # Compute cargoHash from the Cargo.lock contained in the GitHub tarball
               TMPDIR=$(mktemp -d)
               curl -L "${TARBALL_URL}" | tar -xz -C "${TMPDIR}" --strip-components=1
-              CARGO_HASH=$(nix hash path --sri "${TMPDIR}/Cargo.lock")
+              CARGO_HASH=$(nix build --print-build-logs .#flavorcli --show-trace 2>&1 | grep 'got:' | tail -n1 | awk '{print $2}')
+
               sed -i "s|hash = \".*\";|hash = \"$NIX_HASH\";|" flake.nix
               sed -i "s|cargoHash = \".*\";|cargoHash = \"$CARGO_HASH\";|" flake.nix
               
