@@ -26,10 +26,16 @@ use anyhow::{Context,Result};
 use sentry::{start_session,end_session};
 use sentry_anyhow::capture_anyhow;
 use sentry_log::{SentryLogger,LogFilter};
+use update_informer::{registry, Check};
+use owo_colors::OwoColorize;
+
 
 
 #[tokio::main]
 async fn main() {
+    let current_version = env!("CARGO_PKG_VERSION");
+    let informer = update_informer::new(registry::GitHub, "lordseriouspig/flavorcli", current_version);
+
     let args: FlavorArgs = FlavorArgs::parse();
     let mut builder = env_logger::Builder::new();
     builder
@@ -50,6 +56,15 @@ async fn main() {
     if let Err(err) = run(args).await {
         error!("Error: {:?}", err);
         capture_anyhow(&err);
+    }
+    if let Some(version) = informer.check_version().ok().flatten() {
+        let msg = format!(
+            "A new release of {} is available: v{} -> {}",
+            "FlavorCLI".italic().cyan(),
+            current_version,
+            version.to_string().green()
+        );
+        eprintln!("\n{msg}\n{url}", msg = msg, url = format!("https://github.com/lordseriouspig/flavorcli/releases/tag/{}", version).yellow());
     }
     end_session();
 }
