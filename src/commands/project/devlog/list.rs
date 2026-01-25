@@ -28,10 +28,6 @@ use owo_colors::OwoColorize;
 
 #[derive(Debug, Args)]
 pub struct ProjectDevlogList {
-    // Defines list devlogs command (level 4)
-    /// The project ID to list devlogs for. Will list ALL devlogs if not provided.
-    pub project_id: Option<u32>,
-
     /// Page number for pagination. Defaults to 1.
     #[clap(long, short)]
     pub page: Option<u32>,
@@ -66,8 +62,8 @@ pub enum DevlogFields {
 impl ProjectDevlogList {
     pub async fn execute(&self) -> anyhow::Result<()> {
         debug!(
-            "Executing devlog list command (project_id: {:?}, page: {:?})",
-            self.project_id, self.page
+            "Executing devlog list command (page: {:?})",
+            self.page
         );
         let auth: AuthData = get_key()?;
         let spinner = ProgressBar::new_spinner();
@@ -87,12 +83,7 @@ impl ProjectDevlogList {
             p
         };
         let url = format!(
-            "https://flavortown.hackclub.com{}",
-            if let Some(project_id) = self.project_id {
-                format!("/api/v1/projects/{}/devlogs", project_id)
-            } else {
-                "/api/v1/devlogs/".to_string()
-            }
+            "https://flavortown.hackclub.com/api/v1/devlogs/"
         );
         debug!("Sending GET request to {} with params: {:?}", url, params);
         let res = client
@@ -124,76 +115,10 @@ impl ProjectDevlogList {
             } else {
                 let devlogs: DevlogVec = res.json().await?;
                 debug!("Successfully parsed {} devlogs", devlogs.devlogs.len());
-                if let Some(project_id) = &self.project_id {
-                    match self.get_project_name().await {
-                        Ok(name) => {
-                            println!(
-                                "{}{}{}",
-                                "Devlogs for project: '".bold().cyan(),
-                                name.bold().yellow(),
-                                "'".bold().cyan()
-                            );
-                        }
-                        Err(e) => {
-                            warn!("Failed to get project name: {}", e);
-                            println!(
-                                "{}{}{}",
-                                "Devlogs for project with ID: '".bold().cyan(),
-                                project_id.bold().yellow(),
-                                "'".bold().cyan()
-                            );
-                        }
-                    }
-                }
                 print_devlog_table(&devlogs.devlogs, &devlogs.pagination, &self.fields);
             }
         }
 
         Ok(())
-    }
-
-    pub async fn get_project_name(&self) -> anyhow::Result<String> {
-        let auth: AuthData = get_key()?;
-        let spinner = ProgressBar::new_spinner();
-        spinner.set_style(
-            ProgressStyle::with_template("{spinner} {msg}")?
-                .tick_strings(&["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"]),
-        );
-        spinner.set_message("Retrieving project...");
-        spinner.enable_steady_tick(std::time::Duration::from_millis(80));
-        let client = reqwest::Client::new();
-        let project_id = self
-            .project_id
-            .ok_or_else(|| anyhow::anyhow!("Project ID is required to retrieve project name"))?;
-        let url = format!(
-            "https://flavortown.hackclub.com/api/v1/projects/{}",
-            project_id
-        );
-        debug!("Sending GET request to {}", url);
-        let res = client
-            .get(&url)
-            .header("Authorization", auth.token)
-            .header("X-Flavortown-Ext-333", "true")
-            .send()
-            .await?;
-        debug!("Received response with status: {}", res.status());
-        if !res.status().is_success() {
-            spinner.finish_and_clear();
-            anyhow::bail!(
-                "Request failed with status: {}. {}",
-                res.status(),
-                match res.status().as_u16() {
-                    401 => "Is your token correct?",
-                    404 => "Is the project ID correct?",
-                    _ => "Please try again later.",
-                }
-            );
-        } else {
-            spinner.finish_and_clear();
-            info!("Retrieved project successfully.");
-            let project: Project = res.json().await?;
-            debug!("Successfully parsed project data");
-            Ok(project.title)
-        }
     }
 }
