@@ -51,19 +51,4 @@ pub fn print_devlog(d: &Devlog, short: bool) {
         heading!("Scrapbook:");
         field!("URL", scrapbook_url);
     }
-
-    if let Some(media_vec) = &d.media
-        && !short
-    {
-        heading!("Media:");
-        for (i, media) in media_vec.iter().enumerate() {
-            field!(
-                format!("Attachment #{}", i + 1),
-                format!(
-                    "https://flavortown.hackclub.com{} ({})",
-                    media.url, media.content_type
-                )
-            );
-        }
-    }
 }

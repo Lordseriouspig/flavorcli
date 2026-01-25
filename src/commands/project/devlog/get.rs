@@ -27,9 +27,6 @@ use log::{debug, info};
 #[derive(Debug, Args)]
 pub struct ProjectDevlogGet {
     // Defines get devlog command (level 4)
-    /// The project ID the devlog belongs to. Allows access to the devlog's attachments.
-    #[clap(long, short)]
-    pub project_id: Option<u32>,
     /// The devlog ID to retrieve
     pub devlog_id: u32,
     /// Returns data as raw JSON
@@ -43,8 +40,8 @@ pub struct ProjectDevlogGet {
 impl ProjectDevlogGet {
     pub async fn execute(&self) -> anyhow::Result<()> {
         debug!(
-            "Executing devlog get command (project_id: {:?}, devlog_id: {})",
-            self.project_id, self.devlog_id
+            "Executing devlog get command (devlog_id: {})",
+            self.devlog_id
         );
         let auth: AuthData = get_key()?;
         let spinner = ProgressBar::new_spinner();
@@ -58,11 +55,7 @@ impl ProjectDevlogGet {
         let client = reqwest::Client::new();
         let url = format!(
             "https://flavortown.hackclub.com{}",
-            if let Some(project_id) = self.project_id {
-                format!("/api/v1/projects/{}/devlogs/{}", project_id, self.devlog_id)
-            } else {
-                format!("/api/v1/devlogs/{}", self.devlog_id)
-            }
+            format!("/api/v1/devlogs/{}", self.devlog_id)
         );
         debug!("Sending GET request to {}", url);
         let res = client
@@ -79,7 +72,7 @@ impl ProjectDevlogGet {
                 res.status(),
                 match res.status().as_u16() {
                     401 => "Is your token correct?",
-                    404 => "Is the project ID and/or devlog ID correct?",
+                    404 => "Is the devlog ID correct?",
                     _ => "Please try again later.",
                 }
             );
