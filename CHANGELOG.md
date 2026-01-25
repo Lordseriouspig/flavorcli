@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.0.1 - 2026-01-25
+
+[6f9cf24](6f9cf2486359728b2b5b37907709ded46d9f4455)...[fde9c59](fde9c5935ab782b57b4e20233d547835aedf0379)
+
+### Features
+
+- Add "devlog" alias for "project devlog" ([52a1b4b](52a1b4b91f54f68afe50ba22b25480ffb8098798))
+- Add update checking ([d563d6e](d563d6ec321d64789131dc7db13e3a616fa79883))
+
+### Miscellaneous Tasks
+
+- Fix nix stuff probably ([bd26170](bd26170a154c4e753001a71acc2b2bc489c8bff3))
+- Fix some ci stuff ([dba3a65](dba3a6578b21df725f4982a9cac05a1a1732806d))
+- Fix git cliff ([fc4f4b3](fc4f4b3bdfa73146b7fc1c4d90e9ae9d2fdac439))
+- Fix git cliff again ([fde9c59](fde9c5935ab782b57b4e20233d547835aedf0379))
+
+### Styling
+
+- My linter decided to run ([308b970](308b9700889155f3f8c4005d6a59e55a80e218c7))
+
 ## 1.0.0 - 2026-01-24
 
 [04927ef](04927efd67448b16472e9ef7e5e5c2ca5a6b6393)...[6f9cf24](6f9cf2486359728b2b5b37907709ded46d9f4455)

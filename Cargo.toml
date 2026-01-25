@@ -1,6 +1,6 @@
 [package]
 name = "flavorcli"
-version = "1.0.0"
+version = "1.0.1"
 authors = ["Lordseriouspig <lordseriouspig@gmail.com>"]
 edition = "2024"
 description = "A command line interface to interact with FlavorTown"
