@@ -132,11 +132,7 @@ impl ProjectList {
                         "'".bold().cyan()
                     );
                 }
-                print_project_table(
-                    &projects.projects,
-                    &projects.pagination,
-                    &self.fields,
-                );
+                print_project_table(&projects.projects, &projects.pagination, &self.fields);
             }
         }
         Ok(())
