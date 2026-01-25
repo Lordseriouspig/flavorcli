@@ -4,6 +4,6 @@ tag-message = "chore(release): release version {{version}}"
 pre-release-commit-message = "chore(release): bump version {{version}}"
 pre-release-replacements = [
     {file="PKGBUILD", search="pkgver=.*", replace="pkgver={{version}}"},
-    {file="pre-release-hook.ps1", search='--bump ".*"', replace='--bump "{{version}}"'},
+    {file="pre-release-hook.ps1", search='--bump ".*"', replace='--tag {{version}}'},
     {file="flake.nix", search='version = ".*";', replace='version = "{{version}}";'},
 ]
