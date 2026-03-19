@@ -19,10 +19,13 @@ use crate::helpers::get_key::get_key;
 use crate::helpers::print_devlog_table::print_devlog_table;
 use crate::models::authdata::AuthData;
 use crate::models::devlog_vec::DevlogVec;
+use crate::models::project::Project;
 use anyhow;
 use clap::Args;
 use indicatif::{ProgressBar, ProgressStyle};
-use log::{debug, info};
+use log::{debug, info, warn};
+use owo_colors::OwoColorize;
+
 #[derive(Debug, Args)]
 pub struct ProjectDevlogList {
     // Defines list devlogs command (level 4)
