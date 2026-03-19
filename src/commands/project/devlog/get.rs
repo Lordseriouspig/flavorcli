@@ -67,7 +67,7 @@ impl ProjectDevlogGet {
         debug!("Sending GET request to {}", url);
         let res = client
             .get(&url)
-            .header("Authorization", auth.token.clone())
+            .header("Authorization", auth.token)
             .header("X-Flavortown-Ext-333", "true")
             .send()
             .await?;

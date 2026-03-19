@@ -52,7 +52,7 @@ fn format_project_ids(project_ids: &[u32]) -> Cell {
     Cell::new(formatted)
 }
 
-pub fn print_user_table(users: &[UserList], pagination: &Pagination, fields: Vec<UserFields>) {
+pub fn print_user_table(users: &[UserList], pagination: &Pagination, fields: &[UserFields]) {
     if users.is_empty() {
         println!("No users found.");
         return;
@@ -65,7 +65,7 @@ pub fn print_user_table(users: &[UserList], pagination: &Pagination, fields: Vec
 
     // Build header
     let mut header = Vec::<&str>::new();
-    for field in &fields {
+    for field in fields {
         match field {
             UserFields::Id => {
                 header.push("ID");
@@ -90,7 +90,7 @@ pub fn print_user_table(users: &[UserList], pagination: &Pagination, fields: Vec
     table.set_header(header);
     for user in users {
         let mut row: Vec<Cell> = Vec::new();
-        for field in &fields {
+        for field in fields {
             match field {
                 UserFields::Id => row.push(format_u32(user.id)),
                 UserFields::SlackId => row.push(format_str(&user.slack_id)),

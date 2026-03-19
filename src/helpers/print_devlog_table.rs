@@ -72,7 +72,7 @@ fn format_time_cell(dt: &str) -> Cell {
     Cell::new(format_time(dt))
 }
 
-pub fn print_devlog_table(devlogs: &[Devlog], pagination: &Pagination, fields: Vec<DevlogFields>) {
+pub fn print_devlog_table(devlogs: &[Devlog], pagination: &Pagination, fields: &[DevlogFields]) {
     if devlogs.is_empty() {
         println!("No devlogs found.");
         return;
@@ -85,7 +85,7 @@ pub fn print_devlog_table(devlogs: &[Devlog], pagination: &Pagination, fields: V
 
     // Build header
     let mut header = Vec::<&str>::new();
-    for field in &fields {
+    for field in fields {
         match field {
             DevlogFields::Id => {
                 header.push("ID");
@@ -116,7 +116,7 @@ pub fn print_devlog_table(devlogs: &[Devlog], pagination: &Pagination, fields: V
     table.set_header(header);
     for devlog in devlogs {
         let mut row: Vec<Cell> = Vec::new();
-        for field in &fields {
+        for field in fields {
             match field {
                 DevlogFields::Id => row.push(format_id(devlog.id)),
                 DevlogFields::Body => row.push(format_body(&devlog.body)),

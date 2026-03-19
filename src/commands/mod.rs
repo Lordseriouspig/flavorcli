@@ -23,7 +23,12 @@ pub mod store;
 pub mod user;
 
 #[derive(Parser)]
-#[clap(name = "ft", author, version, about)]
+#[clap(
+    name = "flavor",
+    author = "Lordseriouspig",
+    version,
+    about = "A command line interface to interact with FlavorTown"
+)]
 #[derive(Debug)]
 pub struct FlavorArgs {
     // Defines the top level command
@@ -40,7 +45,7 @@ pub enum Command {
     /// Commands that allow you to manage your authorization to Flavortown.
     Auth(auth::AuthCommand),
 
-    /// Commands that allow you to view and search projects and devlogs.
+    /// Commands that allow you to view, search and manage projects and devlogs.
     #[clap(alias = "projects")]
     Project(project::ProjectsCommand),
 
@@ -50,4 +55,8 @@ pub enum Command {
     /// Commands that allow you to view information about users.
     #[clap(alias = "users")]
     User(user::UsersCommand),
+
+    /// Commands that allow you to view, search and manage devlogs. (Alias for project devlog)
+    #[clap(alias = "devlogs")]
+    Devlog(project::devlog::ProjectDevlogs),
 }

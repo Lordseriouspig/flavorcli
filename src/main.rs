@@ -26,10 +26,16 @@ use anyhow::{Context,Result};
 use sentry::{start_session,end_session};
 use sentry_anyhow::capture_anyhow;
 use sentry_log::{SentryLogger,LogFilter};
+use update_informer::{registry, Check};
+use owo_colors::OwoColorize;
+
 
 
 #[tokio::main]
 async fn main() {
+    let current_version = env!("CARGO_PKG_VERSION");
+    let informer = update_informer::new(registry::GitHub, "lordseriouspig/flavorcli", current_version);
+
     let args: FlavorArgs = FlavorArgs::parse();
     let mut builder = env_logger::Builder::new();
     builder
@@ -50,6 +56,15 @@ async fn main() {
     if let Err(err) = run(args).await {
         error!("Error: {:?}", err);
         capture_anyhow(&err);
+    }
+    if let Some(version) = informer.check_version().ok().flatten() {
+        let msg = format!(
+            "A new release of {} is available: v{} -> {}",
+            "FlavorCLI".italic().cyan(),
+            current_version,
+            version.to_string().green()
+        );
+        eprintln!("\n{msg}\n{url}", msg = msg, url = format!("https://github.com/lordseriouspig/flavorcli/releases/tag/{}", version).yellow());
     }
     end_session();
 }
@@ -101,24 +116,6 @@ async fn run(args: FlavorArgs) -> Result<()> {
                             .await
                             .context("Failed to list devlogs")?;
                         }
-                        commands::project::devlog::ProjectDevlogSubcommand::Create(create_cmd) => {
-                            debug!("Executing ProjectDevlogSubcommand::Create with args: {:?}", create_cmd);
-                            create_cmd.execute()
-                            .await
-                            .context("Failed to create devlog")?;
-                        }
-                        commands::project::devlog::ProjectDevlogSubcommand::Delete(delete_cmd) => {
-                            debug!("Executing ProjectDevlogSubcommand::Delete with args: {:?}", delete_cmd);
-                            delete_cmd.execute()
-                            .await
-                            .context("Failed to delete devlog")?;
-                        }
-                        commands::project::devlog::ProjectDevlogSubcommand::Update(update_cmd) => {
-                            debug!("Executing ProjectDevlogSubcommand::Update with args: {:?}", update_cmd);
-                            update_cmd.execute()
-                            .await
-                            .context("Failed to update devlog")?;
-                        }
                     }
                 }
                 commands::project::ProjectSubcommand::Create(create_cmd) => {
@@ -132,6 +129,22 @@ async fn run(args: FlavorArgs) -> Result<()> {
                     update_cmd.execute()
                     .await
                     .context("Failed to update project")?;
+                }
+            }
+        }
+        commands::Command::Devlog(devlog_cmd) => {
+            match devlog_cmd.command {
+                commands::project::devlog::ProjectDevlogSubcommand::Get(get_cmd) => {
+                    debug!("Executing ProjectDevlogSubcommand::Get with args: {:?}", get_cmd);
+                    get_cmd.execute()
+                    .await
+                    .context("Failed to get devlog")?;
+                }
+                commands::project::devlog::ProjectDevlogSubcommand::List(list_cmd) => {
+                    debug!("Executing ProjectDevlogSubcommand::List with args: {:?}", list_cmd);
+                    list_cmd.execute()
+                    .await
+                    .context("Failed to list devlogs")?;
                 }
             }
         }

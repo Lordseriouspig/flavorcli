@@ -92,7 +92,7 @@ impl UserList {
         let res = client
             .get("https://flavortown.hackclub.com/api/v1/users")
             .query(&params)
-            .header("Authorization", auth.token.clone())
+            .header("Authorization", auth.token)
             .header("X-Flavortown-Ext-333", "true")
             .send()
             .await?;
@@ -126,7 +126,7 @@ impl UserList {
                         "'".bold().cyan()
                     );
                 };
-                print_user_table(&users.users, &users.pagination, self.fields.clone());
+                print_user_table(&users.users, &users.pagination, &self.fields);
             }
         }
         Ok(())

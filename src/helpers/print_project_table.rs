@@ -84,7 +84,7 @@ fn format_devlog_ids(ids: &[u32]) -> Cell {
 pub fn print_project_table(
     projects: &[Project],
     pagination: &Pagination,
-    fields: Vec<ProjectFields>,
+    fields: &[ProjectFields],
 ) {
     if projects.is_empty() {
         println!("No projects found.");
@@ -97,7 +97,7 @@ pub fn print_project_table(
         .set_content_arrangement(ContentArrangement::Dynamic);
 
     let mut header = Vec::<&str>::new();
-    for field in &fields {
+    for field in fields {
         match field {
             ProjectFields::Id => header.push("ID"),
             ProjectFields::Title => header.push("Title"),
@@ -114,7 +114,7 @@ pub fn print_project_table(
     table.set_header(header);
     for project in projects {
         let mut row: Vec<Cell> = Vec::new();
-        for field in &fields {
+        for field in fields {
             match field {
                 ProjectFields::Id => row.push(format_id(project.id)),
                 ProjectFields::Title => row.push(format_title(&project.title)),

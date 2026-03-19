@@ -19,13 +19,10 @@ use crate::helpers::get_key::get_key;
 use crate::helpers::print_devlog_table::print_devlog_table;
 use crate::models::authdata::AuthData;
 use crate::models::devlog_vec::DevlogVec;
-use crate::models::project::Project;
 use anyhow;
 use clap::Args;
 use indicatif::{ProgressBar, ProgressStyle};
-use log::{debug, info, warn};
-use owo_colors::OwoColorize;
-
+use log::{debug, info};
 #[derive(Debug, Args)]
 pub struct ProjectDevlogList {
     // Defines list devlogs command (level 4)
@@ -98,7 +95,7 @@ impl ProjectDevlogList {
         let res = client
             .get(&url)
             .query(&params)
-            .header("Authorization", auth.token.clone())
+            .header("Authorization", auth.token)
             .header("X-Flavortown-Ext-333", "true")
             .send()
             .await?;
@@ -145,7 +142,7 @@ impl ProjectDevlogList {
                         }
                     }
                 }
-                print_devlog_table(&devlogs.devlogs, &devlogs.pagination, self.fields.clone());
+                print_devlog_table(&devlogs.devlogs, &devlogs.pagination, &self.fields);
             }
         }
 
@@ -172,7 +169,7 @@ impl ProjectDevlogList {
         debug!("Sending GET request to {}", url);
         let res = client
             .get(&url)
-            .header("Authorization", auth.token.clone())
+            .header("Authorization", auth.token)
             .header("X-Flavortown-Ext-333", "true")
             .send()
             .await?;

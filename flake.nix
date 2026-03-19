@@ -17,7 +17,7 @@
         packages = rec {
           flavorcli = pkgs.rustPlatform.buildRustPackage rec {
             pname = "flavorcli";
-            version = "0.3.0";
+            version = "1.0.1";
 
             src = pkgs.fetchFromGitHub {
               owner = "lordseriouspig";
@@ -28,7 +28,6 @@
 
             cargoHash = "sha256-V+OTtBVOGke7/+r+y1ciopR85QUju1WEd2DiY7jFiMI=";
 
-            # Only needed if you have native deps later
             nativeBuildInputs = [ pkgs.pkg-config ];
             buildInputs = [ pkgs.openssl pkgs.dbus ];
 

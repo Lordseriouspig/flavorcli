@@ -156,7 +156,7 @@ fn format_regional(
 pub fn print_store_table(
     mut items: Vec<Store>,
     region: Option<impl AsRef<str>>,
-    fields: Vec<StoreFields>,
+    fields: &[StoreFields],
     sort: SortFields,
     sort_order: SortOrder,
     sort_region: Option<impl AsRef<str>>,
@@ -377,7 +377,7 @@ pub fn print_store_table(
     // Build table header
     let mut header = Vec::<&str>::new();
     // Get the fields the user supplies and add the headers
-    for field in &fields {
+    for field in fields {
         match field {
             StoreFields::Id => header.push("ID"),
             StoreFields::Name => header.push("Name"),
@@ -406,7 +406,7 @@ pub fn print_store_table(
     table.set_header(header);
     for item in items {
         let mut row: Vec<Cell> = Vec::new();
-        for field in &fields {
+        for field in fields {
             match field {
                 StoreFields::Id => row.push(format_id(item.id)),
                 StoreFields::Name => row.push(format_name(&item.name)),

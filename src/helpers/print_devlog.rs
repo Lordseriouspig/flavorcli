@@ -45,12 +45,16 @@ pub fn print_devlog(d: &Devlog, short: bool) {
 
     long_text!("Body", &d.body);
 
-    if let Some(scrapbook_url) = &d.scrapbook_url && !short {
+    if let Some(scrapbook_url) = &d.scrapbook_url
+        && !short
+    {
         heading!("Scrapbook:");
         field!("URL", scrapbook_url);
     }
 
-    if let Some(media_vec) = &d.media && !short {
+    if let Some(media_vec) = &d.media
+        && !short
+    {
         heading!("Media:");
         for (i, media) in media_vec.iter().enumerate() {
             field!(
