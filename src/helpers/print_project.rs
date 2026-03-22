@@ -37,6 +37,9 @@ pub async fn print_project(p: &Project, resolve: bool) {
     field!("Created", format_time(&p.created_at));
     field!("Updated", format_time(&p.updated_at));
     long_text!("Description", &p.description);
+    if !p.ai_declaration.is_empty() {
+        long_text!("AI Declaration", &p.ai_declaration);
+    }
 
     heading!("Links:");
     field!(
@@ -62,6 +65,10 @@ pub async fn print_project(p: &Project, resolve: bool) {
         } else {
             &p.readme_url
         }
+    );
+    field!(
+        "Banner",
+        p.banner_url.as_deref().unwrap_or("-")
     );
 
     if resolve {

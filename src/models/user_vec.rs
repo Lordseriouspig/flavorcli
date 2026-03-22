@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 
+use crate::models::pagination::Pagination;
 use serde::Deserialize;
 
 fn zero_if_null<'de, D>(deserializer: D) -> Result<u32, D::Error>
@@ -31,14 +32,6 @@ where
     D: serde::Deserializer<'de>,
 {
     Option::<String>::deserialize(deserializer).map(|v| v.unwrap_or("User".to_string()))
-}
-
-#[derive(Debug, Deserialize)]
-pub struct Pagination {
-    pub current_page: u32,
-    pub total_pages: u32,
-    pub total_count: u32,
-    pub next_page: Option<u32>,
 }
 
 #[derive(Debug, Deserialize)]

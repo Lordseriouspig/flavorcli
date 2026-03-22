@@ -16,7 +16,7 @@
 // along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 
 use crate::commands::user::list::UserFields;
-use crate::models::user_vec::Pagination;
+use crate::models::pagination::Pagination;
 use crate::models::user_vec::UserList;
 use comfy_table::modifiers::UTF8_ROUND_CORNERS;
 use comfy_table::presets::UTF8_FULL;

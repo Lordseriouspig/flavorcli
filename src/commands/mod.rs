@@ -18,6 +18,7 @@
 use clap::{Parser, Subcommand};
 
 pub mod auth;
+pub mod devlog;
 pub mod project;
 pub mod store;
 pub mod user;
@@ -56,7 +57,7 @@ pub enum Command {
     #[clap(alias = "users")]
     User(user::UsersCommand),
 
-    /// Commands that allow you to view, search and manage devlogs. (Alias for project devlog)
+    /// Commands that allow you to list and view devlogs.
     #[clap(alias = "devlogs")]
-    Devlog(project::devlog::ProjectDevlogs),
+    Devlog(devlog::DevlogsCommand),
 }

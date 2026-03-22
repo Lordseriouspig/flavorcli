@@ -27,9 +27,6 @@ flavor project devlog [OPTIONS] <COMMAND>
 ### Commands
 -  **[`list`](./list.md):**     List devlogs for a project
 -  **[`get`](./get.md):**       Get a specific devlog by its ID
--  **[`create`](./create.md):** Create a new devlog for a project
--  **[`update`](./update.md):** Update an existing devlog
--  **[`delete`](./delete.md):** Delete a devlog
 -  **`help`:**                 Print this message or the help of the given command(s)
 
 ### Options

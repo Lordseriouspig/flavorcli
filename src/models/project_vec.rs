@@ -15,16 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 
+use crate::models::pagination::Pagination;
 use crate::models::project::Project;
 use serde::Deserialize;
-
-#[derive(Debug, Deserialize)]
-pub struct Pagination {
-    pub current_page: u32,
-    pub total_pages: u32,
-    pub total_count: u32,
-    pub next_page: Option<u32>,
-}
 
 #[derive(Debug, Deserialize)]
 pub struct ProjectVec {

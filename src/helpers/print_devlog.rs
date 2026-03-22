@@ -16,7 +16,7 @@
 // along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 
 use crate::models::devlog::Devlog;
-use crate::{field, heading, long_text, title};
+use crate::{field, heading, long_text, title, field_long};
 use chrono::{DateTime, Local};
 use owo_colors::OwoColorize;
 
@@ -64,6 +64,34 @@ pub fn print_devlog(d: &Devlog, short: bool) {
                     media.url, media.content_type
                 )
             );
+        }
+    }
+
+    if !d.comments.is_empty() {
+        if short {
+            heading!("Comments:");
+            for comment in &d.comments {
+                field_long!(
+                    format!("- ({}) {}", comment.id, comment.author.display_name),
+                    comment.body.replace('\n', " ")
+                );
+            }
+        } else {
+            heading!("Comments:");
+            for comment in &d.comments {
+                let edit_info = if comment.created_at != comment.updated_at {
+                    format!(" (edited at {})", format_time(&comment.updated_at)).dimmed().to_string()
+                } else {
+                    String::new()
+                };
+                println!(
+                    "{} {} {}\n {}",
+                    format!("#{}", comment.id).blue().bold(),
+                    format!("{} ({})", comment.author.display_name, comment.author.id).green().bold(),
+                    format!("at {}{}", format_time(&comment.created_at), edit_info).dimmed(),
+                    comment.body
+                );
+            }
         }
     }
 }
