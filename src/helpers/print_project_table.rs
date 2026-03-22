@@ -16,9 +16,9 @@
 // along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 
 use crate::commands::project::list::ProjectFields;
-use crate::models::project::Project;
 use crate::models::pagination::Pagination;
-use chrono::{DateTime, Local, format};
+use crate::models::project::Project;
+use chrono::{DateTime, Local};
 use comfy_table::modifiers::UTF8_ROUND_CORNERS;
 use comfy_table::presets::UTF8_FULL;
 use comfy_table::*;
@@ -121,12 +121,16 @@ pub fn print_project_table(
                 ProjectFields::Id => row.push(format_id(project.id)),
                 ProjectFields::Title => row.push(format_title(&project.title)),
                 ProjectFields::Description => row.push(format_description(&project.description)),
-                ProjectFields::AiDeclaration => row.push(format_description(&project.ai_declaration)),
+                ProjectFields::AiDeclaration => {
+                    row.push(format_description(&project.ai_declaration))
+                }
                 ProjectFields::ShipStatus => row.push(format_status(&project.ship_status)),
                 ProjectFields::RepoUrl => row.push(format_url(&project.repo_url)),
                 ProjectFields::DemoUrl => row.push(format_url(&project.demo_url)),
                 ProjectFields::ReadmeUrl => row.push(format_url(&project.readme_url)),
-                ProjectFields::BannerUrl => row.push(format_url(project.banner_url.as_deref().unwrap_or(""))),
+                ProjectFields::BannerUrl => {
+                    row.push(format_url(project.banner_url.as_deref().unwrap_or("")))
+                }
                 ProjectFields::CreatedAt => row.push(format_time_cell(&project.created_at)),
                 ProjectFields::UpdatedAt => row.push(format_time_cell(&project.updated_at)),
                 ProjectFields::DevlogIds => row.push(format_devlog_ids(&project.devlog_ids)),

@@ -34,7 +34,6 @@ where
     Option::<String>::deserialize(deserializer).map(|v| v.unwrap_or("User".to_string()))
 }
 
-
 #[derive(Debug, Deserialize)]
 pub struct UserList {
     // The user object returned from list is slightly different to the one returned from get as of now. I'll remove this if that gets changed

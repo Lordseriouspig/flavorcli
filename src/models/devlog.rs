@@ -32,9 +32,25 @@ pub struct DevlogMedia {
 }
 
 #[derive(Debug, Deserialize)]
+pub struct Author {
+    pub display_name: String,
+    pub id: u32,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct Comment {
+    pub id: u32,
+    pub author: Author,
+    pub body: String,
+    pub created_at: String,
+    pub updated_at: String,
+}
+
+#[derive(Debug, Deserialize)]
 pub struct Devlog {
     pub id: u32,
     pub body: String,
+    pub comments: Vec<Comment>,
     pub comments_count: u32,
     #[serde(deserialize_with = "zero_if_null")]
     pub duration_seconds: u32,
