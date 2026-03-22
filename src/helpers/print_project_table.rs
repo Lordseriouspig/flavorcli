@@ -17,7 +17,7 @@
 
 use crate::commands::project::list::ProjectFields;
 use crate::models::project::Project;
-use crate::models::project_vec::Pagination;
+use crate::models::pagination::Pagination;
 use chrono::{DateTime, Local};
 use comfy_table::modifiers::UTF8_ROUND_CORNERS;
 use comfy_table::presets::UTF8_FULL;
