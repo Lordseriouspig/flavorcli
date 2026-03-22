@@ -68,11 +68,7 @@ pub async fn print_project(p: &Project, resolve: bool) {
     );
     field!(
         "Banner",
-        if p.banner_url.is_none() {
-            "-"
-        } else {
-            p.banner_url.as_ref().unwrap()
-        }
+        p.banner_url.as_deref().unwrap_or("-")
     );
 
     if resolve {
