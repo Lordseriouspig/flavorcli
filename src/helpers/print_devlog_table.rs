@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 
-use crate::commands::project::devlog::list::DevlogFields;
+use crate::commands::devlog::list::DevlogFields;
 use crate::models::devlog::Devlog;
 use crate::models::devlog_vec::Pagination;
 use chrono::{DateTime, Local};

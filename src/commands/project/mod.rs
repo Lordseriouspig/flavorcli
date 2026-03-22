@@ -18,7 +18,6 @@
 use clap::{Args, Subcommand};
 
 pub mod create;
-pub mod devlog;
 pub mod get;
 pub mod list;
 pub mod update;
@@ -37,12 +36,12 @@ pub enum ProjectSubcommand {
     List(list::ProjectList),
     /// Get a specific project by its ID
     Get(get::ProjectGet),
-    /// Commands that allow you to view devlogs for a project
-    #[clap(alias = "devlogs")]
-    Devlog(devlog::ProjectDevlogs),
     /// Create a new project
     Create(create::ProjectCreate),
     /// Update an existing project
     #[clap(alias = "edit")]
     Update(update::ProjectUpdate),
+    /// [DEPRECATED - use `flavor devlog` instead] View, search and manage devlogs for a project
+    #[clap(alias = "devlogs")]
+    Devlog(crate::commands::devlog::DevlogsCommand),
 }

@@ -27,7 +27,7 @@ use log::{debug, info, warn};
 use owo_colors::OwoColorize;
 
 #[derive(Debug, Args)]
-pub struct ProjectDevlogList {
+pub struct DevlogList {
     // Defines list devlogs command (level 4)
     /// The project ID to list devlogs for. Will list ALL devlogs if not provided.
     pub project_id: Option<u32>,
@@ -63,7 +63,7 @@ pub enum DevlogFields {
     UpdatedAt,
 }
 
-impl ProjectDevlogList {
+impl DevlogList {
     pub async fn execute(&self) -> anyhow::Result<()> {
         debug!(
             "Executing devlog list command (project_id: {:?}, page: {:?})",

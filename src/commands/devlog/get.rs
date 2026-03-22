@@ -25,7 +25,7 @@ use indicatif::{ProgressBar, ProgressStyle};
 use log::{debug, info};
 
 #[derive(Debug, Args)]
-pub struct ProjectDevlogGet {
+pub struct DevlogGet {
     // Defines get devlog command (level 4)
     /// The project ID the devlog belongs to. Allows access to the devlog's attachments.
     #[clap(long, short)]
@@ -40,7 +40,7 @@ pub struct ProjectDevlogGet {
     pub short: bool,
 }
 
-impl ProjectDevlogGet {
+impl DevlogGet {
     pub async fn execute(&self) -> anyhow::Result<()> {
         debug!(
             "Executing devlog get command (project_id: {:?}, devlog_id: {})",

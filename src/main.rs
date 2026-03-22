@@ -20,12 +20,12 @@ mod helpers;
 mod models;
 
 use clap::{Parser};
-use log::{error,debug};
+use log::{error, debug, warn};
 use commands::FlavorArgs;
-use anyhow::{Context,Result};
-use sentry::{start_session,end_session};
+use anyhow::{Context, Result};
+use sentry::{start_session, end_session};
 use sentry_anyhow::capture_anyhow;
-use sentry_log::{SentryLogger,LogFilter};
+use sentry_log::{SentryLogger, LogFilter};
 use update_informer::{registry, Check};
 use owo_colors::OwoColorize;
 
@@ -104,13 +104,15 @@ async fn run(args: FlavorArgs) -> Result<()> {
                 }
                 commands::project::ProjectSubcommand::Devlog(devlog_cmd) => {
                     match devlog_cmd.command {
-                        commands::project::devlog::ProjectDevlogSubcommand::Get(get_cmd) => {
+                        commands::devlog::DevlogSubcommand::Get(get_cmd) => {
+                            warn!("Deprecation Warning: The 'project devlog get' command is deprecated and is kept for historical reasons. Please use 'flavor devlog get' instead.");
                             debug!("Executing ProjectDevlogSubcommand::Get with args: {:?}", get_cmd);
                             get_cmd.execute()
                             .await
                             .context("Failed to get devlog")?;
                         }
-                        commands::project::devlog::ProjectDevlogSubcommand::List(list_cmd) => {
+                        commands::devlog::DevlogSubcommand::List(list_cmd) => {
+                            warn!("Deprecation Warning: The 'project devlog list' command is deprecated and is kept for historical reasons. Please use 'flavor devlog list' instead.");
                             debug!("Executing ProjectDevlogSubcommand::List with args: {:?}", list_cmd);
                             list_cmd.execute()
                             .await
@@ -134,14 +136,14 @@ async fn run(args: FlavorArgs) -> Result<()> {
         }
         commands::Command::Devlog(devlog_cmd) => {
             match devlog_cmd.command {
-                commands::project::devlog::ProjectDevlogSubcommand::Get(get_cmd) => {
-                    debug!("Executing ProjectDevlogSubcommand::Get with args: {:?}", get_cmd);
+                commands::devlog::DevlogSubcommand::Get(get_cmd) => {
+                    debug!("Executing DevlogSubcommand::Get with args: {:?}", get_cmd);
                     get_cmd.execute()
                     .await
                     .context("Failed to get devlog")?;
                 }
-                commands::project::devlog::ProjectDevlogSubcommand::List(list_cmd) => {
-                    debug!("Executing ProjectDevlogSubcommand::List with args: {:?}", list_cmd);
+                commands::devlog::DevlogSubcommand::List(list_cmd) => {
+                    debug!("Executing DevlogSubcommand::List with args: {:?}", list_cmd);
                     list_cmd.execute()
                     .await
                     .context("Failed to list devlogs")?;

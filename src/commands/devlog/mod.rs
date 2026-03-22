@@ -21,18 +21,18 @@ pub mod get;
 pub mod list;
 
 #[derive(Debug, Args)]
-pub struct ProjectDevlogs {
+pub struct DevlogsCommand {
     // Defines devlog subcommand (level 3)
     #[clap(subcommand)]
-    pub command: ProjectDevlogSubcommand,
+    pub command: DevlogSubcommand,
 }
 
 #[derive(Debug, Subcommand)]
-pub enum ProjectDevlogSubcommand {
+pub enum DevlogSubcommand {
     // Defines devlog commands (level 4)
     /// List devlogs for a project
-    List(list::ProjectDevlogList),
+    List(list::DevlogList),
 
     /// Get a specific devlog by its ID
-    Get(get::ProjectDevlogGet),
+    Get(get::DevlogGet),
 }
