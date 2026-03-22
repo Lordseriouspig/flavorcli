@@ -18,7 +18,7 @@
 use crate::commands::project::list::ProjectFields;
 use crate::models::project::Project;
 use crate::models::pagination::Pagination;
-use chrono::{DateTime, Local};
+use chrono::{DateTime, Local, format};
 use comfy_table::modifiers::UTF8_ROUND_CORNERS;
 use comfy_table::presets::UTF8_FULL;
 use comfy_table::*;
@@ -102,10 +102,12 @@ pub fn print_project_table(
             ProjectFields::Id => header.push("ID"),
             ProjectFields::Title => header.push("Title"),
             ProjectFields::Description => header.push("Description"),
+            ProjectFields::AiDeclaration => header.push("AI Declaration"),
             ProjectFields::ShipStatus => header.push("Status"),
             ProjectFields::RepoUrl => header.push("Repo"),
             ProjectFields::DemoUrl => header.push("Demo"),
             ProjectFields::ReadmeUrl => header.push("Readme"),
+            ProjectFields::BannerUrl => header.push("Banner"),
             ProjectFields::CreatedAt => header.push("Created"),
             ProjectFields::UpdatedAt => header.push("Updated"),
             ProjectFields::DevlogIds => header.push("Devlog IDs"),
@@ -119,10 +121,12 @@ pub fn print_project_table(
                 ProjectFields::Id => row.push(format_id(project.id)),
                 ProjectFields::Title => row.push(format_title(&project.title)),
                 ProjectFields::Description => row.push(format_description(&project.description)),
+                ProjectFields::AiDeclaration => row.push(format_description(&project.ai_declaration)),
                 ProjectFields::ShipStatus => row.push(format_status(&project.ship_status)),
                 ProjectFields::RepoUrl => row.push(format_url(&project.repo_url)),
                 ProjectFields::DemoUrl => row.push(format_url(&project.demo_url)),
                 ProjectFields::ReadmeUrl => row.push(format_url(&project.readme_url)),
+                ProjectFields::BannerUrl => row.push(format_url(project.banner_url.as_deref().unwrap_or(""))),
                 ProjectFields::CreatedAt => row.push(format_time_cell(&project.created_at)),
                 ProjectFields::UpdatedAt => row.push(format_time_cell(&project.updated_at)),
                 ProjectFields::DevlogIds => row.push(format_devlog_ids(&project.devlog_ids)),
