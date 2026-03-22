@@ -21,7 +21,7 @@ Commands that allow you to view and manage your devlogs.
 
 ## Usage
 ```bash
-flavor project devlog [OPTIONS] <COMMAND>
+flavor devlog [OPTIONS] <COMMAND>
 ```
 
 ### Commands

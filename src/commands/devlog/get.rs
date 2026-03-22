@@ -53,7 +53,10 @@ impl DevlogGet {
         spinner.enable_steady_tick(std::time::Duration::from_millis(80));
 
         let client = reqwest::Client::new();
-        let url = format!("https://flavortown.hackclub.com/api/v1/devlogs/{}", self.devlog_id);
+        let url = format!(
+            "https://flavortown.hackclub.com/api/v1/devlogs/{}",
+            self.devlog_id
+        );
         debug!("Sending GET request to {}", url);
         let res = client
             .get(&url)
