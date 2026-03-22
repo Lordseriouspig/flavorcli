@@ -27,9 +27,6 @@ use log::{debug, info};
 #[derive(Debug, Args)]
 pub struct DevlogGet {
     // Defines get devlog command (level 4)
-    /// The project ID the devlog belongs to. Allows access to the devlog's attachments.
-    #[clap(long, short)]
-    pub project_id: Option<u32>,
     /// The devlog ID to retrieve
     pub devlog_id: u32,
     /// Returns data as raw JSON
@@ -43,8 +40,8 @@ pub struct DevlogGet {
 impl DevlogGet {
     pub async fn execute(&self) -> anyhow::Result<()> {
         debug!(
-            "Executing devlog get command (project_id: {:?}, devlog_id: {})",
-            self.project_id, self.devlog_id
+            "Executing devlog get command (devlog_id: {})",
+            self.devlog_id
         );
         let auth: AuthData = get_key()?;
         let spinner = ProgressBar::new_spinner();
@@ -56,14 +53,7 @@ impl DevlogGet {
         spinner.enable_steady_tick(std::time::Duration::from_millis(80));
 
         let client = reqwest::Client::new();
-        let url = format!(
-            "https://flavortown.hackclub.com{}",
-            if let Some(project_id) = self.project_id {
-                format!("/api/v1/projects/{}/devlogs/{}", project_id, self.devlog_id)
-            } else {
-                format!("/api/v1/devlogs/{}", self.devlog_id)
-            }
-        );
+        let url = format!("https://flavortown.hackclub.com/api/v1/devlogs/{}", self.devlog_id);
         debug!("Sending GET request to {}", url);
         let res = client
             .get(&url)
