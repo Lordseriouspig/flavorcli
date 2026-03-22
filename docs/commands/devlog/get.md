@@ -22,17 +22,16 @@ Devlog Get allows you to get information about a specific devlog by it's, and op
 ## Usage
 
 ```bash
-flavor project devlog get [OPTIONS] <DEVLOG_ID>
+flavor devlog get [OPTIONS] <DEVLOG_ID>
 ```
 
 ### Arguments
 - **`<DEVLOG_ID>`:**  The devlog ID to retrieve
 {% hint style="info" %}
-You can get Devlog IDs from the `flavor project devlog list` command, or from the `flavor project get` command, where you can see all devlogs associated with a project.
+You can get Devlog IDs from the `flavor devlog list` command, or from the `flavor project get` command, where you can see all devlogs associated with a project.
 {% endhint %}
 
 ### Options
--  **`-p, --project-id <PROJECT_ID>`:**  The project ID the devlog belongs to. Allows access to the devlog's attachments
 -  **`    --json`:**                     Returns data as raw JSON
 -  **`-s, --short`:**                    Omits the devlog's metadata
 -  **`-v, --verbose...`:**               Increase logging verbosity
@@ -42,7 +41,7 @@ You can get Devlog IDs from the `flavor project devlog list` command, or from th
 ## Examples
 ### Get a devlog by its ID
 ```bash
-flavor project devlog get 11564 --project-id 333
+flavor devlog get 11564 --project-id 333
 ```
 **Returns**
 ```
@@ -73,7 +72,7 @@ Attachment #2: https://flavortown.hackclub.com/rails/active_storage/blobs/proxy/
 
 ### Get json of a devlog by its ID
 ```bash
-flavor project devlog get 11564 --json
+flavor devlog get 11564 --json
 ```
 
 **Returns**

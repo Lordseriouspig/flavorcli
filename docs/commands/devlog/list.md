@@ -21,7 +21,7 @@ The Devlog list command allows you to list devlogs for a specific project or all
 
 ## Usage
 ```bash
-flavor project devlog list [Options] [PROJECT_ID]
+flavor devlog list [Options] [PROJECT_ID]
 ```
 
 ### Arguments
@@ -38,7 +38,7 @@ flavor project devlog list [Options] [PROJECT_ID]
 ## Examples
 ### Get all devlogs of a project
 ```bash
-flavor project devlog list 333
+flavor devlog list 333
 ```
 **Returns** (concatenated)
 ```
@@ -63,7 +63,7 @@ Page 1/1 | Total results: 14
 
 ### Get all devlogs of a project with custom columns
 ```bash
-flavor project devlog list 333 --fields id,body,duration
+flavor devlog list 333 --fields id,body,duration
 ```
 **Returns** (concatenated)
 ```
@@ -88,7 +88,7 @@ Page 1/1 | Total results: 14
 
 ### Get all devlogs of a project in json
 ```bash
-flavor project devlog list 333 --json
+flavor devlog list 333 --json
 ```
 **Returns** (concatenated)
 ```json
