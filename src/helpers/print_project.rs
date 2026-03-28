@@ -66,10 +66,7 @@ pub async fn print_project(p: &Project, resolve: bool) {
             &p.readme_url
         }
     );
-    field!(
-        "Banner",
-        p.banner_url.as_deref().unwrap_or("-")
-    );
+    field!("Banner", p.banner_url.as_deref().unwrap_or("-"));
 
     if resolve {
         heading!("Devlogs:");
