@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## 1.0.2 - 2026-03-28
 
-[f2c13aa](f2c13aa1c4b25af009b429ed429ced93d8ca910f)...[c5a493c](c5a493c2669d3a486a56c86f37e2e476e9ccbfd6)
+[f2c13aa](f2c13aa1c4b25af009b429ed429ced93d8ca910f)...[2d2b88a](2d2b88a83740ba977280203a8828f6383193d0d6)
 
 ### Bug Fixes
 
