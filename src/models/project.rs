@@ -29,6 +29,7 @@ where
 pub struct Project {
     pub id: u32,
     pub title: String,
+    #[serde(deserialize_with = "empty_string")]
     pub ai_declaration: String,
     pub description: String,
     pub ship_status: String,
