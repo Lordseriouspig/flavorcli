@@ -54,10 +54,6 @@ pub struct ProjectUpdate {
     /// Returns data as raw JSON
     #[clap(long)]
     pub json: bool,
-
-    /// Overrides the resource to be exactly what you specify (PUT instead of PATCH)
-    #[clap(long, alias = "override")]
-    pub put: bool,
 }
 
 impl ProjectUpdate {
@@ -96,31 +92,20 @@ impl ProjectUpdate {
         }
 
         debug!(
-            "Sending {} request to {}\n{}",
-            if self.put { "PUT" } else { "PATCH" },
+            "Sending PATCH request to {}\n{}",
             url,
             body.iter()
                 .map(|(k, v)| format!("{}: {}", k, v))
                 .collect::<Vec<String>>()
                 .join("\n")
         );
-        let res = if self.put {
-            client
-                .put(&url)
-                .header("Authorization", auth.token)
-                .header("X-Flavortown-Ext-333", "true")
-                .form(&body)
-                .send()
-                .await?
-        } else {
-            client
-                .patch(&url)
-                .header("Authorization", auth.token)
-                .header("X-Flavortown-Ext-333", "true")
-                .form(&body)
-                .send()
-                .await?
-        };
+        let res = client
+            .patch(&url)
+            .header("Authorization", auth.token)
+            .header("X-Flavortown-Ext-333", "true")
+            .form(&body)
+            .send()
+            .await?;
         debug!("Received response with status: {}", res.status());
         if !res.status().is_success() {
             spinner.finish_and_clear();

@@ -35,7 +35,6 @@ flavor project update [OPTIONS] <PROJECT_ID>
 -  **``-v, --verbose...``:**                 Increase logging verbosity
 -  **``--json``:**                       Returns data as raw JSON
 -  **``-q, --quiet...``:**                   Decrease logging verbosity
--  **``--put``:**                        Overrides the resource to be exactly what you specify (PUT instead of PATCH)
 -  **``-h, --help``:**                       Print help
 
 ## Examples
