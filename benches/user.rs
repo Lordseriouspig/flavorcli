@@ -20,8 +20,6 @@ use flavorcli::commands::user::{get::UserGet, list::UserList};
 use flavorcli::models::session::Session;
 use flavorcli::helpers::get_key::get_key;
 
-#[allow(unused)]
-
 fn cmd_user_get(c: &mut Criterion) {
     c.bench_function("cmd_user_get", |b| {
         b.iter(|| {
@@ -48,6 +46,7 @@ fn cmd_user_list(c: &mut Criterion) {
     });
 }
 
+#[allow(unused)]
 fn fn_user_get(c: &mut Criterion) {
     let rt = Runtime::new().unwrap();
     let session = Session::new();
@@ -64,6 +63,7 @@ fn fn_user_get(c: &mut Criterion) {
     });
 }
 
+#[allow(unused)]
 fn fn_user_list(c: &mut Criterion) {
     let rt = Runtime::new().unwrap();
     let session = Session::new();

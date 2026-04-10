@@ -20,8 +20,6 @@ use flavorcli::commands::devlog::{get::DevlogGet, list::DevlogList};
 use flavorcli::models::session::Session;
 use flavorcli::helpers::get_key::get_key;
 
-#[allow(unused)]
-
 fn cmd_devlog_get(c: &mut Criterion) {
     c.bench_function("cmd_devlog_get", |b| {
         b.iter(|| {
@@ -48,6 +46,7 @@ fn cmd_devlog_list(c: &mut Criterion) {
     });
 }
 
+#[allow(unused)]
 fn fn_devlog_get(c: &mut Criterion) {
     let rt = Runtime::new().unwrap();
     let session = Session::new();
@@ -64,6 +63,7 @@ fn fn_devlog_get(c: &mut Criterion) {
     });
 }
 
+#[allow(unused)]
 fn fn_devlog_list(c: &mut Criterion) {
     let rt = Runtime::new().unwrap();
     let session = Session::new();
