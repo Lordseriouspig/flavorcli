@@ -15,9 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 
-use crate::helpers::get_key::get_key;
 use crate::helpers::print_project::print_project;
 use crate::models::authdata::AuthData;
+use crate::models::session::Session;
 use crate::models::project::Project;
 use anyhow;
 use clap::Args;
@@ -46,12 +46,11 @@ pub struct ProjectGet {
 }
 
 impl ProjectGet {
-    pub async fn execute(&self) -> anyhow::Result<()> {
+    pub async fn execute(&self, session: &Session, auth: &AuthData) -> anyhow::Result<()> {
         debug!(
             "Executing project get command for project ID: {}",
             self.project_id
         );
-        let auth: AuthData = get_key()?;
         let spinner = ProgressBar::new_spinner();
         spinner.set_style(
             ProgressStyle::with_template("{spinner} {msg}")?
@@ -60,18 +59,12 @@ impl ProjectGet {
         spinner.set_message("Retrieving project...");
         spinner.enable_steady_tick(std::time::Duration::from_millis(80));
 
-        let client = reqwest::Client::new();
         let url = format!(
             "https://flavortown.hackclub.com/api/v1/projects/{}",
             self.project_id
         );
         debug!("Sending GET request to {}", url);
-        let res = client
-            .get(&url)
-            .header("Authorization", auth.token)
-            .header("X-Flavortown-Ext-333", "true")
-            .send()
-            .await?;
+        let res = session.get(&url, auth.token.clone(), None).await?;
         debug!("Received response with status: {}", res.status());
         if !res.status().is_success() {
             spinner.finish_and_clear();
@@ -94,7 +87,7 @@ impl ProjectGet {
             } else {
                 let project: Project = res.json().await?;
                 debug!("Successfully parsed project data");
-                print_project(&project, self.resolve).await;
+                print_project(&project, self.resolve, auth, session).await;
             }
             Ok(())
         }

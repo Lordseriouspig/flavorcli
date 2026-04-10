@@ -15,9 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 
-use crate::helpers::get_key::get_key;
 use crate::helpers::print_project_table::print_project_table;
 use crate::models::authdata::AuthData;
+use crate::models::session::Session;
 use crate::models::project_vec::ProjectVec;
 use anyhow;
 use clap::Args;
@@ -68,12 +68,11 @@ pub enum ProjectFields {
 }
 
 impl ProjectList {
-    pub async fn execute(&self) -> anyhow::Result<()> {
+    pub async fn execute(&self, session: &Session, auth: &AuthData) -> anyhow::Result<()> {
         debug!(
             "Executing project list command (page: {:?}, query: {:?})",
             self.page, self.query
         );
-        let auth: AuthData = get_key()?;
         let spinner = ProgressBar::new_spinner();
         spinner.set_style(
             ProgressStyle::with_template("{spinner} {msg}")?
@@ -82,7 +81,6 @@ impl ProjectList {
         spinner.set_message("Retrieving projects...");
         spinner.enable_steady_tick(std::time::Duration::from_millis(80));
 
-        let client = reqwest::Client::new();
         let params = {
             let mut p = vec![];
             if let Some(page) = self.page {
@@ -93,18 +91,8 @@ impl ProjectList {
             }
             p
         };
-        debug!(
-            "Sending GET request to https://flavortown.hackclub.com/api/v1/projects with params: {:?}",
-            params
-        );
-        let res = client
-            .get("https://flavortown.hackclub.com/api/v1/projects")
-            .query(&params)
-            .header("Authorization", auth.token)
-            .header("X-Flavortown-Ext-333", "true")
-            .send()
-            .await?;
-        debug!("Received response with status: {}", res.status());
+
+        let res = session.get("https://flavortown.hackclub.com/api/v1/projects", auth.token.clone(), Some(params)).await?;
         if !res.status().is_success() {
             spinner.finish_and_clear();
             anyhow::bail!(

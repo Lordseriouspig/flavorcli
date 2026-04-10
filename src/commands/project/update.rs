@@ -15,9 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 
-use crate::helpers::get_key::get_key;
 use crate::helpers::print_project::print_project;
 use crate::models::authdata::AuthData;
+use crate::models::session::Session;
 use crate::models::project::Project;
 use anyhow;
 use clap::Args;
@@ -53,13 +53,12 @@ pub struct ProjectUpdate {
 
     /// Returns data as raw JSON
     #[clap(long)]
-    pub json: bool,
+    pub json: bool
 }
 
 impl ProjectUpdate {
-    pub async fn execute(&self) -> anyhow::Result<()> {
+    pub async fn execute(&self, session: &Session, auth: &AuthData) -> anyhow::Result<()> {
         debug!("Executing project update command.");
-        let auth: AuthData = get_key()?;
         let spinner = ProgressBar::new_spinner();
         spinner.set_style(
             ProgressStyle::with_template("{spinner} {msg}")?
@@ -68,7 +67,6 @@ impl ProjectUpdate {
         spinner.set_message("Updating project...");
         spinner.enable_steady_tick(std::time::Duration::from_millis(80));
 
-        let client = reqwest::Client::new();
         let url = format!(
             "https://flavortown.hackclub.com/api/v1/projects/{}",
             self.project_id
@@ -91,21 +89,7 @@ impl ProjectUpdate {
             body.insert("readme_url", readme_url.clone());
         }
 
-        debug!(
-            "Sending PATCH request to {}\n{}",
-            url,
-            body.iter()
-                .map(|(k, v)| format!("{}: {}", k, v))
-                .collect::<Vec<String>>()
-                .join("\n")
-        );
-        let res = client
-            .patch(&url)
-            .header("Authorization", auth.token)
-            .header("X-Flavortown-Ext-333", "true")
-            .form(&body)
-            .send()
-            .await?;
+        let res = session.patch(&url, body, auth.token.clone()).await?;
         debug!("Received response with status: {}", res.status());
         if !res.status().is_success() {
             spinner.finish_and_clear();
@@ -142,7 +126,7 @@ impl ProjectUpdate {
             } else {
                 let project: Project = res.json().await?;
                 debug!("Successfully parsed project data");
-                print_project(&project, false).await;
+                print_project(&project, false, auth, session).await;
             }
             Ok(())
         }

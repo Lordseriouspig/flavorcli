@@ -17,6 +17,8 @@ use std::process::Command;
 use std::hint::black_box;
 use tokio::runtime::Runtime;
 use flavorcli::commands::store::{get::StoreGet, list::{StoreList, StoreFields, SortOrder, SortFields}};
+use flavorcli::models::session::Session;
+use flavorcli::helpers::get_key::get_key;
 
 #[allow(unused)]
 
@@ -48,6 +50,8 @@ fn cmd_store_list(c: &mut Criterion) {
 
 fn fn_store_get(c: &mut Criterion) {
     let rt = Runtime::new().unwrap();
+    let session = Session::new();
+    let auth = get_key().unwrap();
     c.bench_function("fn_store_get", |b| {
         b.iter(|| {
             let cmd = StoreGet {
@@ -56,13 +60,15 @@ fn fn_store_get(c: &mut Criterion) {
                 short: false,
                 detailed: false,
             };
-            black_box(rt.block_on(cmd.execute()));
+            black_box(rt.block_on(cmd.execute(&session, &auth)));
         })
     });
 }
 
 fn fn_store_list(c: &mut Criterion) {
     let rt = Runtime::new().unwrap();
+    let session = Session::new();
+    let auth = get_key().unwrap();
     c.bench_function("fn_store_list", |b| {
         b.iter(|| {
             let cmd = StoreList {
@@ -81,7 +87,7 @@ fn fn_store_list(c: &mut Criterion) {
                 sort_region: None,
                 sort_order: SortOrder::Asc,
             };
-            black_box(rt.block_on(cmd.execute()));
+            black_box(rt.block_on(cmd.execute(&session, &auth)));
         })
     });
 }

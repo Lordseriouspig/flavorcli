@@ -17,6 +17,8 @@ use std::process::Command;
 use std::hint::black_box;
 use tokio::runtime::Runtime;
 use flavorcli::commands::user::{get::UserGet, list::UserList};
+use flavorcli::models::session::Session;
+use flavorcli::helpers::get_key::get_key;
 
 #[allow(unused)]
 
@@ -48,6 +50,8 @@ fn cmd_user_list(c: &mut Criterion) {
 
 fn fn_user_get(c: &mut Criterion) {
     let rt = Runtime::new().unwrap();
+    let session = Session::new();
+    let auth = get_key().unwrap();
     c.bench_function("fn_user_get", |b| {
         b.iter(|| {
             let cmd = UserGet {
@@ -55,13 +59,15 @@ fn fn_user_get(c: &mut Criterion) {
                 json: false,
                 resolve: 0,
             };
-            black_box(rt.block_on(cmd.execute()));
+            black_box(rt.block_on(cmd.execute(&session, &auth)));
         })
     });
 }
 
 fn fn_user_list(c: &mut Criterion) {
     let rt = Runtime::new().unwrap();
+    let session = Session::new();
+    let auth = get_key().unwrap();
     c.bench_function("fn_user_list", |b| {
         b.iter(|| {
             let cmd = UserList {
@@ -70,7 +76,7 @@ fn fn_user_list(c: &mut Criterion) {
                 fields: Vec::new(),
                 query: None,
             };
-            black_box(rt.block_on(cmd.execute()));
+            black_box(rt.block_on(cmd.execute(&session, &auth)));
         })
     });
 }

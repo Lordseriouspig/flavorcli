@@ -15,14 +15,13 @@
 // You should have received a copy of the GNU General Public License
 // along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 
-use crate::{helpers::get_key::get_key, models::authdata::AuthData, models::project::Project};
+use crate::{models::authdata::AuthData, models::project::Project};
 use anyhow::{Ok, Result};
 use futures::future::try_join_all;
 use indicatif::{ProgressBar, ProgressStyle};
 use log::{debug, info};
 
-pub async fn resolve_projects(project_ids: &[u32]) -> Result<Vec<Project>> {
-    let auth: AuthData = get_key()?;
+pub async fn resolve_projects(project_ids: &[u32], auth: &AuthData, session: &crate::models::session::Session) -> Result<Vec<Project>> {
     let spinner = ProgressBar::new_spinner();
     spinner.set_style(
         ProgressStyle::with_template("{spinner} {msg}")?
@@ -30,9 +29,7 @@ pub async fn resolve_projects(project_ids: &[u32]) -> Result<Vec<Project>> {
     );
     spinner.set_message("Resolving projects...");
     spinner.enable_steady_tick(std::time::Duration::from_millis(80));
-    let client = reqwest::Client::new();
     let futures = project_ids.iter().map(|project| {
-        let client = client.clone();
         let token = auth.token.clone();
         let url = format!(
             "https://flavortown.hackclub.com/api/v1/projects/{}",
@@ -41,12 +38,7 @@ pub async fn resolve_projects(project_ids: &[u32]) -> Result<Vec<Project>> {
         debug!("Sending GET request to {}", url);
 
         async move {
-            let res = client
-                .get(&url)
-                .header("Authorization", token)
-                .header("X-Flavortown-Ext-333", "true")
-                .send()
-                .await?;
+            let res = session.get(&url, token, None).await?;
             debug!("Received response with status: {}", res.status());
             if !res.status().is_success() {
                 anyhow::bail!(

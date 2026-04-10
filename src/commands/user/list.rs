@@ -15,9 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 
-use crate::helpers::get_key::get_key;
 use crate::helpers::print_user_table::print_user_table;
 use crate::models::authdata::AuthData;
+use crate::models::session::Session;
 use crate::models::user_vec::UserVec;
 use anyhow;
 use clap::Args;
@@ -63,9 +63,8 @@ pub enum UserFields {
 }
 
 impl UserList {
-    pub async fn execute(&self) -> anyhow::Result<()> {
+    pub async fn execute(&self, session: &Session, auth: &AuthData) -> anyhow::Result<()> {
         debug!("Executing user list command (page: {:?})", self.page);
-        let auth: AuthData = get_key()?;
         let spinner = ProgressBar::new_spinner();
         spinner.set_style(
             ProgressStyle::with_template("{spinner} {msg}")?
@@ -74,7 +73,6 @@ impl UserList {
         spinner.set_message("Retrieving users...");
         spinner.enable_steady_tick(std::time::Duration::from_millis(80));
 
-        let client = reqwest::Client::new();
         let params = {
             let mut p = vec![];
             if let Some(page) = self.page {
@@ -85,18 +83,7 @@ impl UserList {
             }
             p
         };
-        debug!(
-            "Sending GET request to https://flavortown.hackclub.com/api/v1/users with params: {:?}",
-            params
-        );
-        let res = client
-            .get("https://flavortown.hackclub.com/api/v1/users")
-            .query(&params)
-            .header("Authorization", auth.token)
-            .header("X-Flavortown-Ext-333", "true")
-            .send()
-            .await?;
-        debug!("Received response with status: {}", res.status());
+        let res = session.get("https://flavortown.hackclub.com/api/v1/users", auth.token.clone(), Some(params)).await?;
         if !res.status().is_success() {
             spinner.finish_and_clear();
             anyhow::bail!(

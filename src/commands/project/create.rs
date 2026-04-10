@@ -15,9 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 
-use crate::helpers::get_key::get_key;
 use crate::helpers::print_project::print_project;
 use crate::models::authdata::AuthData;
+use crate::models::session::Session;
 use crate::models::project::Project;
 use anyhow;
 use clap::Args;
@@ -54,9 +54,8 @@ pub struct ProjectCreate {
 }
 
 impl ProjectCreate {
-    pub async fn execute(&self) -> anyhow::Result<()> {
+    pub async fn execute(&self, session: &Session, auth: &AuthData) -> anyhow::Result<()> {
         debug!("Executing project create command.");
-        let auth: AuthData = get_key()?;
         let spinner = ProgressBar::new_spinner();
         spinner.set_style(
             ProgressStyle::with_template("{spinner} {msg}")?
@@ -65,7 +64,6 @@ impl ProjectCreate {
         spinner.set_message("Creating project...");
         spinner.enable_steady_tick(std::time::Duration::from_millis(80));
 
-        let client = reqwest::Client::new();
         let url = "https://flavortown.hackclub.com/api/v1/projects".to_string();
         let mut body = HashMap::new();
 
@@ -82,22 +80,7 @@ impl ProjectCreate {
             body.insert("readme_url", readme_url.clone());
         }
 
-        debug!(
-            "Sending POST request to {}\n{}",
-            url,
-            body.iter()
-                .map(|(k, v)| format!("{}: {}", k, v))
-                .collect::<Vec<String>>()
-                .join("\n")
-        );
-        let res = client
-            .post(&url)
-            .header("Authorization", auth.token)
-            .header("X-Flavortown-Ext-333", "true")
-            .form(&body)
-            .send()
-            .await?;
-        debug!("Received response with status: {}", res.status());
+        let res = session.post(&url, body, auth.token.clone()).await?;
         if !res.status().is_success() {
             spinner.finish_and_clear();
             anyhow::bail!(
@@ -133,7 +116,7 @@ impl ProjectCreate {
             } else {
                 let project: Project = res.json().await?;
                 debug!("Successfully parsed project data");
-                print_project(&project, false).await;
+                print_project(&project, false, auth, session).await;
             }
             Ok(())
         }

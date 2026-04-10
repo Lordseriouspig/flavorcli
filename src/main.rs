@@ -19,6 +19,9 @@ mod commands;
 mod helpers;
 mod models;
 
+use crate::models::session::Session;
+use crate::helpers::get_key::get_key;
+
 use clap::{Parser};
 use log::{error, debug, warn};
 use commands::FlavorArgs;
@@ -71,12 +74,35 @@ async fn main() {
 
 async fn run(args: FlavorArgs) -> Result<()> {
     debug!("Parsed arguments: {:?}", args);
+    let needs_session = match &args.entity_type {
+        commands::Command::Auth(auth_cmd) => {
+            match &auth_cmd.command {
+                commands::auth::AuthSubcommand::Set(set_cmd) => !set_cmd.no_verify,
+                _ => false,
+            }
+        }
+        _ => true,
+    };
+    let needs_auth: bool = match &args.entity_type {
+        commands::Command::Auth(_) => false,
+        _ => true,
+    };
+    let session = if needs_session {
+        Some(Session::new())
+    } else {
+        None
+    };
+    let auth = if needs_auth {
+        Some(get_key()?)
+    } else {
+        None
+    };
     match args.entity_type {
         commands::Command::Auth(auth_cmd) => {
-            match auth_cmd.command {
+            match &auth_cmd.command {
                 commands::auth::AuthSubcommand::Set(set_cmd) => {
                     debug!("Executing AuthSubcommand::Set with args: {:?}", set_cmd);
-                    set_cmd.execute()
+                    set_cmd.execute(session.as_ref())
                     .await
                     .context("Failed to set authentication token")?;
                 }
@@ -92,13 +118,13 @@ async fn run(args: FlavorArgs) -> Result<()> {
             match project_cmd.command {
                 commands::project::ProjectSubcommand::Get(get_cmd) => {
                     debug!("Executing ProjectSubcommand::Get with args: {:?}", get_cmd);
-                    get_cmd.execute()
+                    get_cmd.execute(session.as_ref().unwrap(), auth.as_ref().unwrap())
                     .await
                     .context("Failed to get project")?;
                 }
                 commands::project::ProjectSubcommand::List(list_cmd) => {
                     debug!("Executing ProjectSubcommand::List with args: {:?}", list_cmd);
-                    list_cmd.execute()
+                    list_cmd.execute(session.as_ref().unwrap(), auth.as_ref().unwrap())
                     .await
                     .context("Failed to list projects")?;
                 }
@@ -107,14 +133,14 @@ async fn run(args: FlavorArgs) -> Result<()> {
                         commands::devlog::DevlogSubcommand::Get(get_cmd) => {
                             warn!("Deprecation Warning: The 'project devlog get' command is deprecated and is kept for historical reasons. Please use 'flavor devlog get' instead.");
                             debug!("Executing ProjectDevlogSubcommand::Get with args: {:?}", get_cmd);
-                            get_cmd.execute()
+                            get_cmd.execute(session.as_ref().unwrap(), auth.as_ref().unwrap())
                             .await
                             .context("Failed to get devlog")?;
                         }
                         commands::devlog::DevlogSubcommand::List(list_cmd) => {
                             warn!("Deprecation Warning: The 'project devlog list' command is deprecated and is kept for historical reasons. Please use 'flavor devlog list' instead.");
                             debug!("Executing ProjectDevlogSubcommand::List with args: {:?}", list_cmd);
-                            list_cmd.execute()
+                            list_cmd.execute(session.as_ref().unwrap(), auth.as_ref().unwrap())
                             .await
                             .context("Failed to list devlogs")?;
                         }
@@ -122,13 +148,13 @@ async fn run(args: FlavorArgs) -> Result<()> {
                 }
                 commands::project::ProjectSubcommand::Create(create_cmd) => {
                     debug!("Executing ProjectSubcommand::Create with args: {:?}", create_cmd);
-                    create_cmd.execute()
+                    create_cmd.execute(session.as_ref().unwrap(), auth.as_ref().unwrap())
                     .await
                     .context("Failed to create project")?; // TODO: might need something to check if the error was caused when rendering the project and show a different message, as the project would have been created.
                 }
                 commands::project::ProjectSubcommand::Update(update_cmd) => {
                     debug!("Executing ProjectSubcommand::Update with args: {:?}", update_cmd);
-                    update_cmd.execute()
+                    update_cmd.execute(session.as_ref().unwrap(), auth.as_ref().unwrap())
                     .await
                     .context("Failed to update project")?;
                 }
@@ -138,13 +164,13 @@ async fn run(args: FlavorArgs) -> Result<()> {
             match devlog_cmd.command {
                 commands::devlog::DevlogSubcommand::Get(get_cmd) => {
                     debug!("Executing DevlogSubcommand::Get with args: {:?}", get_cmd);
-                    get_cmd.execute()
+                    get_cmd.execute(session.as_ref().unwrap(), auth.as_ref().unwrap())
                     .await
                     .context("Failed to get devlog")?;
                 }
                 commands::devlog::DevlogSubcommand::List(list_cmd) => {
                     debug!("Executing DevlogSubcommand::List with args: {:?}", list_cmd);
-                    list_cmd.execute()
+                    list_cmd.execute(session.as_ref().unwrap(), auth.as_ref().unwrap())
                     .await
                     .context("Failed to list devlogs")?;
                 }
@@ -154,13 +180,13 @@ async fn run(args: FlavorArgs) -> Result<()> {
             match store_cmd.command {
                 commands::store::StoreSubcommand::Get(get_cmd) => {
                     debug!("Executing StoreSubcommand::Get with args: {:?}", get_cmd);
-                    get_cmd.execute()
+                    get_cmd.execute(session.as_ref().unwrap(), auth.as_ref().unwrap())
                     .await
                     .context("Failed to get store item")?;
                 }
                 commands::store::StoreSubcommand::List(list_cmd) => {
                     debug!("Executing StoreSubcommand::List with args: {:?}", list_cmd);
-                    list_cmd.execute()
+                    list_cmd.execute(session.as_ref().unwrap(), auth.as_ref().unwrap())
                     .await
                     .context("Failed to list store items")?;
                 }
@@ -170,13 +196,13 @@ async fn run(args: FlavorArgs) -> Result<()> {
             match user_cmd.command {
                 commands::user::UserSubcommand::Get(get_cmd) => {
                     debug!("Executing UserSubcommand::Get with args: {:?}", get_cmd);
-                    get_cmd.execute()
+                    get_cmd.execute(session.as_ref().unwrap(), auth.as_ref().unwrap())
                     .await
                     .context("Failed to get user")?;
                 }
                 commands::user::UserSubcommand::List(list_cmd) => {
                     debug!("Executing UserSubcommand::List with args: {:?}", list_cmd);
-                    list_cmd.execute()
+                    list_cmd.execute(session.as_ref().unwrap(), auth.as_ref().unwrap())
                     .await
                     .context("Failed to list users")?;
                 }

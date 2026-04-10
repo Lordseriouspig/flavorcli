@@ -30,7 +30,7 @@ fn format_time(dt: &str) -> String {
     local_dt.format("%Y-%m-%d %H:%M:%S").to_string()
 }
 
-pub async fn print_project(p: &Project, resolve: bool) {
+pub async fn print_project(p: &Project, resolve: bool, auth: &crate::models::authdata::AuthData, session: &crate::models::session::Session) {
     title!(p.title);
     field!("ID", p.id);
     field!("Status", p.ship_status);
@@ -70,7 +70,7 @@ pub async fn print_project(p: &Project, resolve: bool) {
 
     if resolve {
         heading!("Devlogs:");
-        match resolve_devlogs(&p.devlog_ids).await {
+        match resolve_devlogs(&p.devlog_ids, auth, session).await {
             Ok(devlogs) => {
                 if devlogs.is_empty() {
                     println!("- None -");

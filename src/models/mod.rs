@@ -16,6 +16,7 @@
 // along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 
 pub mod authdata;
+pub mod session;
 pub mod devlog;
 pub mod devlog_vec;
 pub mod pagination;

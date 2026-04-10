@@ -15,17 +15,13 @@
 // You should have received a copy of the GNU General Public License
 // along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 
-use crate::{
-    helpers::get_key::get_key,
-    models::{authdata::AuthData, devlog::Devlog},
-};
+use crate::models::{authdata::AuthData, devlog::Devlog};
 use anyhow::Result;
 use futures::future::try_join_all;
 use indicatif::{ProgressBar, ProgressStyle};
 use log::{debug, info};
 
-pub async fn resolve_devlogs(devlog_ids: &[u32]) -> Result<Vec<Devlog>> {
-    let auth: AuthData = get_key()?;
+pub async fn resolve_devlogs(devlog_ids: &[u32], auth: &AuthData, session: &crate::models::session::Session) -> Result<Vec<Devlog>> {
     let spinner = ProgressBar::new_spinner();
     spinner.set_style(
         ProgressStyle::with_template("{spinner} {msg}")?
@@ -33,20 +29,13 @@ pub async fn resolve_devlogs(devlog_ids: &[u32]) -> Result<Vec<Devlog>> {
     );
     spinner.set_message("Resolving devlogs...");
     spinner.enable_steady_tick(std::time::Duration::from_millis(80));
-    let client = reqwest::Client::new();
     let futures = devlog_ids.iter().map(|devlog| {
-        let client = client.clone();
         let token = auth.token.clone();
         let url = format!("https://flavortown.hackclub.com/api/v1/devlogs/{}", devlog);
         debug!("Sending GET request to {}", url);
 
         async move {
-            let res = client
-                .get(&url)
-                .header("Authorization", token)
-                .header("X-Flavortown-Ext-333", "true")
-                .send()
-                .await?;
+            let res = session.get(&url, token, None).await?;
             debug!(
                 "Received response for {} with status: {}",
                 devlog,

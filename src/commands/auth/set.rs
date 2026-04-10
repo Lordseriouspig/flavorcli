@@ -16,6 +16,7 @@
 // along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 
 use crate::models::authdata::AuthData;
+use crate::models::session::Session;
 use crate::models::user::User;
 use anyhow;
 use clap::Args;
@@ -39,7 +40,7 @@ pub struct AuthSet {
 }
 
 impl AuthSet {
-    pub async fn execute(&self) -> anyhow::Result<()> {
+    pub async fn execute(&self, session: Option<&Session>) -> anyhow::Result<()> {
         debug!(
             "Executing auth set command (user_id: {}, no_verify: {})",
             self.user_id.unwrap_or(0),
@@ -59,16 +60,8 @@ impl AuthSet {
             spinner.set_message("Verifying token...");
             spinner.enable_steady_tick(std::time::Duration::from_millis(80));
 
-            let client = reqwest::Client::new();
             let url = "https://flavortown.hackclub.com/api/v1/users/me".to_string();
-            debug!("Sending GET request to {}", url);
-            let res = client
-                .get(&url)
-                .header("Authorization", self.token.clone())
-                .header("X-Flavortown-Ext-333", "true")
-                .send()
-                .await?;
-            debug!("Received response with status: {}", res.status());
+            let res = session.as_ref().unwrap().get(&url, self.token.clone(), None).await?;
             if !res.status().is_success() {
                 spinner.finish_and_clear();
                 anyhow::bail!(

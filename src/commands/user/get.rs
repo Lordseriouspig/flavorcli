@@ -15,9 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 
-use crate::helpers::get_key::get_key;
 use crate::helpers::print_user::print_user;
 use crate::models::authdata::AuthData;
+use crate::models::session::Session;
 use crate::models::user::User;
 use anyhow;
 use clap::Args;
@@ -40,9 +40,8 @@ pub struct UserGet {
 }
 
 impl UserGet {
-    pub async fn execute(&self) -> anyhow::Result<()> {
+    pub async fn execute(&self, session: &Session, auth: &AuthData) -> anyhow::Result<()> {
         debug!("Executing user get command for user ID: {:?}", self.user_id);
-        let auth: AuthData = get_key()?;
         let spinner = ProgressBar::new_spinner();
         spinner.set_style(
             ProgressStyle::with_template("{spinner} {msg}")?
@@ -51,7 +50,6 @@ impl UserGet {
         spinner.set_message("Retrieving user...");
         spinner.enable_steady_tick(std::time::Duration::from_millis(80));
 
-        let client = reqwest::Client::new();
         let url = format!(
             "https://flavortown.hackclub.com/api/v1/users/{}",
             if let Some(user_id) = &self.user_id {
@@ -60,14 +58,7 @@ impl UserGet {
                 "me".to_string()
             }
         );
-        debug!("Sending GET request to {}", url);
-        let res = client
-            .get(&url)
-            .header("Authorization", auth.token)
-            .header("X-Flavortown-Ext-333", "true")
-            .send()
-            .await?;
-        debug!("Received response with status: {}", res.status());
+        let res: reqwest::Response = session.get(&url, auth.token.clone(), None).await?;
         if !res.status().is_success() {
             spinner.finish_and_clear();
             anyhow::bail!(
@@ -89,7 +80,7 @@ impl UserGet {
             } else {
                 let user: User = res.json().await?;
                 debug!("Successfully parsed user data");
-                print_user(&user, self.resolve).await;
+                print_user(&user, self.resolve, auth, session).await;
             }
         }
 

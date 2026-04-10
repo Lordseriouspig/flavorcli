@@ -28,7 +28,7 @@ fn format_duration(seconds: u32) -> String {
     format!("{:02}:{:02}:{:02}", hours, minutes, secs)
 }
 
-pub async fn print_user(u: &User, resolve: u8) {
+pub async fn print_user(u: &User, resolve: u8, auth: &crate::models::authdata::AuthData, session: &crate::models::session::Session) {
     title!(u.display_name);
     field!("ID", u.id);
     field!("Slack ID", u.slack_id);
@@ -36,13 +36,13 @@ pub async fn print_user(u: &User, resolve: u8) {
 
     if resolve > 0 {
         heading!("Projects:");
-        match resolve_projects(&u.project_ids).await {
+        match resolve_projects(&u.project_ids, &auth, session).await {
             Ok(projects) => {
                 if projects.is_empty() {
                     println!("- None -");
                 } else {
                     for project in projects {
-                        print_project(&project, resolve > 1).await;
+                        print_project(&project, resolve > 1, auth, session).await;
                         println!();
                     }
                 }

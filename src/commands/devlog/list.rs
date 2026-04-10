@@ -15,9 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 
-use crate::helpers::get_key::get_key;
 use crate::helpers::print_devlog_table::print_devlog_table;
 use crate::models::authdata::AuthData;
+use crate::models::session::Session;
 use crate::models::devlog_vec::DevlogVec;
 use crate::models::project::Project;
 use anyhow;
@@ -64,12 +64,11 @@ pub enum DevlogFields {
 }
 
 impl DevlogList {
-    pub async fn execute(&self) -> anyhow::Result<()> {
+    pub async fn execute(&self, session: &Session, auth: &AuthData) -> anyhow::Result<()> {
         debug!(
             "Executing devlog list command (project_id: {:?}, page: {:?})",
             self.project_id, self.page
         );
-        let auth: AuthData = get_key()?;
         let spinner = ProgressBar::new_spinner();
         spinner.set_style(
             ProgressStyle::with_template("{spinner} {msg}")?
@@ -78,7 +77,6 @@ impl DevlogList {
         spinner.set_message("Retrieving devlogs...");
         spinner.enable_steady_tick(std::time::Duration::from_millis(80));
 
-        let client = reqwest::Client::new();
         let params = {
             let mut p = vec![];
             if let Some(page) = self.page {
@@ -94,15 +92,7 @@ impl DevlogList {
                 "/api/v1/devlogs/".to_string()
             }
         );
-        debug!("Sending GET request to {} with params: {:?}", url, params);
-        let res = client
-            .get(&url)
-            .query(&params)
-            .header("Authorization", auth.token)
-            .header("X-Flavortown-Ext-333", "true")
-            .send()
-            .await?;
-        debug!("Received response with status: {}", res.status());
+        let res = session.get(&url, auth.token.clone(), Some(params)).await?;
         if !res.status().is_success() {
             spinner.finish_and_clear();
             anyhow::bail!(
@@ -125,7 +115,7 @@ impl DevlogList {
                 let devlogs: DevlogVec = res.json().await?;
                 debug!("Successfully parsed {} devlogs", devlogs.devlogs.len());
                 if let Some(project_id) = &self.project_id {
-                    match self.get_project_name().await {
+                    match self.get_project_name(session, auth).await {
                         Ok(name) => {
                             println!(
                                 "{}{}{}",
@@ -152,8 +142,7 @@ impl DevlogList {
         Ok(())
     }
 
-    pub async fn get_project_name(&self) -> anyhow::Result<String> {
-        let auth: AuthData = get_key()?;
+    pub async fn get_project_name(&self, session: &Session, auth: &AuthData) -> anyhow::Result<String> {
         let spinner = ProgressBar::new_spinner();
         spinner.set_style(
             ProgressStyle::with_template("{spinner} {msg}")?
@@ -161,7 +150,6 @@ impl DevlogList {
         );
         spinner.set_message("Retrieving project...");
         spinner.enable_steady_tick(std::time::Duration::from_millis(80));
-        let client = reqwest::Client::new();
         let project_id = self
             .project_id
             .ok_or_else(|| anyhow::anyhow!("Project ID is required to retrieve project name"))?;
@@ -170,12 +158,7 @@ impl DevlogList {
             project_id
         );
         debug!("Sending GET request to {}", url);
-        let res = client
-            .get(&url)
-            .header("Authorization", auth.token)
-            .header("X-Flavortown-Ext-333", "true")
-            .send()
-            .await?;
+        let res = session.get(&url, auth.token.clone(), None).await?;
         debug!("Received response with status: {}", res.status());
         if !res.status().is_success() {
             spinner.finish_and_clear();

@@ -15,9 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 
-use crate::helpers::get_key::get_key;
 use crate::helpers::print_store_table::print_store_table;
 use crate::models::authdata::AuthData;
+use crate::models::session::Session;
 use crate::models::store::Store;
 use anyhow;
 use clap::Args;
@@ -124,9 +124,8 @@ pub enum Regions {
 }
 
 impl StoreList {
-    pub async fn execute(&self) -> anyhow::Result<()> {
+    pub async fn execute(&self, session: &Session, auth: &AuthData) -> anyhow::Result<()> {
         debug!("Executing store list command");
-        let auth: AuthData = get_key()?;
         let spinner = ProgressBar::new_spinner();
         spinner.set_style(
             ProgressStyle::with_template("{spinner} {msg}")?
@@ -135,16 +134,9 @@ impl StoreList {
         spinner.set_message("Retrieving items...");
         spinner.enable_steady_tick(std::time::Duration::from_millis(80));
 
-        let client = reqwest::Client::new();
         // this is where to put params in the future (let params =)
         debug!("Sending GET request to https://flavortown.hackclub.com/api/v1/store");
-        let res = client
-            .get("https://flavortown.hackclub.com/api/v1/store")
-            //.query(&params)
-            .header("Authorization", auth.token)
-            .header("X-Flavortown-Ext-333", "true")
-            .send()
-            .await?;
+        let res = session.get("https://flavortown.hackclub.com/api/v1/store", auth.token.clone(), None).await?;
         debug!("Received response with status: {}", res.status());
         if !res.status().is_success() {
             spinner.finish_and_clear();
