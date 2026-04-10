@@ -2,9 +2,46 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.0.2 - 2026-03-28
+
+[f2c13aa](f2c13aa1c4b25af009b429ed429ced93d8ca910f)...[2d2b88a](2d2b88a83740ba977280203a8828f6383193d0d6)
+
+### Bug Fixes
+
+- Remove create update and delete devlogs ([a0e5aa0](a0e5aa06e0c1db6fb9d5cdd6e72b4072165d2409)), BREAKING CHANGE:Removes commands and functionality related to devlog creation, updating, and deletion.
+- Remove project scoped devlog commands ([46a4286](46a428601b853a62c5cce07cca7189a5c12eed90)), BREAKING CHANGE:Removes some options and functionality from devlog commands
+- Remove project specific listing of devlogs ([90c106a](90c106a298e22b370b2c7f8291d92f69455a8ffa)), BREAKING CHANGE:The `project_id` parameter was removed from devlog list.
+- Remove unused inports ([1729ddb](1729ddb37d2d6f2d278cc9575d78c949239f800b))
+- Remove redundent --project-id in devlog get (again) ([8e0e6d4](8e0e6d4e31f6e5c50ae1d0d600e5907b254893b3))
+
+### Documentation
+
+- Update help commands ([f5736ad](f5736ad7ce7a7623a1d1f846a94e964540b7ab4a)), Co-authored-by:Copilot <175728472+Copilot@users.noreply.github.com>
+- Update da docs ([e6e1ebe](e6e1ebe92cc80a785a51c64028438586c8d7276d))
+
+### Features
+
+- Add banner url and ai declaration to project ([ecfc3fc](ecfc3fcceb6c6f6d8a8c6ab2cd1216406e8cb863))
+- Add comments to devlogs ([08ae012](08ae012dcbb9e10b566d9321b2dd29c9cd14895a))
+
+### Refactor
+
+- Make consistant with api ([74d8233](74d8233e8d825392206414fc7ef81d5dbac45492))
+- Move pagination to a new file ([8b131b1](8b131b1aeb6593535e9792239f29c4b268102df9))
+
+### Styling
+
+- Remove unnessesary stuff ([12a2979](12a29794b59bc18f9dfffbb4c791fa50a833cc94))
+
+### Revert
+
+- "fix!: remove project specific listing of devlogs" ([8c7f05a](8c7f05a6502dd1b03c5135728779574a769db069))
+- "fix!: remove project scoped devlog commands" ([80df39b](80df39b969fb0aa3f30964aaf5cc39a7048ff340))
+- "fix: remove unused inports" ([714382a](714382af2d0bb1f395c0928d38f5aad06de51864))
+
 ## 1.0.1 - 2026-01-25
 
-[6f9cf24](6f9cf2486359728b2b5b37907709ded46d9f4455)...[fde9c59](fde9c5935ab782b57b4e20233d547835aedf0379)
+[6f9cf24](6f9cf2486359728b2b5b37907709ded46d9f4455)...[f2c13aa](f2c13aa1c4b25af009b429ed429ced93d8ca910f)
 
 ### Features
 
