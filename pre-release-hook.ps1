@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
 
-git cliff -o "CHANGELOG.md" --tag 1.0.2;
+git cliff -o "CHANGELOG.md" --tag 1.0.3;
 
 (Get-Content ./PKGBUILD) | 
     ForEach-Object {

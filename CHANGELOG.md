@@ -2,9 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.0.3 - 2026-04-10
+
+[b1857ab](b1857ab6f01c92692e0e1c0d2ddebcee1d4246bd)...[f3e8cc3](f3e8cc30b37b9a77f8ba1ab223ee600002934f50)
+
+### Bug Fixes
+
+- Account for an edge case where ai declaration is null ([f3e8cc3](f3e8cc30b37b9a77f8ba1ab223ee600002934f50))
+
 ## 1.0.2 - 2026-03-28
 
-[f2c13aa](f2c13aa1c4b25af009b429ed429ced93d8ca910f)...[2d2b88a](2d2b88a83740ba977280203a8828f6383193d0d6)
+[f2c13aa](f2c13aa1c4b25af009b429ed429ced93d8ca910f)...[b1857ab](b1857ab6f01c92692e0e1c0d2ddebcee1d4246bd)
 
 ### Bug Fixes
 
