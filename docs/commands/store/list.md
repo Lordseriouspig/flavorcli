@@ -1,27 +1,27 @@
 <!--
  Copyright (C) 2026 Lordseriouspig
  
- This file is part of flavorcli.
+ This file is part of starcli.
  
- flavorcli is free software: you can redistribute it and/or modify
+ starcli is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
  (at your option) any later version.
  
- flavorcli is distributed in the hope that it will be useful,
+ starcli is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
  
  You should have received a copy of the GNU General Public License
- along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
+ along with starcli.  If not, see <https://www.gnu.org/licenses/>.
 -->
 
-Store list allows you to list every item in the Flavortown store.
+Store list allows you to list every item in the Stardance store.
 
 ## Usage
 ```bash
-flavor store list [OPTIONS]
+star store list [OPTIONS]
 ```
 
 ### Options
@@ -38,7 +38,7 @@ flavor store list [OPTIONS]
 ## Examples
 ### List all store items
 ```bash
-flavor store list
+star store list
 ```
 **Returns** (concatenated)
 ```
@@ -57,7 +57,7 @@ flavor store list
 
 ### List store items for a specific region
 ```bash
-flavor store list --region united-states
+star store list --region united-states
 ```
 **Returns** (concatenated)
 ```
@@ -76,7 +76,7 @@ flavor store list --region united-states
 
 ### List store items with custom columns
 ```bash
-flavor store list --fields id,name,stock,regional,show-in-carousel --region united-states
+star store list --fields id,name,stock,regional,show-in-carousel --region united-states
 ```
 **Returns** (concatenated)
 ```
@@ -95,7 +95,7 @@ flavor store list --fields id,name,stock,regional,show-in-carousel --region unit
 
 ### List store items with custom sort
 ```bash
-flavor store list --sort regional --sort-region united-states --sort-order desc --region united-states
+star store list --sort regional --sort-region united-states --sort-order desc --region united-states
 ```
 **Returns** (concatenated)
 ```
@@ -114,9 +114,9 @@ flavor store list --sort regional --sort-region united-states --sort-order desc 
 
 ### List store items in JSON
 ```bash
-flavor store list --json
+star store list --json
 ```
 **Returns** (concatenated)
 ```json
-[{"id":9,"name":"Macbook Air","description":"M4 13\" - a favourite on our team!","old_prices":[],"limited":false,"stock":null,"type":"ShopItem::ThirdPartyPhysical","show_in_carousel":true,"accessory_tag":null,"agh_contents":"","attached_shop_item_ids":[null],"buyable_by_self":true,"long_description":null,"max_qty":null,"one_per_person_ever":false,"sale_percentage":null,"image_url":"https://flavortown.hackclub.com/rails/active_storage/blobs/proxy/eyJfcmFpbHMiOnsiZGF0YSI6MjUwLCJwdXIiOiJibG9iX2lkIn19--60d2d36d5c02546f61220f0814b67655a58de042/mba%20Background%20Removed%202.png","enabled":{"enabled_au":true,"enabled_ca":true,"enabled_eu":true,"enabled_in":true,"enabled_uk":true,"enabled_us":true,"enabled_xx":true},"ticket_cost":{"base_cost":4995.0,"au":4995.0,"ca":4995.0,"eu":4995.0,"in":4995.0,"uk":4995.0,"us":4995.0,"xx":4995.0}},{"id":2,"name":"Raspberry Pi 5","description":"mm,,, great for hosting all your yummy apps!","old_prices":[],"limited":false,"stock":null,"type":"ShopItem::ThirdPartyPhysical","show_in_carousel":true,"accessory_tag":null,"agh_contents":"","attached_shop_item_ids":[null],"buyable_by_self":true,"long_description":null,"max_qty":null,"one_per_person_ever":false,"sale_percentage":null,"image_url":"https://flavortown.hackclub.com/rails/active_storage/blobs/proxy/eyJfcmFpbHMiOnsiZGF0YSI6MjEwLCJwdXIiOiJibG9iX2lkIn19--bb4ab60784a2590933a9f7f273851b7c63f2b731/raspberry-pi-5-raspberry-pi-40958498898115_1000x%20Background%20Removed.png","enabled":{"enabled_au":true,"enabled_ca":true,"enabled_eu":true,"enabled_in":true,"enabled_uk":true,"enabled_us":true,"enabled_xx":true},"ticket_cost":{"base_cost":405.0,"au":405.0,"ca":405.0,"eu":405.0,"in":405.0,"uk":405.0,"us":430.0,"xx":455.0}}]
+[{"id":9,"name":"Macbook Air","description":"M4 13\" - a favourite on our team!","old_prices":[],"limited":false,"stock":null,"type":"ShopItem::ThirdPartyPhysical","show_in_carousel":true,"accessory_tag":null,"agh_contents":"","attached_shop_item_ids":[null],"buyable_by_self":true,"long_description":null,"max_qty":null,"one_per_person_ever":false,"sale_percentage":null,"image_url":"https://stardance.hackclub.com/rails/active_storage/blobs/proxy/eyJfcmFpbHMiOnsiZGF0YSI6MjUwLCJwdXIiOiJibG9iX2lkIn19--60d2d36d5c02546f61220f0814b67655a58de042/mba%20Background%20Removed%202.png","enabled":{"enabled_au":true,"enabled_ca":true,"enabled_eu":true,"enabled_in":true,"enabled_uk":true,"enabled_us":true,"enabled_xx":true},"ticket_cost":{"base_cost":4995.0,"au":4995.0,"ca":4995.0,"eu":4995.0,"in":4995.0,"uk":4995.0,"us":4995.0,"xx":4995.0}},{"id":2,"name":"Raspberry Pi 5","description":"mm,,, great for hosting all your yummy apps!","old_prices":[],"limited":false,"stock":null,"type":"ShopItem::ThirdPartyPhysical","show_in_carousel":true,"accessory_tag":null,"agh_contents":"","attached_shop_item_ids":[null],"buyable_by_self":true,"long_description":null,"max_qty":null,"one_per_person_ever":false,"sale_percentage":null,"image_url":"https://stardance.hackclub.com/rails/active_storage/blobs/proxy/eyJfcmFpbHMiOnsiZGF0YSI6MjEwLCJwdXIiOiJibG9iX2lkIn19--bb4ab60784a2590933a9f7f273851b7c63f2b731/raspberry-pi-5-raspberry-pi-40958498898115_1000x%20Background%20Removed.png","enabled":{"enabled_au":true,"enabled_ca":true,"enabled_eu":true,"enabled_in":true,"enabled_uk":true,"enabled_us":true,"enabled_xx":true},"ticket_cost":{"base_cost":405.0,"au":405.0,"ca":405.0,"eu":405.0,"in":405.0,"uk":405.0,"us":430.0,"xx":455.0}}]
 ```

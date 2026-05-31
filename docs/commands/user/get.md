@@ -1,27 +1,27 @@
 <!--
  Copyright (C) 2026 Lordseriouspig
  
- This file is part of flavorcli.
+ This file is part of starcli.
  
- flavorcli is free software: you can redistribute it and/or modify
+ starcli is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
  (at your option) any later version.
  
- flavorcli is distributed in the hope that it will be useful,
+ starcli is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
  
  You should have received a copy of the GNU General Public License
- along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
+ along with starcli.  If not, see <https://www.gnu.org/licenses/>.
 -->
 
 The user get command allows you to get information about a specific user by their ID.
 
 ## Usage
 ```bash
-flavor user get [OPTIONS] [USER_ID]
+star user get [OPTIONS] [USER_ID]
 ```
 
 ### Arguments
@@ -37,7 +37,7 @@ flavor user get [OPTIONS] [USER_ID]
 ## Examples
 ### Get information about yourself
 ```bash
-flavor user get
+star user get
 ```
 **Returns**
 ```
@@ -64,7 +64,7 @@ Cookies     : 47
 
 ### Get information about a specific user by ID
 ```bash
-flavor user get 2
+star user get 2
 ```
 **Returns**
 ```
@@ -89,7 +89,7 @@ Cookies     : 0
 
 ### Get information about a user and resolve their projects
 ```bash
-flavor user get 2 --resolve
+star user get 2 --resolve
 ```
 **Returns**
 ```
@@ -102,7 +102,7 @@ Avatar URL
 https://cachet.dunkirk.sh/users/U0C7B14Q3/r
 
 Projects:
-Flavortown
+Stardance
 ----------------------------------------
 ID          : 1
 Status      : draft
@@ -113,9 +113,9 @@ Description
 yep! I'm logging this on the platform itself (am staff)
 
 Links:
-Repo        : https://github.com/hackclub/flavortown
-Demo        : https://flavortown.hackclub.com
-Readme      : https://raw.githubusercontent.com/hackclub/flavortown/refs/heads/main/README.md
+Repo        : https://github.com/hackclub/stardance
+Demo        : https://stardance.hackclub.com
+Readme      : https://raw.githubusercontent.com/hackclub/stardance/refs/heads/main/README.md
 
 Devlog IDs:
 - 5194
@@ -132,11 +132,11 @@ Cookies     : 0
 
 ### Get information about a user and resolve their projects AND devlogs (can be very long)
 ```bash
-flavor user get 2 --resolve --resolve
+star user get 2 --resolve --resolve
 ```
 or
 ```bash
-flavor user get 2 -rr
+star user get 2 -rr
 ```
 **Returns**
 ```
@@ -149,7 +149,7 @@ Avatar URL
 https://cachet.dunkirk.sh/users/U0C7B14Q3/r
 
 Projects:
-Flavortown
+Stardance
 ----------------------------------------
 ID          : 1
 Status      : draft
@@ -160,18 +160,18 @@ Description
 yep! I'm logging this on the platform itself (am staff)
 
 Links:
-Repo        : https://github.com/hackclub/flavortown
-Demo        : https://flavortown.hackclub.com
-Readme      : https://raw.githubusercontent.com/hackclub/flavortown/refs/heads/main/README.md
+Repo        : https://github.com/hackclub/stardance
+Demo        : https://stardance.hackclub.com
+Readme      : https://raw.githubusercontent.com/hackclub/stardance/refs/heads/main/README.md
 
 Devlogs:
 Devlog #5194
 ----------------------------------------
 
 Body
-Check out https://flavortown.hackclub.com/explore/extensions! we now
-have a list of projects that use the flavortown api ranked by the number
-of total users. if you're building something flavortown related you
+Check out https://stardance.hackclub.com/explore/extensions! we now
+have a list of projects that use the stardance api ranked by the number
+of total users. if you're building something stardance related you
 should set your headers!
 
 Devlog #1
@@ -192,7 +192,7 @@ Cookies     : 0
 
 ### Get information about a user in json
 ```bash
-flavor user get 2 --json
+star user get 2 --json
 ```
 **Returns**
 ```json

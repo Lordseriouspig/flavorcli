@@ -48,7 +48,7 @@ impl Session {
                 String::new()
             }
         );
-        let mut request = self.client.get(url).header("Authorization", &auth).header("X-Flavortown-Ext-333", "true");
+        let mut request = self.client.get(url).header("Authorization", &auth).header("X-Stardance-Ext-333", "true");
         if let Some(p) = params {
             request = request.query(&p);
         }
@@ -71,7 +71,7 @@ impl Session {
         let res = self.client
             .post(url)
             .header("Authorization", &auth)
-            .header("X-Flavortown-Ext-333", "true")
+            .header("X-Stardance-Ext-333", "true")
             .json(&body)
             .send()
             .await?;
@@ -86,7 +86,7 @@ impl Session {
         let res = self.client
             .patch(url)
             .header("Authorization", &auth)
-            .header("X-Flavortown-Ext-333", "true")
+            .header("X-Stardance-Ext-333", "true")
             .json(&body)
             .send()
             .await?;

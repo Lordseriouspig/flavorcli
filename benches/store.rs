@@ -16,15 +16,15 @@ use criterion::{criterion_group, criterion_main, Criterion};
 use std::process::Command;
 use std::hint::black_box;
 use tokio::runtime::Runtime;
-use flavorcli::commands::store::{get::StoreGet, list::{StoreList, StoreFields, SortOrder, SortFields}};
-use flavorcli::models::session::Session;
-use flavorcli::helpers::get_key::get_key;
+use starcli::commands::store::{get::StoreGet, list::{StoreList, StoreFields, SortOrder, SortFields}};
+use starcli::models::session::Session;
+use starcli::helpers::get_key::get_key;
 
 fn cmd_store_get(c: &mut Criterion) {
     c.bench_function("cmd_store_get", |b| {
         b.iter(|| {
             black_box(
-                Command::new("./target/release/flavor")
+                Command::new("./target/release/star")
                     .args(["store", "get", "1"])
                     .status()
                     .expect("Failed to execute command")
@@ -37,7 +37,7 @@ fn cmd_store_list(c: &mut Criterion) {
     c.bench_function("cmd_store_list", |b| {
         b.iter(|| {
             black_box(
-                Command::new("./target/release/flavor")
+                Command::new("./target/release/star")
                     .args(["store", "list"])
                     .status()
                     .expect("Failed to execute command")

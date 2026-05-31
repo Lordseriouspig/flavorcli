@@ -1,27 +1,27 @@
 <!--
  Copyright (C) 2026 Lordseriouspig
  
- This file is part of flavorcli.
+ This file is part of starcli.
  
- flavorcli is free software: you can redistribute it and/or modify
+ starcli is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
  (at your option) any later version.
  
- flavorcli is distributed in the hope that it will be useful,
+ starcli is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
  
  You should have received a copy of the GNU General Public License
- along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
+ along with starcli.  If not, see <https://www.gnu.org/licenses/>.
 -->
 
 The project create command allows you to create a new project.
 
 ## Usage
 ```bash
-flavor project create [OPTIONS] --title <TITLE> --description <DESCRIPTION>
+star project create [OPTIONS] --title <TITLE> --description <DESCRIPTION>
 ```
 
 ### Options
@@ -38,7 +38,7 @@ flavor project create [OPTIONS] --title <TITLE> --description <DESCRIPTION>
 ## Examples
 Create a new project with a title and description:
 ```bash
-flavor project create --title "Cool project" --description "wawawa"
+star project create --title "Cool project" --description "wawawa"
 ```
 **Returns**
 ```
@@ -63,7 +63,7 @@ Devlog IDs:
 
 Create a project and return it as json
 ```bash
-flavor project create --title "Cool project" --description "wawawa" --json
+star project create --title "Cool project" --description "wawawa" --json
 ```
 **Returns**
 ```json

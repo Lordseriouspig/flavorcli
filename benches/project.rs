@@ -16,15 +16,15 @@ use criterion::{criterion_group, criterion_main, Criterion};
 use std::process::Command;
 use std::hint::black_box;
 use tokio::runtime::Runtime;
-use flavorcli::commands::project::{get::ProjectGet, list::ProjectList};
-use flavorcli::models::session::Session;
-use flavorcli::helpers::get_key::get_key;
+use starcli::commands::project::{get::ProjectGet, list::ProjectList};
+use starcli::models::session::Session;
+use starcli::helpers::get_key::get_key;
 
 fn cmd_project_get(c: &mut Criterion) {
     c.bench_function("cmd_project_get", |b| {
         b.iter(|| {
             black_box(
-                Command::new("./target/release/flavor")
+                Command::new("./target/release/star")
                     .args(["project", "get", "1"])
                     .status()
                     .expect("Failed to execute command")
@@ -37,7 +37,7 @@ fn cmd_project_list(c: &mut Criterion) {
     c.bench_function("cmd_project_list", |b| {
         b.iter(|| {
             black_box(
-                Command::new("./target/release/flavor")
+                Command::new("./target/release/star")
                     .args(["project", "list"])
                     .status()
                     .expect("Failed to execute command")

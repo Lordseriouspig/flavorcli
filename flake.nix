@@ -1,5 +1,5 @@
 {
-  description = "FlavorCLI – Flavortown API CLI";
+  description = "StarCLI – Stardance API CLI";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -15,13 +15,13 @@
       in
       {
         packages = rec {
-          flavorcli = pkgs.rustPlatform.buildRustPackage rec {
-            pname = "flavorcli";
+          starcli = pkgs.rustPlatform.buildRustPackage rec {
+            pname = "starcli";
             version = "1.0.3";
 
             src = pkgs.fetchFromGitHub {
               owner = "lordseriouspig";
-              repo = "flavorcli";
+              repo = "starcli";
               rev = "v${version}";
               hash = "sha256-Y7FP47gv8g5hNy7/k8OgQW2slj7dmVi4j2JAfDedrEY=";
             };
@@ -38,18 +38,18 @@
             '';
 
             meta = with pkgs.lib; {
-              description = "Fully-featured implementation of the Flavortown API";
-              homepage = "https://github.com/lordseriouspig/flavorcli";
+              description = "Fully-featured implementation of the Stardance API";
+              homepage = "https://github.com/lordseriouspig/starcli";
               license = licenses.gpl3Plus;
               platforms = platforms.linux;
             };
           };
 
-          default = flavorcli;
+          default = starcli;
         };
 
         devShells.default = pkgs.mkShell {
-          inputsFrom = [ self.packages.${system}.flavorcli ];
+          inputsFrom = [ self.packages.${system}.starcli ];
 
           packages = with pkgs; [
             rustc

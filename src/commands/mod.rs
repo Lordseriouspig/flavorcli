@@ -1,19 +1,19 @@
 // Copyright (C) 2025 Lordseriouspig
 //
-// This file is part of flavorcli.
+// This file is part of starcli.
 //
-// flavorcli is free software: you can redistribute it and/or modify
+// starcli is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// flavorcli is distributed in the hope that it will be useful,
+// starcli is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
+// along with starcli.  If not, see <https://www.gnu.org/licenses/>.
 
 use clap::{Parser, Subcommand};
 
@@ -25,13 +25,13 @@ pub mod user;
 
 #[derive(Parser)]
 #[clap(
-    name = "flavor",
+    name = "star",
     author = "Lordseriouspig",
     version,
-    about = "A command line interface to interact with FlavorTown"
+    about = "A command line interface to interact with Stardance"
 )]
 #[derive(Debug)]
-pub struct FlavorArgs {
+pub struct StarArgs {
     // Defines the top level command
     #[clap(subcommand)]
     pub entity_type: Command,
@@ -43,14 +43,14 @@ pub struct FlavorArgs {
 
 pub enum Command {
     // Defines each subcommand (level 2)
-    /// Commands that allow you to manage your authorization to Flavortown.
+    /// Commands that allow you to manage your authorization to Stardance.
     Auth(auth::AuthCommand),
 
     /// Commands that allow you to view, search and manage projects and devlogs.
     #[clap(alias = "projects")]
     Project(project::ProjectsCommand),
 
-    /// Commands that allow you to browse the Flavortown store.
+    /// Commands that allow you to browse the Stardance store.
     Store(store::StoreCommand),
 
     /// Commands that allow you to view information about users.

@@ -1,19 +1,19 @@
 // Copyright (C) 2025 Lordseriouspig
 //
-// This file is part of flavorcli.
+// This file is part of starcli.
 //
-// flavorcli is free software: you can redistribute it and/or modify
+// starcli is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// flavorcli is distributed in the hope that it will be useful,
+// starcli is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
+// along with starcli.  If not, see <https://www.gnu.org/licenses/>.
 
 use crate::helpers::print_devlog_table::print_devlog_table;
 use crate::models::authdata::AuthData;
@@ -85,7 +85,7 @@ impl DevlogList {
             p
         };
         let url = format!(
-            "https://flavortown.hackclub.com{}",
+            "https://stardance.hackclub.com{}",
             if let Some(project_id) = self.project_id {
                 format!("/api/v1/projects/{}/devlogs", project_id)
             } else {
@@ -154,7 +154,7 @@ impl DevlogList {
             .project_id
             .ok_or_else(|| anyhow::anyhow!("Project ID is required to retrieve project name"))?;
         let url = format!(
-            "https://flavortown.hackclub.com/api/v1/projects/{}",
+            "https://stardance.hackclub.com/api/v1/projects/{}",
             project_id
         );
         debug!("Sending GET request to {}", url);

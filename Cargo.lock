@@ -1395,36 +1395,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "flavorcli"
-version = "1.0.3"
-dependencies = [
- "anyhow",
- "cargo-release",
- "chrono",
- "clap",
- "clap-verbosity-flag",
- "colog",
- "comfy-table",
- "criterion",
- "env_logger 0.11.9",
- "futures",
- "git-cliff",
- "indicatif",
- "keyring",
- "log",
- "owo-colors",
- "reqwest 0.13.2",
- "sentry",
- "sentry-anyhow",
- "sentry-log",
- "serde",
- "serde_json",
- "textwrap",
- "tokio",
- "update-informer",
-]
-
-[[package]]
 name = "fnv"
 version = "1.0.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4231,6 +4201,36 @@ name = "stable_deref_trait"
 version = "1.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6ce2be8dc25455e1f91df71bfa12ad37d7af1092ae736f3a6cd0e37bc7810596"
+
+[[package]]
+name = "starcli"
+version = "1.0.3"
+dependencies = [
+ "anyhow",
+ "cargo-release",
+ "chrono",
+ "clap",
+ "clap-verbosity-flag",
+ "colog",
+ "comfy-table",
+ "criterion",
+ "env_logger 0.11.9",
+ "futures",
+ "git-cliff",
+ "indicatif",
+ "keyring",
+ "log",
+ "owo-colors",
+ "reqwest 0.13.2",
+ "sentry",
+ "sentry-anyhow",
+ "sentry-log",
+ "serde",
+ "serde_json",
+ "textwrap",
+ "tokio",
+ "update-informer",
+]
 
 [[package]]
 name = "strsim"

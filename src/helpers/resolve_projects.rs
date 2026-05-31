@@ -1,19 +1,19 @@
 // Copyright (C) 2026 Lordseriouspig
 //
-// This file is part of flavorcli.
+// This file is part of starcli.
 //
-// flavorcli is free software: you can redistribute it and/or modify
+// starcli is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// flavorcli is distributed in the hope that it will be useful,
+// starcli is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
+// along with starcli.  If not, see <https://www.gnu.org/licenses/>.
 
 use crate::{models::authdata::AuthData, models::project::Project};
 use anyhow::{Ok, Result};
@@ -32,7 +32,7 @@ pub async fn resolve_projects(project_ids: &[u32], auth: &AuthData, session: &cr
     let futures = project_ids.iter().map(|project| {
         let token = auth.token.clone();
         let url = format!(
-            "https://flavortown.hackclub.com/api/v1/projects/{}",
+            "https://stardance.hackclub.com/api/v1/projects/{}",
             project
         );
         debug!("Sending GET request to {}", url);

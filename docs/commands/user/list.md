@@ -1,27 +1,27 @@
 <!--
  Copyright (C) 2026 Lordseriouspig
  
- This file is part of flavorcli.
+ This file is part of starcli.
  
- flavorcli is free software: you can redistribute it and/or modify
+ starcli is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
  (at your option) any later version.
  
- flavorcli is distributed in the hope that it will be useful,
+ starcli is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
  
  You should have received a copy of the GNU General Public License
- along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
+ along with starcli.  If not, see <https://www.gnu.org/licenses/>.
 -->
 
 The user list command allows you to get a list of every user.
 
 ## Usage
 ```bash
-flavor user list [OPTIONS]
+star user list [OPTIONS]
 ```
 
 ### Options
@@ -35,7 +35,7 @@ flavor user list [OPTIONS]
 ## Examples
 ### Get all users (page 1)
 ```bash
-flavor user list
+star user list
 ```
 **Returns** (concatenated)
 ```
@@ -55,7 +55,7 @@ Page 1/57 | Total users: 5647 | Next page: 2
 
 ### Get a list of users with custom fields
 ```bash
-flavor user list --fields id,display-name,slack-id,cookies
+star user list --fields id,display-name,slack-id,cookies
 ```
 **Returns** (concatenated)
 ```
@@ -74,7 +74,7 @@ flavor user list --fields id,display-name,slack-id,cookies
 
 ### Get a list of users in json
 ```bash
-flavor user list --json
+star user list --json
 ```
 **Returns** (concatenated)
 ```json

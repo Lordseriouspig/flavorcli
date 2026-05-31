@@ -1,20 +1,20 @@
 [package]
-name = "flavorcli"
+name = "starcli"
 version = "1.0.3"
 authors = ["Lordseriouspig <lordseriouspig@gmail.com>"]
 edition = "2024"
-description = "A command line interface to interact with FlavorTown"
+description = "A command line interface to interact with Stardance"
 readme = "README.MD"
-repository = "https://github.com/lordseriouspig/flavorcli"
+repository = "https://github.com/lordseriouspig/starcli"
 license = "GPL-3.0-or-later"
-keywords = ["flavortown","hack-club"]
+keywords = ["stardance", "startown", "hack-club"]
 categories = ["command-line-utilities"]
 
 [lints.rust]
 unsafe_code = "warn"
 
 [[bin]]
-name = "flavor"
+name = "star"
 path = "src/main.rs"
 
 [dependencies]

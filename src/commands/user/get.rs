@@ -1,19 +1,19 @@
 // Copyright (C) 2025 Lordseriouspig
 //
-// This file is part of flavorcli.
+// This file is part of starcli.
 //
-// flavorcli is free software: you can redistribute it and/or modify
+// starcli is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// flavorcli is distributed in the hope that it will be useful,
+// starcli is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
+// along with starcli.  If not, see <https://www.gnu.org/licenses/>.
 
 use crate::helpers::print_user::print_user;
 use crate::models::authdata::AuthData;
@@ -51,7 +51,7 @@ impl UserGet {
         spinner.enable_steady_tick(std::time::Duration::from_millis(80));
 
         let url = format!(
-            "https://flavortown.hackclub.com/api/v1/users/{}",
+            "https://stardance.hackclub.com/api/v1/users/{}",
             if let Some(user_id) = &self.user_id {
                 user_id.to_string()
             } else {

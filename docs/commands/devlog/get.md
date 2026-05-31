@@ -1,20 +1,20 @@
 <!--
  Copyright (C) 2026 Lordseriouspig
  
- This file is part of flavorcli.
+ This file is part of starcli.
  
- flavorcli is free software: you can redistribute it and/or modify
+ starcli is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
  (at your option) any later version.
  
- flavorcli is distributed in the hope that it will be useful,
+ starcli is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
  
  You should have received a copy of the GNU General Public License
- along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
+ along with starcli.  If not, see <https://www.gnu.org/licenses/>.
 -->
 
 Devlog Get allows you to get information about a specific devlog by it's, and optionally it's project's, ID.
@@ -22,13 +22,13 @@ Devlog Get allows you to get information about a specific devlog by it's, and op
 ## Usage
 
 ```bash
-flavor devlog get [OPTIONS] <DEVLOG_ID>
+star devlog get [OPTIONS] <DEVLOG_ID>
 ```
 
 ### Arguments
 - **`<DEVLOG_ID>`:**  The devlog ID to retrieve
 {% hint style="info" %}
-You can get Devlog IDs from the `flavor devlog list` command, or from the `flavor project get` command, where you can see all devlogs associated with a project.
+You can get Devlog IDs from the `star devlog list` command, or from the `star project get` command, where you can see all devlogs associated with a project.
 {% endhint %}
 
 ### Options
@@ -41,7 +41,7 @@ You can get Devlog IDs from the `flavor devlog list` command, or from the `flavo
 ## Examples
 ### Get a devlog by its ID
 ```bash
-flavor devlog get 11564 --project-id 333
+star devlog get 11564 --project-id 333
 ```
 **Returns**
 ```
@@ -65,14 +65,14 @@ Anyway, I'm now working on adding documentation to GitBook, and once
 that's finished, I'll be working on releasing the next release.
 
 Media:
-Attachment #1: https://flavortown.hackclub.com/rails/active_storage/blobs/proxy/eyJfcmFpbHMiOnsiZGF0YSI6NjMxNjEsInB1ciI6ImJsb2JfaWQifX0=--4d3eb44ce45ac2b8ccabc82a08190c84a38e62f4/pasted-2026-01-14T02-13-20-408Z.png (image/png)
-Attachment #2: https://flavortown.hackclub.com/rails/active_storage/blobs/proxy/eyJfcmFpbHMiOnsiZGF0YSI6NjMxNjIsInB1ciI6ImJsb2JfaWQifX0=--4f8fde4ea82a6b2e69a0cd0838924a91ae99dbeb/pasted-2026-01-14T02-17-55-727Z.png (image/png)
+Attachment #1: https://stardance.hackclub.com/rails/active_storage/blobs/proxy/eyJfcmFpbHMiOnsiZGF0YSI6NjMxNjEsInB1ciI6ImJsb2JfaWQifX0=--4d3eb44ce45ac2b8ccabc82a08190c84a38e62f4/pasted-2026-01-14T02-13-20-408Z.png (image/png)
+Attachment #2: https://stardance.hackclub.com/rails/active_storage/blobs/proxy/eyJfcmFpbHMiOnsiZGF0YSI6NjMxNjIsInB1ciI6ImJsb2JfaWQifX0=--4f8fde4ea82a6b2e69a0cd0838924a91ae99dbeb/pasted-2026-01-14T02-17-55-727Z.png (image/png)
 ```
 
 
 ### Get json of a devlog by its ID
 ```bash
-flavor devlog get 11564 --json
+star devlog get 11564 --json
 ```
 
 **Returns**

@@ -1,19 +1,19 @@
 // Copyright (C) 2025 Lordseriouspig
 // 
-// This file is part of flavorcli.
+// This file is part of starcli.
 // 
-// flavorcli is free software: you can redistribute it and/or modify
+// starcli is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 // 
-// flavorcli is distributed in the hope that it will be useful,
+// starcli is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 // 
 // You should have received a copy of the GNU General Public License
-// along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
+// along with starcli.  If not, see <https://www.gnu.org/licenses/>.
 
 mod commands;
 mod helpers;
@@ -24,7 +24,7 @@ use crate::helpers::get_key::get_key;
 
 use clap::{Parser};
 use log::{error, debug, warn};
-use commands::FlavorArgs;
+use commands::StarArgs;
 use anyhow::{Context, Result};
 use sentry::{start_session, end_session};
 use sentry_anyhow::capture_anyhow;
@@ -37,9 +37,9 @@ use owo_colors::OwoColorize;
 #[tokio::main]
 async fn main() {
     let current_version = env!("CARGO_PKG_VERSION");
-    let informer = update_informer::new(registry::GitHub, "lordseriouspig/flavorcli", current_version);
+    let informer = update_informer::new(registry::GitHub, "lordseriouspig/starcli", current_version);
 
-    let args: FlavorArgs = FlavorArgs::parse();
+    let args: StarArgs = StarArgs::parse();
     let mut builder = env_logger::Builder::new();
     builder
         .format(colog::formatter(colog::format::DefaultCologStyle))
@@ -63,16 +63,16 @@ async fn main() {
     if let Some(version) = informer.check_version().ok().flatten() {
         let msg = format!(
             "A new release of {} is available: v{} -> {}",
-            "FlavorCLI".italic().cyan(),
+            "StarCLI".italic().cyan(),
             current_version,
             version.to_string().green()
         );
-        eprintln!("\n{msg}\n{url}", msg = msg, url = format!("https://github.com/lordseriouspig/flavorcli/releases/tag/{}", version).yellow());
+        eprintln!("\n{msg}\n{url}", msg = msg, url = format!("https://github.com/lordseriouspig/starcli/releases/tag/{}", version).yellow());
     }
     end_session();
 }
 
-async fn run(args: FlavorArgs) -> Result<()> {
+async fn run(args: StarArgs) -> Result<()> {
     debug!("Parsed arguments: {:?}", args);
     let needs_session = match &args.entity_type {
         commands::Command::Auth(auth_cmd) => {
@@ -131,14 +131,14 @@ async fn run(args: FlavorArgs) -> Result<()> {
                 commands::project::ProjectSubcommand::Devlog(devlog_cmd) => {
                     match devlog_cmd.command {
                         commands::devlog::DevlogSubcommand::Get(get_cmd) => {
-                            warn!("Deprecation Warning: The 'project devlog get' command is deprecated and is kept for historical reasons. Please use 'flavor devlog get' instead.");
+                            warn!("Deprecation Warning: The 'project devlog get' command is deprecated and is kept for historical reasons. Please use 'star devlog get' instead.");
                             debug!("Executing ProjectDevlogSubcommand::Get with args: {:?}", get_cmd);
                             get_cmd.execute(session.as_ref().unwrap(), auth.as_ref().unwrap())
                             .await
                             .context("Failed to get devlog")?;
                         }
                         commands::devlog::DevlogSubcommand::List(list_cmd) => {
-                            warn!("Deprecation Warning: The 'project devlog list' command is deprecated and is kept for historical reasons. Please use 'flavor devlog list' instead.");
+                            warn!("Deprecation Warning: The 'project devlog list' command is deprecated and is kept for historical reasons. Please use 'star devlog list' instead.");
                             debug!("Executing ProjectDevlogSubcommand::List with args: {:?}", list_cmd);
                             list_cmd.execute(session.as_ref().unwrap(), auth.as_ref().unwrap())
                             .await

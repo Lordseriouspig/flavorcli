@@ -1,19 +1,19 @@
 // Copyright (C) 2026 Lordseriouspig
 //
-// This file is part of flavorcli.
+// This file is part of starcli.
 //
-// flavorcli is free software: you can redistribute it and/or modify
+// starcli is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// flavorcli is distributed in the hope that it will be useful,
+// starcli is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with flavorcli.  If not, see <https://www.gnu.org/licenses/>.
+// along with starcli.  If not, see <https://www.gnu.org/licenses/>.
 
 use crate::models::devlog::Devlog;
 use crate::{field, field_long, heading, long_text, title};
@@ -60,7 +60,7 @@ pub fn print_devlog(d: &Devlog, short: bool) {
             field!(
                 format!("Attachment #{}", i + 1),
                 format!(
-                    "https://flavortown.hackclub.com{} ({})",
+                    "https://stardance.hackclub.com{} ({})",
                     media.url, media.content_type
                 )
             );
